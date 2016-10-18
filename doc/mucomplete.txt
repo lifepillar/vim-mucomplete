@@ -1,0 +1,90 @@
+*mucomplete.txt*  Chained autocompletion!
+
+Author:  Lifepillar <https://github.com/lifepillar>
+License: Public Domain
+                                        
+        _ _  _ _  _ | __|_ _                      ~
+    |_|(_(_)| | ||_)|(/_|_(/_                     ~
+    |            |                                ~
+
+====================================================================
+CONTENTS                                       *mucomplete-contents*
+
+    1. Introduction ......... |mucomplete-introduction|
+    2. Getting started ...... |mucomplete-howto|
+    3. Mappings ............. |mucomplete-mappings|
+    4. Customization ........ |mucomplete-customization|
+    5. Contributing ......... |mucomplete-contributing|
+
+====================================================================
+Section 1: Introduction                    *mucomplete-introduction*
+
+Can't stand the dozen of MB of YouCompleteMe? Can't figure out the
+correct settings to tame NeoComplete? D'you think AutoComplPop is an
+old fashioned song and Supertab a movie hero for children?
+
+Mucomplete (or µcomplete) may be the minimalistic autocompletion
+plugin you were looking for!
+
+Mucomplete does nothing more than typing some completion mappings
+for you (see |ins-completion|), either when you press Tab or
+automatically while you are typing. You choose which completion
+methods to use and in which order, and µcomplete does the rest. It
+does no caching, no asynchronous computation, no intelligent
+guessing. It just makes use of the built-in Vim features.
+
+====================================================================
+Section 2: Getting started                        *mucomplete-howto*
+
+Make sure |completeopt| contains `menu` and/or `menuone`:
+
+  `:set completeopt?`
+
+If it doesn't:
+
+  `:set completeopt+=menu,menuone`
+
+Press <Tab> in Insert mode after at least two consecutive non-space
+characters. This will trigger, in order, one or more of:
+
+1. omnicompletion;
+2. keyword local completion;
+3. dictionary completion.
+
+Before trying each method, µcomplete checks whether the method can
+be applied. For example, omnicompletion is tried only if |omnifunc|
+is non-empty. When a method cannot be applied, or it returns no
+results, the next method is tried. As soon as a completion method
+produces some results, the search stops and a pop-up menu appears.
+
+Ok mucomplete, how much do you need? ~
+Just Vim compiled with |+comments| and |+folding|.
+
+====================================================================
+Section 3: Mappings                            *mucomplete-mappings*
+
+
+====================================================================
+Section 4: Customization                  *mucomplete-customization*
+
+                                      *g:mucomplete_body_text_level*
+The foldlevel of the body text. The value of this variable should be
+either `'='` (same foldlevel as the topic header) or `20`. If you
+use `20`, you may fully expand the outline while keeping the body
+text folded by setting |foldlevel| to `19`. The value of this
+variable may be quickly toggled using `gy` (see
+|mucomplete-mappings|).
+
+  let g:mucomplete_body_text_level = '='
+
+
+====================================================================
+Section 5: Contributing                    *mucomplete-contributing*
+
+For bug reports and feature requests please use:
+
+    https://github.com/lifepillar/vim-mucomplete/issues
+
+Pull requests are welcome, too!
+
+" vim: sw=2 tw=68
