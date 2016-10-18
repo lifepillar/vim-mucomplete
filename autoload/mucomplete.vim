@@ -91,7 +91,7 @@ else
    call mucomplete#DisableAutocompletion()
 endif
 
-" Used internally
+" Internal status
 let s:compl_method = []
 let s:compl_text = ''
 
