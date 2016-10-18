@@ -6,22 +6,16 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " Conditions to be verified for a given method to be applied.
-let s:can_complete = {
-      \ 'c-n'     :  { t -> 1 },
-      \ 'c-p'     :  { t -> 1 },
-      \ 'cmd'     :  { t -> 1 },
-      \ 'defs'    :  { t -> 1 },
-      \ 'dict'    :  { t -> strlen(&l:dictionary) > 0 },
-      \ 'file'    :  { t -> t =~# '/' },
-      \ 'incl'    :  { t -> 1 },
-      \ 'keyn'    :  { t -> 1 },
-      \ 'keyp'    :  { t -> 1 },
-      \ 'line'    :  { t -> 1 },
-      \ 'omni'    :  { t -> strlen(&l:omnifunc) > 0 },
-      \ 'spel'    :  { t -> &l:spell },
-      \ 'tags'    :  { t -> !empty(tagfiles()) },
-      \ 'thes'    :  { t -> strlen(&l:thesaurus) > 0 },
-      \ 'user'    :  { t -> strlen(&l:completefunc) > 0 }
+let g:mucomplete_can_complete = {
+      \ 'default' : {
+      \     'dict':  { t -> strlen(&l:dictionary) > 0 },
+      \     'file':  { t -> t =~# '/' },
+      \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
+      \     'spel':  { t -> &l:spell },
+      \     'tags':  { t -> !empty(tagfiles()) },
+      \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
+      \     'user':  { t -> strlen(&l:completefunc) > 0 }
+      \   }
       \ }
 
 " Note: In 'c-n' and 'c-p' below we use the fact that pressing <c-x> while in
@@ -98,7 +92,11 @@ let s:compl_text = ''
 " Workhorse function for chained completion. Do not call directly.
 fun! mucomplete#complete_chain(index)
   let i = a:index
-  while i < len(s:compl_method) && !s:can_complete[s:compl_method[i]](s:compl_text)
+  while i < len(s:compl_method) &&
+        \ !get(get(g:mucomplete_can_complete, getbufvar("%","&ft"), {}),
+        \          s:compl_method[i],
+        \          get(g:mucomplete_can_complete['default'], s:compl_method[i], { t -> 1 }
+        \ ))(s:compl_text)
     let i += 1
   endwhile
   if i < len(s:compl_method)
