@@ -18,8 +18,8 @@ if !exists(":DisableAutocompletion")
   command -nargs=0 DisableAutocompletion :call mucomplete#disable_autocompletion()
 endif
 
-inoremap <expr><silent> <tab>   mucomplete#complete(1)
-inoremap <expr><silent> <s-tab> mucomplete#complete(-1)
+imap <expr> <silent> <tab>   mucomplete#complete(1)
+imap <expr> <silent> <s-tab> mucomplete#complete(-1)
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
