@@ -113,22 +113,22 @@ fun! mucomplete#complete_chain(index)
   return ''
 endf
 
-fun! s:complete(dir)
+fun! s:complete(rev)
   let s:compl_methods = get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default'])
-  if a:dir == -1
+  if a:rev
     call reverse(s:compl_methods)
   endif
   return mucomplete#complete_chain(0)
 endf
 
-fun! mucomplete#complete(dir)
+fun! mucomplete#complete(rev)
   if pumvisible()
-    return a:dir == -1 ? "\<c-p>" : "\<c-n>"
+    return a:rev ? "\<c-p>" : "\<c-n>"
   endif
   let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
   return strlen(s:compl_text) == 0
-        \ ? (a:dir == -1 ? "\<c-d>" : "\<tab>")
-        \ : get(b:, 'lf_tab_complete', s:complete(a:dir))
+        \ ? (a:rev ? "\<c-d>" : "\<tab>")
+        \ : get(b:, 'lf_tab_complete', s:complete(a:rev))
 endf
 
 
