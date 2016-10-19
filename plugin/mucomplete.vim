@@ -11,11 +11,11 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 if !exists(":EnableAutocompletion")
-  command -nargs=0 EnableAutocompletion :call mucomplete#EnableAutocompletion()
+  command -nargs=0 EnableAutocompletion :call mucomplete#enable_autocompletion()
 endif
 
 if !exists(":DisableAutocompletion")
-  command -nargs=0 DisableAutocompletion :call mucomplete#DisableAutocompletion()
+  command -nargs=0 DisableAutocompletion :call mucomplete#disable_autocompletion()
 endif
 
 inoremap <expr><silent> <tab>   mucomplete#complete(1)

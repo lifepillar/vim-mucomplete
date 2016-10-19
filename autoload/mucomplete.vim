@@ -34,7 +34,7 @@ let g:mucomplete_can_complete = {
 " <c-x><c-o> would do a different thing).
 let g:mucomplete_exit_ctrlx_key = "\<c-b>"
 
-fun! mucomplete#EnableAutocompletion()
+fun! mucomplete#enable_autocompletion()
   let s:completedone = 0
   let g:mucomplete_mappings = {
         \ 'c-n'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-n>\<c-p>",
@@ -60,7 +60,7 @@ fun! mucomplete#EnableAutocompletion()
   augroup END
 endf
 
-fun! mucomplete#DisableAutocompletion()
+fun! mucomplete#disable_autocompletion()
   if exists('#mucomplete_auto')
     autocmd! mucomplete_auto
     augroup! mucomplete_auto
@@ -88,9 +88,9 @@ fun! mucomplete#DisableAutocompletion()
 endf
 
 if get(g:, 'mucomplete_auto', 0)
-   call mucomplete#EnableAutocompletion()
+   call mucomplete#enable_autocompletion()
 else
-   call mucomplete#DisableAutocompletion()
+   call mucomplete#disable_autocompletion()
 endif
 
 " Internal status
