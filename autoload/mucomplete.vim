@@ -35,7 +35,7 @@ let g:mucomplete#exit_ctrlx_key = "\<c-b>"
 
 fun! mucomplete#enable_autocompletion()
   let s:completedone = 0
-  let g:mucomplete#mappings = {
+  let s:compl_mappings = extend({
         \ 'c-n'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-n>\<c-p>",
         \ 'c-p'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-p>\<c-n>",
         \ 'cmd'     :  "\<c-x>\<c-v>\<c-p>",
@@ -51,7 +51,7 @@ fun! mucomplete#enable_autocompletion()
         \ 'tags'    :  "\<c-x>\<c-]>\<c-p>",
         \ 'thes'    :  "\<c-x>\<c-t>\<c-p>",
         \ 'user'    :  "\<c-x>\<c-u>\<c-p>"
-        \ }
+        \ }, map(get(g:, 'mucomplete#user_mappings', {}), { m -> m."\<c-p>" }), 'error')
   augroup mucomplete_auto
     autocmd!
     autocmd TextChangedI * noautocmd if s:completedone | let s:completedone = 0 | else | silent call mucomplete#autocomplete() | endif
@@ -64,7 +64,7 @@ fun! mucomplete#disable_autocompletion()
     autocmd! mucomplete_auto
     augroup! mucomplete_auto
   endif
-  let g:mucomplete#mappings = {
+  let s:compl_mappings = extend({
         \ 'c-n'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-n>",
         \ 'c-p'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-p>",
         \ 'cmd'     :  "\<c-x>\<c-v>",
@@ -80,7 +80,7 @@ fun! mucomplete#disable_autocompletion()
         \ 'tags'    :  "\<c-x>\<c-]>",
         \ 'thes'    :  "\<c-x>\<c-t>",
         \ 'user'    :  "\<c-x>\<c-u>"
-        \ }
+        \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
   if exists('s:completedone')
     unlet s:completedone
   endif
@@ -107,7 +107,7 @@ fun! mucomplete#complete_chain(index)
     let i += 1
   endwhile
   if i < len(s:compl_methods)
-    return g:mucomplete#mappings[s:compl_methods[i]] .
+    return s:compl_mappings[s:compl_methods[i]] .
           \ "\<c-r>=pumvisible()?'':mucomplete#complete_chain(".(i+1).")\<cr>"
   endif
   return ''
