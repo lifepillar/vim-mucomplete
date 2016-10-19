@@ -52,7 +52,7 @@ fun! mucomplete#enable_autocompletion()
         \ 'thes'    :  "\<c-x>\<c-t>\<c-p>",
         \ 'user'    :  "\<c-x>\<c-u>\<c-p>"
         \ }, map(get(g:, 'mucomplete#user_mappings', {}), { m -> m."\<c-p>" }), 'error')
-  augroup mucomplete_auto
+  augroup MucompleteAuto
     autocmd!
     autocmd TextChangedI * noautocmd if s:completedone | let s:completedone = 0 | else | silent call mucomplete#autocomplete() | endif
     autocmd CompleteDone * noautocmd let s:completedone = 1
@@ -60,9 +60,9 @@ fun! mucomplete#enable_autocompletion()
 endf
 
 fun! mucomplete#disable_autocompletion()
-  if exists('#mucomplete_auto')
-    autocmd! mucomplete_auto
-    augroup! mucomplete_auto
+  if exists('#MucompleteAuto')
+    autocmd! MucompleteAuto
+    augroup! MucompleteAuto
   endif
   let s:compl_mappings = extend({
         \ 'c-n'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-n>",
