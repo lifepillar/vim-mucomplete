@@ -5,6 +5,11 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+" Default completion chain
+let g:mucomplete_methods = {
+      \ 'default' : ['file', 'omni', 'keyn', 'dict']
+      \ }
+
 " Conditions to be verified for a given method to be applied.
 let g:mucomplete_can_complete = {
       \ 'default' : {
@@ -107,7 +112,7 @@ fun! mucomplete#complete_chain(index)
 endf
 
 fun! s:complete(dir)
-  let s:compl_methods = get(b:, 'completion_methods', ['file', 'omni', 'keyn',  'incl', 'tags', 'dict'])
+  let s:compl_methods = get(g:mucomplete_methods, getbufvar("%", "&ft"), g:mucomplete_methods['default'])
   if a:dir == -1
     call reverse(s:compl_methods)
   endif
