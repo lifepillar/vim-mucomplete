@@ -10,8 +10,8 @@ let g:mucomplete#chains = extend(get(g:, 'mucomplete#chains', {}), {
       \ }, 'keep')
 
 " Conditions to be verified for a given method to be applied.
-let g:mucomplete#can_complete = {
-      \ 'default' : {
+let g:mucomplete#can_complete = extend({
+      \ 'default' : extend({
       \     'dict':  { t -> strlen(&l:dictionary) > 0 },
       \     'file':  { t -> t =~# '/' },
       \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
@@ -19,8 +19,8 @@ let g:mucomplete#can_complete = {
       \     'tags':  { t -> !empty(tagfiles()) },
       \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
       \     'user':  { t -> strlen(&l:completefunc) > 0 }
-      \   }
-      \ }
+      \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
+      \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 
 " Note: In 'c-n' and 'c-p' below we use the fact that pressing <c-x> while in
 " ctrl-x submode doesn't do anything and any key that is not valid in ctrl-x
