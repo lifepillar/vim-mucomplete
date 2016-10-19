@@ -6,12 +6,12 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " Default completion chain
-let g:mucomplete_methods = {
+let g:mucomplete#chains = {
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }
 
 " Conditions to be verified for a given method to be applied.
-let g:mucomplete_can_complete = {
+let g:mucomplete#can_complete = {
       \ 'default' : {
       \     'dict':  { t -> strlen(&l:dictionary) > 0 },
       \     'file':  { t -> t =~# '/' },
@@ -32,13 +32,13 @@ let g:mucomplete_can_complete = {
 " keyword completion under all circumstances, in particular when the current
 " mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
 " <c-x><c-o> would do a different thing).
-let g:mucomplete_exit_ctrlx_key = "\<c-b>"
+let g:mucomplete#exit_ctrlx_key = "\<c-b>"
 
 fun! mucomplete#enable_autocompletion()
   let s:completedone = 0
-  let g:mucomplete_mappings = {
-        \ 'c-n'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-n>\<c-p>",
-        \ 'c-p'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-p>\<c-n>",
+  let g:mucomplete#mappings = {
+        \ 'c-n'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-n>\<c-p>",
+        \ 'c-p'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-p>\<c-n>",
         \ 'cmd'     :  "\<c-x>\<c-v>\<c-p>",
         \ 'defs'    :  "\<c-x>\<c-d>\<c-p>",
         \ 'dict'    :  "\<c-x>\<c-k>\<c-p>",
@@ -65,9 +65,9 @@ fun! mucomplete#disable_autocompletion()
     autocmd! mucomplete_auto
     augroup! mucomplete_auto
   endif
-  let g:mucomplete_mappings = {
-        \ 'c-n'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-n>",
-        \ 'c-p'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-p>",
+  let g:mucomplete#mappings = {
+        \ 'c-n'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-n>",
+        \ 'c-p'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-p>",
         \ 'cmd'     :  "\<c-x>\<c-v>",
         \ 'defs'    :  "\<c-x>\<c-d>",
         \ 'dict'    :  "\<c-x>\<c-k>",
@@ -101,21 +101,21 @@ let s:compl_text = ''
 fun! mucomplete#complete_chain(index)
   let i = a:index
   while i < len(s:compl_methods) &&
-        \ !get(get(g:mucomplete_can_complete, getbufvar("%","&ft"), {}),
+        \ !get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
         \          s:compl_methods[i],
-        \          get(g:mucomplete_can_complete['default'], s:compl_methods[i], { t -> 1 })
+        \          get(g:mucomplete#can_complete['default'], s:compl_methods[i], { t -> 1 })
         \ )(s:compl_text)
     let i += 1
   endwhile
   if i < len(s:compl_methods)
-    return g:mucomplete_mappings[s:compl_methods[i]] .
+    return g:mucomplete#mappings[s:compl_methods[i]] .
           \ "\<c-r>=pumvisible()?'':mucomplete#complete_chain(".(i+1).")\<cr>"
   endif
   return ''
 endf
 
 fun! s:complete(dir)
-  let s:compl_methods = get(g:mucomplete_methods, getbufvar("%", "&ft"), g:mucomplete_methods['default'])
+  let s:compl_methods = get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default'])
   if a:dir == -1
     call reverse(s:compl_methods)
   endif
