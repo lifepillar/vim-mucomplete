@@ -31,7 +31,7 @@ let g:mucomplete_exit_ctrlx_key = "\<c-b>"
 
 fun! mucomplete#EnableAutocompletion()
   let s:completedone = 0
-  let g:compl_map = {
+  let g:mucomplete_mappings = {
         \ 'c-n'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-n>\<c-p>",
         \ 'c-p'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-p>\<c-n>",
         \ 'cmd'     :  "\<c-x>\<c-v>\<c-p>",
@@ -60,7 +60,7 @@ fun! mucomplete#DisableAutocompletion()
     autocmd! mucomplete_auto
     augroup! mucomplete_auto
   endif
-  let g:compl_map = {
+  let g:mucomplete_mappings = {
         \ 'c-n'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-n>",
         \ 'c-p'     :  "\<c-x>".g:mucomplete_exit_ctrlx_key."\<bs>\<c-p>",
         \ 'cmd'     :  "\<c-x>\<c-v>",
@@ -86,30 +86,30 @@ else
 endif
 
 " Internal status
-let s:compl_method = []
+let s:compl_methods = []
 let s:compl_text = ''
 
 " Workhorse function for chained completion. Do not call directly.
 fun! mucomplete#complete_chain(index)
   let i = a:index
-  while i < len(s:compl_method) &&
+  while i < len(s:compl_methods) &&
         \ !get(get(g:mucomplete_can_complete, getbufvar("%","&ft"), {}),
-        \          s:compl_method[i],
-        \          get(g:mucomplete_can_complete['default'], s:compl_method[i], { t -> 1 }
-        \ ))(s:compl_text)
+        \          s:compl_methods[i],
+        \          get(g:mucomplete_can_complete['default'], s:compl_methods[i], { t -> 1 })
+        \ )(s:compl_text)
     let i += 1
   endwhile
-  if i < len(s:compl_method)
-    return g:compl_map[s:compl_method[i]] .
+  if i < len(s:compl_methods)
+    return g:mucomplete_mappings[s:compl_methods[i]] .
           \ "\<c-r>=pumvisible()?'':mucomplete#complete_chain(".(i+1).")\<cr>"
   endif
   return ''
 endf
 
 fun! s:complete(dir)
-  let s:compl_method = get(b:, 'completion_methods', ['file', 'omni', 'keyn',  'incl', 'tags', 'dict'])
+  let s:compl_methods = get(b:, 'completion_methods', ['file', 'omni', 'keyn',  'incl', 'tags', 'dict'])
   if a:dir == -1
-    call reverse(s:compl_method)
+    call reverse(s:compl_methods)
   endif
   return mucomplete#complete_chain(0)
 endf
