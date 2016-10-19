@@ -5,10 +5,9 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-" Default completion chain
-let g:mucomplete#chains = {
+let g:mucomplete#chains = extend(get(g:, 'mucomplete#chains', {}), {
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
-      \ }
+      \ }, 'keep')
 
 " Conditions to be verified for a given method to be applied.
 let g:mucomplete#can_complete = {
