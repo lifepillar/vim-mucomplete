@@ -82,6 +82,9 @@ fun! mucomplete#DisableAutocompletion()
         \ 'thes'    :  "\<c-x>\<c-t>",
         \ 'user'    :  "\<c-x>\<c-u>"
         \ }
+  if exists('s:completedone')
+    unlet s:completedone
+  endif
 endf
 
 if get(g:, 'mucomplete_auto', 0)
