@@ -27,72 +27,32 @@ let g:mucomplete#can_complete = extend({
 " submode silently ends that mode (:h complete_CTRL-Y) and inserts the key.
 " Hence, after <c-x><c-b>, we are surely out of ctrl-x submode. The subsequent
 " <bs> is used to delete the inserted <c-b>. We use <c-b> because it is not
-" mapped (:h i_CTRL-B-gone). This trick is needed to have <c-p> trigger
-" keyword completion under all circumstances, in particular when the current
-" mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
+" mapped (:h i_CTRL-B-gone). This trick is needed to have <c-p> (an <c-n>)
+" trigger keyword completion under all circumstances, in particular when the
+" current mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
 " <c-x><c-o> would do a different thing).
-let g:mucomplete#exit_ctrlx_key = "\<c-b>"
-
-fun! mucomplete#enable_autocompletion()
-  let s:completedone = 0
-  let s:compl_mappings = extend({
-        \ 'c-n'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-n>\<c-p>",
-        \ 'c-p'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-p>\<c-n>",
-        \ 'cmd'     :  "\<c-x>\<c-v>\<c-p>",
-        \ 'defs'    :  "\<c-x>\<c-d>\<c-p>",
-        \ 'dict'    :  "\<c-x>\<c-k>\<c-p>",
-        \ 'file'    :  "\<c-x>\<c-f>\<c-p>",
-        \ 'incl'    :  "\<c-x>\<c-i>\<c-p>",
-        \ 'keyn'    :  "\<c-x>\<c-n>\<c-p>",
-        \ 'keyp'    :  "\<c-x>\<c-p>\<c-n>",
-        \ 'line'    :  "\<c-x>\<c-l>\<c-p>",
-        \ 'omni'    :  "\<c-x>\<c-o>\<c-p>",
-        \ 'spel'    :  "\<c-x>s\<c-p>",
-        \ 'tags'    :  "\<c-x>\<c-]>\<c-p>",
-        \ 'thes'    :  "\<c-x>\<c-t>\<c-p>",
-        \ 'user'    :  "\<c-x>\<c-u>\<c-p>"
-        \ }, map(get(g:, 'mucomplete#user_mappings', {}), { m -> m."\<c-p>" }), 'error')
-  augroup MucompleteAuto
-    autocmd!
-    autocmd TextChangedI * noautocmd if s:completedone | let s:completedone = 0 | else | silent call mucomplete#autocomplete() | endif
-    autocmd CompleteDone * noautocmd let s:completedone = 1
-  augroup END
-endf
-
-fun! mucomplete#disable_autocompletion()
-  if exists('#MucompleteAuto')
-    autocmd! MucompleteAuto
-    augroup! MucompleteAuto
-  endif
-  let s:compl_mappings = extend({
-        \ 'c-n'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-n>",
-        \ 'c-p'     :  "\<c-x>".g:mucomplete#exit_ctrlx_key."\<bs>\<c-p>",
-        \ 'cmd'     :  "\<c-x>\<c-v>",
-        \ 'defs'    :  "\<c-x>\<c-d>",
-        \ 'dict'    :  "\<c-x>\<c-k>",
-        \ 'file'    :  "\<c-x>\<c-f>",
-        \ 'incl'    :  "\<c-x>\<c-i>",
-        \ 'line'    :  "\<c-x>\<c-l>",
-        \ 'keyn'    :  "\<c-x>\<c-n>",
-        \ 'keyp'    :  "\<c-x>\<c-p>",
-        \ 'omni'    :  "\<c-x>\<c-o>",
-        \ 'spel'    :  "\<c-x>s",
-        \ 'tags'    :  "\<c-x>\<c-]>",
-        \ 'thes'    :  "\<c-x>\<c-t>",
-        \ 'user'    :  "\<c-x>\<c-u>"
-        \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
-  if exists('s:completedone')
-    unlet s:completedone
-  endif
-endf
-
-if get(g:, 'mucomplete_auto', 0)
-   call mucomplete#enable_autocompletion()
-else
-   call mucomplete#disable_autocompletion()
-endif
+let g:mucomplete#exit_ctrlx_keys = "\<c-b>\<bs>"
 
 " Internal status
+let s:cnp = "\<c-x>".g:mucomplete#exit_ctrlx_keys
+let s:compl_mappings = extend({
+      \ 'c-n'     :  [s:cnp."\<c-n>", s:cnp."\<c-n>\<c-p>"],
+      \ 'c-p'     :  [s:cnp."\<c-p>", s:cnp."\<c-p>\<c-n>"],
+      \ 'cmd'     :  ["\<c-x>\<c-v>", "\<c-x>\<c-v>\<c-p>"],
+      \ 'defs'    :  ["\<c-x>\<c-d>", "\<c-x>\<c-d>\<c-p>"],
+      \ 'dict'    :  ["\<c-x>\<c-k>", "\<c-x>\<c-k>\<c-p>"],
+      \ 'file'    :  ["\<c-x>\<c-f>", "\<c-x>\<c-f>\<c-p>"],
+      \ 'incl'    :  ["\<c-x>\<c-i>", "\<c-x>\<c-i>\<c-p>"],
+      \ 'keyn'    :  ["\<c-x>\<c-n>", "\<c-x>\<c-n>\<c-p>"],
+      \ 'keyp'    :  ["\<c-x>\<c-p>", "\<c-x>\<c-p>\<c-n>"],
+      \ 'line'    :  ["\<c-x>\<c-l>", "\<c-x>\<c-l>\<c-p>"],
+      \ 'omni'    :  ["\<c-x>\<c-o>", "\<c-x>\<c-o>\<c-p>"],
+      \ 'spel'    :  ["\<c-x>s"     , "\<c-x>s\<c-p>"     ],
+      \ 'tags'    :  ["\<c-x>\<c-]>", "\<c-x>\<c-]>\<c-p>"],
+      \ 'thes'    :  ["\<c-x>\<c-t>", "\<c-x>\<c-t>\<c-p>"],
+      \ 'user'    :  ["\<c-x>\<c-u>", "\<c-x>\<c-u>\<c-p>"]
+      \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
+unlet s:cnp
 let s:compl_methods = []
 let s:compl_text = ''
 
@@ -107,7 +67,7 @@ fun! mucomplete#complete_chain(index)
     let i += 1
   endwhile
   if i < len(s:compl_methods)
-    return s:compl_mappings[s:compl_methods[i]] .
+    return s:compl_mappings[s:compl_methods[i]][g:mucomplete#_auto_] .
           \ "\<c-r>=pumvisible()?'':mucomplete#complete_chain(".(i+1).")\<cr>"
   endif
   return ''
@@ -131,6 +91,7 @@ fun! mucomplete#complete(rev)
         \ : get(b:, 'lf_tab_complete', s:complete(a:rev))
 endf
 
+let mucomplete#trigger_completion_pattern = '\k\k$'
 
 fun! mucomplete#autocomplete()
   if match(strpart(getline('.'), 0, col('.') - 1), '\k\k$') > -1
