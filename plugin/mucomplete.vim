@@ -11,7 +11,6 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 fun! s:mucomplete_enable_auto()
-  let g:mucomplete#_auto_ = 1
   let s:completedone = 0
   augroup MucompleteAuto
     autocmd!
@@ -28,7 +27,6 @@ fun! s:mucomplete_disable_auto()
   if exists('s:completedone')
     unlet s:completedone
   endif
-  let g:mucomplete#_auto_ = 0
 endf
 
 if !exists(":MucompleteAutoOn")
@@ -38,8 +36,6 @@ endif
 if !exists(":MucompleteAutoOff")
   command -nargs=0 MucompleteAutoOff :call <sid>mucomplete_disable_auto()
 endif
-
-let g:mucomplete#_auto_ = 0
 
 imap <expr> <silent> <tab>   mucomplete#complete(0)
 imap <expr> <silent> <s-tab> mucomplete#complete(1)

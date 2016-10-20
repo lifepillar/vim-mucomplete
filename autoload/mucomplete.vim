@@ -56,6 +56,7 @@ let s:compl_mappings = extend({
 unlet s:cnp
 let s:compl_methods = []
 let s:compl_text = ''
+let s:auto = 0
 
 " Workhorse function for chained completion. Do not call directly.
 fun! mucomplete#complete_chain(index)
@@ -68,7 +69,7 @@ fun! mucomplete#complete_chain(index)
     let i += 1
   endwhile
   if i < len(s:compl_methods)
-    return s:compl_mappings[s:compl_methods[i]][g:mucomplete#_auto_] .
+    return s:compl_mappings[s:compl_methods[i]][s:auto] .
           \ "\<c-r>=pumvisible()?'':mucomplete#complete_chain(".(i+1).")\<cr>"
   endif
   return ''
@@ -86,6 +87,7 @@ fun! mucomplete#complete(rev)
   if pumvisible()
     return a:rev ? "\<c-p>" : "\<c-n>"
   endif
+  let s:auto = exists('#MucompleteAuto')
   let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
   return strlen(s:compl_text) == 0
         \ ? (a:rev ? "\<c-d>" : "\<tab>")
