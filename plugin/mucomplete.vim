@@ -12,7 +12,7 @@ set cpo&vim
 
 fun! s:mucomplete_enable_auto()
   let s:completedone = 0
-  augroup MucompleteAuto
+  augroup MUcompleteAuto
     autocmd!
     autocmd TextChangedI * noautocmd if s:completedone | let s:completedone = 0 | else | silent call mucomplete#autocomplete() | endif
     autocmd CompleteDone * noautocmd let s:completedone = 1
@@ -20,21 +20,21 @@ fun! s:mucomplete_enable_auto()
 endf
 
 fun! s:mucomplete_disable_auto()
-  if exists('#MucompleteAuto')
-    autocmd! MucompleteAuto
-    augroup! MucompleteAuto
+  if exists('#MUcompleteAuto')
+    autocmd! MUcompleteAuto
+    augroup! MUcompleteAuto
   endif
   if exists('s:completedone')
     unlet s:completedone
   endif
 endf
 
-if !exists(":MucompleteAutoOn")
-  command -nargs=0 MucompleteAutoOn :call <sid>mucomplete_enable_auto()
+if !exists(":MUcompleteAutoOn")
+  command -nargs=0 MUcompleteAutoOn :call <sid>mucomplete_enable_auto()
 endif
 
-if !exists(":MucompleteAutoOff")
-  command -nargs=0 MucompleteAutoOff :call <sid>mucomplete_disable_auto()
+if !exists(":MUcompleteAutoOff")
+  command -nargs=0 MUcompleteAutoOff :call <sid>mucomplete_disable_auto()
 endif
 
 imap <expr> <silent> <tab>   mucomplete#complete(0)

@@ -92,7 +92,7 @@ fun! mucomplete#complete(rev)
   if pumvisible()
     return a:rev ? "\<c-p>" : "\<c-n>"
   endif
-  let s:auto = exists('#MucompleteAuto')
+  let s:auto = exists('#MUcompleteAuto')
   let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
   return strlen(s:compl_text) == 0
         \ ? (a:rev ? "\<c-d>" : "\<tab>")
