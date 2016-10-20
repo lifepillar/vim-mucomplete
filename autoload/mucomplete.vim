@@ -9,6 +9,7 @@ let g:mucomplete#chains = extend(get(g:, 'mucomplete#chains', {}), {
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }, 'keep')
 
+let s:yes_you_can = { _ -> 1 }
 " Conditions to be verified for a given method to be applied.
 let g:mucomplete#can_complete = extend({
       \ 'default' : extend({
@@ -62,7 +63,7 @@ fun! mucomplete#complete_chain(index)
   while i < len(s:compl_methods) &&
         \ !get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
         \          s:compl_methods[i],
-        \          get(g:mucomplete#can_complete['default'], s:compl_methods[i], { t -> 1 })
+        \          get(g:mucomplete#can_complete['default'], s:compl_methods[i], s:yes_you_can)
         \ )(s:compl_text)
     let i += 1
   endwhile
