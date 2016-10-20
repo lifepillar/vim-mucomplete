@@ -40,5 +40,9 @@ endif
 imap <expr> <silent> <tab>   mucomplete#complete(0)
 imap <expr> <silent> <s-tab> mucomplete#complete(1)
 
+if get(g:, 'mucomplete#enable_auto_at_startup', 0)
+  MUcompleteAutoOn
+endif
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
