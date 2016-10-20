@@ -37,8 +37,17 @@ if !exists(":MUcompleteAutoOff")
   command -nargs=0 MUcompleteAutoOff :call <sid>mucomplete_disable_auto()
 endif
 
-imap <expr> <silent> <tab>   mucomplete#complete(0)
-imap <expr> <silent> <s-tab> mucomplete#complete(1)
+imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#complete(0)
+imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#complete(1)
+
+if !get(g:, 'mucomplete#no_mappings', 0)
+  if !hasmapto('<plug>(MUcompleteFwd)', 'i')
+    imap <tab>   <plug>(MUcompleteFwd)
+  endif
+  if !hasmapto('<plug>(MUcompleteBwd)', 'i')
+    imap <s-tab> <plug>(MUcompleteBwd)
+  endif
+endif
 
 if get(g:, 'mucomplete#enable_auto_at_startup', 0)
   MUcompleteAutoOn

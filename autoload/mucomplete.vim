@@ -101,7 +101,7 @@ fun! mucomplete#autocomplete()
   if match(strpart(getline('.'), 0, col('.') - 1),
         \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
         \      g:mucomplete#trigger_auto_pattern['default'])) > -1
-    silent call feedkeys("\<tab>", 'i')
+    silent call feedkeys("\<plug>(MUcompleteFwd)", 'i')
   endif
 endf
 
