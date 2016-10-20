@@ -83,7 +83,7 @@ endf
 fun! s:complete(rev)
   let s:compl_methods = get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default'])
   if a:rev
-    call reverse(s:compl_methods)
+    let s:compl_methods = reverse(copy(s:compl_methods))
   endif
   return mucomplete#complete_chain(0)
 endf
