@@ -39,6 +39,8 @@ endif
 
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#complete(0)
 imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#complete(1)
+inoremap    <silent> <plug>(MUcompleteTab) <tab>
+inoremap    <silent> <plug>(MUcompleteCtd) <c-d>
 
 if !get(g:, 'mucomplete#no_mappings', 0)
   if !hasmapto('<plug>(MUcompleteFwd)', 'i')

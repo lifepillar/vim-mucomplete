@@ -94,7 +94,9 @@ fun! mucomplete#complete(rev)
   endif
   let s:auto = exists('#MUcompleteAuto')
   let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
-  return strlen(s:compl_text) == 0 ? (a:rev ? "\<c-d>" : "\<tab>") : s:complete(a:rev)
+  return strlen(s:compl_text) == 0
+        \ ? (a:rev ? "\<plug>(MUcompleteCtd)" : "\<plug>(MUcompleteTab)")
+        \ : s:complete(a:rev)
 endf
 
 fun! mucomplete#autocomplete()
