@@ -5,6 +5,11 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+" Patterns to decide when automatic completion should be triggered.
+let mucomplete#trigger_auto_pattern = extend({
+      \ 'default' : '\k\k$'
+      \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
+
 let g:mucomplete#chains = extend(get(g:, 'mucomplete#chains', {}), {
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }, 'keep')
@@ -94,10 +99,10 @@ fun! mucomplete#complete(rev)
         \ : get(b:, 'lf_tab_complete', s:complete(a:rev))
 endf
 
-let mucomplete#trigger_completion_pattern = '\k\k$'
-
 fun! mucomplete#autocomplete()
-  if match(strpart(getline('.'), 0, col('.') - 1), '\k\k$') > -1
+  if match(strpart(getline('.'), 0, col('.') - 1),
+        \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
+        \      g:mucomplete#trigger_auto_pattern['default'])) > -1
     silent call feedkeys("\<tab>", 'i')
   endif
 endf
