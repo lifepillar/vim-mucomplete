@@ -6,7 +6,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " Patterns to decide when automatic completion should be triggered.
-let mucomplete#trigger_auto_pattern = extend({
+let g:mucomplete#trigger_auto_pattern = extend({
       \ 'default' : '\k\k$'
       \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
 
