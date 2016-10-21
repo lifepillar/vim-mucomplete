@@ -37,4 +37,5 @@ using.
 # MUcomplete in action
 
 ![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/mucomplete-jedi.gif)
+![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/mucomplete-jedi.gif)
 
