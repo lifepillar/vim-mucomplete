@@ -17,8 +17,7 @@ It just makes use of built-in Vim features.
 # Getting Started
 
 No configuration is required, just start pressing `<tab>` or `<s-tab>`
-after at least two consecutive non-space characters. If you want to
-enable automatic completion, put
+to complete a word. If you want to enable automatic completion, put
 
 ```vim let g:mucomplete#enable_auto_at_startup = 1 ```
 
