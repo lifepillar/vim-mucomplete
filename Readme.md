@@ -33,3 +33,8 @@ detailed documentation.
 “intellisense”/semantic completion. If you want that, you also need to
 install suitable omni completion plugins for the languages you are
 using.
+
+# MUcomplete in action
+
+![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/mucomplete-jedi.gif)
+
