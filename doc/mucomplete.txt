@@ -49,18 +49,18 @@ Recommended Vim settings:
   `set completeopt+=menu,menuone`
   `set shortmess+=c`
 
-Press <tab> in Insert mode after at least two consecutive non-space
-characters. This will sequentially trigger the methods specified in
-|g:mucomplete#chains|, until some results are found. You may use
-<s-tab> to try the same list of methods in reverse order. For
-example, if the current completion chain is ['omni', 'keyn'] (see
-|mucomplete-methods|), then pressing <tab> will cause omni
-completion to be attempted first (provided that |'omnifunc'| is
-defined). If |'omnifunc'| is not defined or the omni completion
-function returns no results, then µcomplete will fallback to local
-keyword completion (|'keyn'|). Pressing <s-tab> will trigger the
-same methods in reverse order. You may define arbitrarily long
-completion chains, and even filetype-specific completion chains.
+Press <tab> in Insert mode to complete a word. This will
+sequentially trigger the methods specified in |g:mucomplete#chains|,
+until some results are found. You may use <s-tab> to try the same
+list of methods in reverse order. For example, if the current
+completion chain is ['omni', 'keyn'] (see |mucomplete-methods|),
+then pressing <tab> will cause omni completion to be attempted first
+(provided that |'omnifunc'| is defined). If |'omnifunc'| is not
+defined or the omni completion function returns no results, then
+µcomplete will fallback to local keyword completion (|'keyn'|).
+Pressing <s-tab> will trigger the same methods in reverse order. You
+may define arbitrarily long completion chains, and even
+filetype-specific completion chains.
 
 In detail, this is the algorithm used by µcomplete:
 
