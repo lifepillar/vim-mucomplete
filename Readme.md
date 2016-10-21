@@ -16,18 +16,20 @@ It just makes use of built-in Vim features.
 
 # Getting Started
 
-No configuration is required, just start pressing <tab> or <s-tab>
+No configuration is required, just start pressing `<tab>` or `<s-tab>`
 after at least two consecutive non-space characters. If you want to
 enable automatic completion, put
 
-   let g:mucomplete#enable_auto_at_startup = 1
+```vim
+let g:mucomplete#enable_auto_at_startup = 1
+```
 
 in your `.vimrc`.
 
-MUcomplete is fully customizable. See `:help mucomplete` for detailed
+MUcomplete is fully customizable. See `:help mucomplete.txt` for detailed
 documentation.
 
 
-**Important:** by itself, µcomplete does not provide any
-“intellisense”/semantic completion. If you need that, install
-suitable omni completion plugins for the languages you are using.
+**Important:** by itself, µcomplete does not provide any “intellisense”/semantic
+completion. If you want that, you also need to install suitable omni completion
+plugins for the languages you are using.
