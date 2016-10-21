@@ -8,8 +8,8 @@ MUcomplete (or µcomplete) may be the minimalistic autocompletion
 plugin you were looking for!
 
 MUcomplete does nothing more than typing some completion mappings for
-you (see `:h ins-completion`), either when you press <tab>/<s-tab> or
-automatically while you are typing. You choose which completion
+you (see `:h ins-completion`), either when you press `<tab>`/`<s-tab>`
+or automatically while you are typing. You choose which completion
 methods to use and in which order, and µcomplete does the rest. It
 does no caching, no asynchronous computation, no intelligent guessing.
 It just makes use of built-in Vim features.
@@ -20,16 +20,15 @@ No configuration is required, just start pressing `<tab>` or `<s-tab>`
 after at least two consecutive non-space characters. If you want to
 enable automatic completion, put
 
-```vim
-let g:mucomplete#enable_auto_at_startup = 1
-```
+```vim let g:mucomplete#enable_auto_at_startup = 1 ```
 
 in your `.vimrc`.
 
-MUcomplete is fully customizable. See `:help mucomplete.txt` for detailed
-documentation.
+MUcomplete is fully customizable. See `:help mucomplete.txt` for
+detailed documentation.
 
 
-**Important:** by itself, µcomplete does not provide any “intellisense”/semantic
-completion. If you want that, you also need to install suitable omni completion
-plugins for the languages you are using.
+**Important:** by itself, µcomplete does not provide any
+“intellisense”/semantic completion. If you want that, you also need to
+install suitable omni completion plugins for the languages you are
+using.
