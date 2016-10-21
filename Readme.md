@@ -8,7 +8,7 @@ MUcomplete (or µcomplete) may be the minimalistic autocompletion
 plugin you were looking for!
 
 MUcomplete does nothing more than typing some completion mappings for
-you (see |ins-completion|), either when you press <tab>/<s-tab> or
+you (see `:h ins-completion`), either when you press <tab>/<s-tab> or
 automatically while you are typing. You choose which completion
 methods to use and in which order, and µcomplete does the rest. It
 does no caching, no asynchronous computation, no intelligent guessing.
