@@ -19,7 +19,9 @@ It just makes use of built-in Vim features.
 No configuration is required, just start pressing `<tab>` or `<s-tab>`
 to complete a word. If you want to enable automatic completion, put
 
-```vim let g:mucomplete#enable_auto_at_startup = 1 ```
+```vim
+let g:mucomplete#enable_auto_at_startup = 1
+```
 
 in your `.vimrc`.
 
