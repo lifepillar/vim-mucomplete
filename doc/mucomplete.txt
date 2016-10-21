@@ -35,7 +35,9 @@ guessing. It just makes use of built-in Vim features.
 ====================================================================
 Section 2: Requirements                    *mucomplete-requirements*
 
-MUcomplete requires Vim compiled with |+lambda| and |+menu|.
+MUcomplete requires Vim compiled with |+insert_expand|, |+lambda|
+and |+menu|.
+
 MUcomplete has been tested with Vim 8 only.
 
 Note: |<c-b>| should not be mapped in Insert mode (see
