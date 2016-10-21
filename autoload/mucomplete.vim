@@ -10,9 +10,10 @@ let mucomplete#trigger_auto_pattern = extend({
       \ 'default' : '\k\k$'
       \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
 
-let g:mucomplete#chains = extend(get(g:, 'mucomplete#chains', {}), {
+" Completion chains
+let g:mucomplete#chains = extend({
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
-      \ }, 'keep')
+      \ }, get(g:, 'mucomplete#chains', {}))
 
 let s:yes_you_can = { _ -> 1 }
 " Conditions to be verified for a given method to be applied.
