@@ -18,6 +18,7 @@ if !exists(":MUcompleteAutoOff")
   command -nargs=0 MUcompleteAutoOff :call mucomplete#disable_auto()
 endif
 
+imap <expr> <silent> <plug>(MUcompleteNxt) mucomplete#complete_chain()
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#complete(0)
 imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#complete(1)
 inoremap    <silent> <plug>(MUcompleteTab) <tab>

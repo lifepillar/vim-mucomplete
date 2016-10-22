@@ -84,20 +84,23 @@ unlet s:cnp
 let s:compl_methods = []
 let s:compl_text = ''
 let s:auto = 0
+let s:i = -1
 
 " Workhorse function for chained completion. Do not call directly.
-fun! mucomplete#complete_chain(index)
-  let i = a:index
-  while i < len(s:compl_methods) &&
+fun! mucomplete#complete_chain()
+  if pumvisible()
+    return ''
+  endif
+  let s:i += 1
+  while s:i < len(s:compl_methods) &&
         \ !get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
-        \          s:compl_methods[i],
-        \          get(g:mucomplete#can_complete['default'], s:compl_methods[i], s:yes_you_can)
+        \          s:compl_methods[s:i],
+        \          get(g:mucomplete#can_complete['default'], s:compl_methods[s:i], s:yes_you_can)
         \ )(s:compl_text)
-    let i += 1
+    let s:i += 1
   endwhile
-  if i < len(s:compl_methods)
-    return s:compl_mappings[s:compl_methods[i]][s:auto] .
-          \ "\<c-r>=pumvisible()?'':mucomplete#complete_chain(".(i+1).")\<cr>"
+  if s:i < len(s:compl_methods)
+    return s:compl_mappings[s:compl_methods[s:i]][s:auto] . "\<plug>(MUcompleteNxt)"
   endif
   return ''
 endf
@@ -107,13 +110,15 @@ fun! s:complete(rev)
   if a:rev
     let s:compl_methods = reverse(copy(s:compl_methods))
   endif
-  return mucomplete#complete_chain(0)
+
+  return mucomplete#complete_chain()
 endf
 
 fun! mucomplete#complete(rev)
   if pumvisible()
     return a:rev ? "\<c-p>" : "\<c-n>"
   endif
+  let s:i = -1
   let s:auto = exists('#MUcompleteAuto')
   let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
   return strlen(s:compl_text) == 0
