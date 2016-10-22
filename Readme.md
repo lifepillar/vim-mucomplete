@@ -32,15 +32,33 @@ detailed documentation.
 **Important:** by itself, µcomplete does not provide any
 “intellisense”/semantic completion. If you want that, you also need to
 install suitable omni completion plugins for the languages you are
-using.
+using (see the example below).
 
 # MUcomplete in action
 
 ![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif)
 ![µcomplete with SQL](https://raw.github.com/lifepillar/Resources/master/mucomplete/sql.gif)
 
-The example on the left shows how the Omni Completion experience may be enhanced
-by µcomplete.
+The example on the left shows µcomplete used together with
+[jedi-vim](https://github.com/davidhalter/jedi-vim), which provides semantic
+completion for Python. Used settings:
 
-The example on the right shows how different completion methods are
-automatically triggered in different contexts.
+```vim
+set noshowmode shortmess+=c
+setl completeopt-=preview
+setl completeopt+=longest,menu,menuone
+let g:jedi#popup_on_dot = 0
+MUcompleteAutoOn *.py
+```
+
+The example on the right shows how different completion methods (omni
+completion, keyword completion, file completion) are automatically selected in
+different contexts. Used settings:
+
+```vim
+set showmode shortmess-=c
+setl completeopt+=menu,menuone
+let g:mucomplete#user_mappings = { 'sql' : ["\<c-c>a", "\<c-c>a\<c-p>"] }
+let g:mucomplete#chains = { 'sql' : ['file', 'sql', 'keyn'] }
+MUcompleteAutoOn *.sql
+```
