@@ -2,17 +2,23 @@
 
 Can't stand the dozen of MB of YouCompleteMe? Can't figure out the
 correct settings to tame NeoComplete? D'you think AutoComplPop is an
-old fashioned rock group and Supertab a movie hero for children?
+old fashioned fusion group and Supertab a movie hero for children?
 
-MUcomplete (or µcomplete) may be the minimalistic autocompletion
+Well below 200 LoC, µcomplete may be the minimalistic autocompletion
 plugin you were looking for!
 
-MUcomplete does nothing more than typing some completion mappings for
-you (see `:h ins-completion`), either when you press `<tab>`/`<s-tab>`
-or automatically while you are typing. You choose which completion
-methods to use and in which order, and µcomplete does the rest. It
-does no caching, no asynchronous computation, no intelligent guessing.
-It just makes use of built-in Vim features.
+MUcomplete is an implementation of *chained (fallback) completion*,
+whereby several completion methods are attempted one after another
+until a result is returned.
+
+Under the hood, µcomplete does nothing more than typing some
+completion mappings for you (see `:h ins-completion`), either when you
+press `<tab>`/`<s-tab>` or automatically while you are typing. You
+choose which completion methods to use and in which order, and
+µcomplete does the rest. It does no caching, no asynchronous
+computation, no intelligent guessing. It just makes use of core Vim
+features.
+
 
 # Getting Started
 
@@ -34,6 +40,7 @@ detailed documentation.
 install suitable omni completion plugins for the languages you are
 using (see the example below).
 
+
 # MUcomplete in action
 
 ![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif)
@@ -45,6 +52,7 @@ completion for Python. Used settings:
 
 ```vim
 set noshowmode shortmess+=c
+setl infercase
 setl completeopt-=preview
 setl completeopt+=longest,menu,menuone
 let g:jedi#popup_on_dot = 0
@@ -58,6 +66,7 @@ different contexts. Used settings:
 ```vim
 set showmode shortmess-=c
 setl completeopt+=menu,menuone
+setl infercase
 let g:mucomplete#user_mappings = { 'sql' : ["\<c-c>a", "\<c-c>a\<c-p>"] }
 let g:mucomplete#chains = { 'sql' : ['file', 'sql', 'keyn'] }
 MUcompleteAutoOn *.sql
