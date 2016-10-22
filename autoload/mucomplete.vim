@@ -5,6 +5,27 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+fun! mucomplete#enable_auto(...)
+  let s:completedone = 0
+  augroup MUcompleteAuto
+    autocmd!
+    execute 'autocmd TextChangedI' (strlen(a:000[0]) > 0 ? a:1 : '*')
+          \ 'noautocmd if s:completedone | let s:completedone = 0 | else | silent call mucomplete#autocomplete() | endif'
+    execute 'autocmd CompleteDone' (strlen(a:000[0]) > 0 ? a:1 : '*')
+          \ 'noautocmd let s:completedone = 1'
+  augroup END
+endf
+
+fun! mucomplete#disable_auto()
+  if exists('#MUcompleteAuto')
+    autocmd! MUcompleteAuto
+    augroup! MUcompleteAuto
+  endif
+  if exists('s:completedone')
+    unlet s:completedone
+  endif
+endf
+
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
       \ 'default' : '\k\k$'

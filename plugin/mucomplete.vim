@@ -10,33 +10,12 @@ let g:loaded_mucomplete = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-fun! s:mucomplete_enable_auto(...)
-  let s:completedone = 0
-  augroup MUcompleteAuto
-    autocmd!
-    execute 'autocmd TextChangedI' (strlen(a:000[0]) > 0 ? a:1 : '*')
-          \ 'noautocmd if s:completedone | let s:completedone = 0 | else | silent call mucomplete#autocomplete() | endif'
-    execute 'autocmd CompleteDone' (strlen(a:000[0]) > 0 ? a:1 : '*')
-          \ 'noautocmd let s:completedone = 1'
-  augroup END
-endf
-
-fun! s:mucomplete_disable_auto()
-  if exists('#MUcompleteAuto')
-    autocmd! MUcompleteAuto
-    augroup! MUcompleteAuto
-  endif
-  if exists('s:completedone')
-    unlet s:completedone
-  endif
-endf
-
 if !exists(":MUcompleteAutoOn")
-  command -nargs=? -complete=dir MUcompleteAutoOn :call <sid>mucomplete_enable_auto(<q-args>)
+  command -nargs=? -complete=dir MUcompleteAutoOn :call mucomplete#enable_auto(<q-args>)
 endif
 
 if !exists(":MUcompleteAutoOff")
-  command -nargs=0 MUcompleteAutoOff :call <sid>mucomplete_disable_auto()
+  command -nargs=0 MUcompleteAutoOff :call mucomplete#disable_auto()
 endif
 
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#complete(0)
