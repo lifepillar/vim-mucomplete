@@ -36,5 +36,11 @@ using.
 
 # MUcomplete in action
 
-![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/mucomplete-jedi.gif)
+![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif)
+![µcomplete with SQL](https://raw.github.com/lifepillar/Resources/master/mucomplete/sql.gif)
 
+The example on the left shows how the Omni Completion experience may be enhanced
+by µcomplete.
+
+The example on the right shows how different completion methods are
+automatically triggered in different contexts.
