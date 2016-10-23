@@ -37,7 +37,7 @@ let g:mucomplete#chains = extend({
       \ }, get(g:, 'mucomplete#chains', {}))
 
 " Conditions to be verified for a given method to be applied.
-let s:yes_you_can = { _ -> 1 } " Always try
+let s:yes_you_can = { _ -> 1 } " Try always
 let g:mucomplete#can_complete = extend({
       \ 'default' : extend({
       \     'dict':  { t -> strlen(&l:dictionary) > 0 },
