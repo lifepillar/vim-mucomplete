@@ -46,22 +46,22 @@ using (see the example below).
 ![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif)
 ![µcomplete with SQL](https://raw.github.com/lifepillar/Resources/master/mucomplete/sql.gif)
 
-The example on the left shows µcomplete used together with
-[jedi-vim](https://github.com/davidhalter/jedi-vim), which provides semantic
-completion for Python. Used settings:
+The example on the left shows µcomplete automatically offering
+suggestions from [jedi-vim](https://github.com/davidhalter/jedi-vim),
+which provides semantic completion for Python. Used settings:
 
 ```vim
 set noshowmode shortmess+=c
 setl infercase
 setl completeopt-=preview
 setl completeopt+=longest,menu,menuone
-let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 0  " It may be 1 as well
 MUcompleteAutoOn *.py
 ```
 
 The example on the right shows how different completion methods (omni
-completion, keyword completion, file completion) are automatically selected in
-different contexts. Used settings:
+completion, keyword completion, file completion) are automatically
+selected in different contexts. Used settings:
 
 ```vim
 set showmode shortmess-=c
