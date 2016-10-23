@@ -110,7 +110,6 @@ fun! s:complete(rev)
   if a:rev
     let s:compl_methods = reverse(copy(s:compl_methods))
   endif
-
   return mucomplete#complete_chain()
 endf
 
