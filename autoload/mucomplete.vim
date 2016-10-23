@@ -64,21 +64,21 @@ let g:mucomplete#exit_ctrlx_keys = "\<c-b>\<bs>"
 " Internal status
 let s:cnp = "\<c-x>".g:mucomplete#exit_ctrlx_keys
 let s:compl_mappings = extend({
-      \ 'c-n'     :  [s:cnp."\<c-n>", s:cnp."\<c-n>\<c-p>"],
-      \ 'c-p'     :  [s:cnp."\<c-p>", s:cnp."\<c-p>\<c-n>"],
-      \ 'cmd'     :  ["\<c-x>\<c-v>", "\<c-x>\<c-v>\<c-p>"],
-      \ 'defs'    :  ["\<c-x>\<c-d>", "\<c-x>\<c-d>\<c-p>"],
-      \ 'dict'    :  ["\<c-x>\<c-k>", "\<c-x>\<c-k>\<c-p>"],
-      \ 'file'    :  ["\<c-x>\<c-f>", "\<c-x>\<c-f>\<c-p>"],
-      \ 'incl'    :  ["\<c-x>\<c-i>", "\<c-x>\<c-i>\<c-p>"],
-      \ 'keyn'    :  ["\<c-x>\<c-n>", "\<c-x>\<c-n>\<c-p>"],
-      \ 'keyp'    :  ["\<c-x>\<c-p>", "\<c-x>\<c-p>\<c-n>"],
-      \ 'line'    :  ["\<c-x>\<c-l>", "\<c-x>\<c-l>\<c-p>"],
-      \ 'omni'    :  ["\<c-x>\<c-o>", "\<c-x>\<c-o>\<c-p>"],
-      \ 'spel'    :  ["\<c-x>s"     , "\<c-x>s\<c-p>"     ],
-      \ 'tags'    :  ["\<c-x>\<c-]>", "\<c-x>\<c-]>\<c-p>"],
-      \ 'thes'    :  ["\<c-x>\<c-t>", "\<c-x>\<c-t>\<c-p>"],
-      \ 'user'    :  ["\<c-x>\<c-u>", "\<c-x>\<c-u>\<c-p>"]
+      \ 'c-n'     :  [s:cnp."\<c-n>\<c-p>\<c-n>", s:cnp."\<c-n>\<c-p>"],
+      \ 'c-p'     :  [s:cnp."\<c-p>\<c-n>\<c-p>", s:cnp."\<c-p>\<c-n>"],
+      \ 'cmd'     :  ["\<c-x>\<c-v>\<c-p>\<c-n>", "\<c-x>\<c-v>\<c-p>"],
+      \ 'defs'    :  ["\<c-x>\<c-d>\<c-p>\<c-n>", "\<c-x>\<c-d>\<c-p>"],
+      \ 'dict'    :  ["\<c-x>\<c-k>\<c-p>\<c-n>", "\<c-x>\<c-k>\<c-p>"],
+      \ 'file'    :  ["\<c-x>\<c-f>\<c-p>\<c-n>", "\<c-x>\<c-f>\<c-p>"],
+      \ 'incl'    :  ["\<c-x>\<c-i>\<c-p>\<c-n>", "\<c-x>\<c-i>\<c-p>"],
+      \ 'keyn'    :  ["\<c-x>\<c-n>\<c-p>\<c-n>", "\<c-x>\<c-n>\<c-p>"],
+      \ 'keyp'    :  ["\<c-x>\<c-p>\<c-n>\<c-p>", "\<c-x>\<c-p>\<c-n>"],
+      \ 'line'    :  ["\<c-x>\<c-l>\<c-n>\<c-p>", "\<c-x>\<c-l>\<c-p>"],
+      \ 'omni'    :  ["\<c-x>\<c-o>\<c-p>\<c-n>", "\<c-x>\<c-o>\<c-p>"],
+      \ 'spel'    :  ["\<c-x>s\<c-p>\<c-n>"     , "\<c-x>s\<c-p>"     ],
+      \ 'tags'    :  ["\<c-x>\<c-]>\<c-n>\<c-p>", "\<c-x>\<c-]>\<c-p>"],
+      \ 'thes'    :  ["\<c-x>\<c-t>\<c-n>\<c-p>", "\<c-x>\<c-t>\<c-p>"],
+      \ 'user'    :  ["\<c-x>\<c-u>\<c-n>\<c-p>", "\<c-x>\<c-u>\<c-p>"]
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 unlet s:cnp
 let s:compl_methods = []
