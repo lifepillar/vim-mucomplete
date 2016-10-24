@@ -22,6 +22,10 @@ features.
 
 # Getting Started
 
+Installation does not require anything special. If you need help,
+please read [How to Install]
+(https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
+
 No configuration is required, just start pressing `<tab>` or `<s-tab>`
 to complete a word. If you want to enable automatic completion, put
 
