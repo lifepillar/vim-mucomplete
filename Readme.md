@@ -71,3 +71,17 @@ let g:mucomplete#user_mappings = { 'sql' : ["\<c-c>a", "\<c-c>a\<c-p>"] }
 let g:mucomplete#chains = { 'sql' : ['file', 'sql', 'keyn'] }
 MUcompleteAutoOn *.sql
 ```
+
+
+# Known Issues
+
+Some completion methods may be skipped in some circumstances, even
+when they have high priority and they return (possibly, not very
+quickly) some results. Also, some Omni Completion plugins (notably,
+clang_complete) do not play well with chained completion either.
+
+If you have problems with chaining several completion methods
+(especially, `'tags'`, `'line'`, and omni completion from plugins),
+the current workaround consists in using only one completion method.
+
+I am investigating why that happens.
