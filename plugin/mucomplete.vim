@@ -31,8 +31,6 @@ if !get(g:, 'mucomplete#no_mappings', 0)
   if !hasmapto('<plug>(MUcompleteBwd)', 'i')
     imap <s-tab> <plug>(MUcompleteBwd)
   endif
-
-  inoremap <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
 endif
 
 if get(g:, 'mucomplete#enable_auto_at_startup', 0)
