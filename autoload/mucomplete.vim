@@ -36,12 +36,14 @@ let g:mucomplete#chains = extend({
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }, get(g:, 'mucomplete#chains', {}))
 
+let s:slash = (has('win32') || has('win64') || has('win16') || has('win95')) ? '\' : '/'
+
 " Conditions to be verified for a given method to be applied.
 let s:yes_you_can = { _ -> 1 } " Try always
 let g:mucomplete#can_complete = extend({
       \ 'default' : extend({
       \     'dict':  { t -> strlen(&l:dictionary) > 0 },
-      \     'file':  { t -> t =~# '/' },
+      \     'file':  { t -> t =~# s:slash },
       \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
       \     'spel':  { t -> &l:spell },
       \     'tags':  { t -> !empty(tagfiles()) },
