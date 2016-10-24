@@ -21,7 +21,24 @@ features.
 
 
 # Getting Started
+## Installation
+### apt-vim
+Install [apt-vim](https://github.com/egalpin/apt-vim) and run the following in terminal:
 
+```apt-vim install -y https://github.com/lifepillar/vim-mucomplete.git
+```
+
+### vim-plug
+Install [vim-plug](https://github.com/junegunn/vim-plug), then add the following to your `.vimrc`
+```Plug 'lifepillar/vim-mucomplete'
+```
+
+### Pathogen
+```cd ~/.vim/bundle && \
+git clone https://github.com/lifepillar/vim-mucomplete.git
+```
+
+## Configuration
 No configuration is required, just start pressing `<tab>` or `<s-tab>`
 to complete a word. If you want to enable automatic completion, put
 
@@ -33,6 +50,7 @@ in your `.vimrc`.
 
 MUcomplete is fully customizable. See `:help mucomplete.txt` for
 detailed documentation.
+
 
 
 **Important:** by itself, µcomplete does not provide any
