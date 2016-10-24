@@ -61,7 +61,9 @@ let g:mucomplete#can_complete = extend({
 " trigger keyword completion under all circumstances, in particular when the
 " current mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
 " <c-x><c-o> would do a different thing).
-let g:mucomplete#exit_ctrlx_keys = "\<c-b>\<bs>"
+if !exists('g:mucomplete#exit_ctrlx_keys')
+  let g:mucomplete#exit_ctrlx_keys = "\<c-b>\<bs>"
+endif
 
 " Internal status
 let s:cnp = "\<c-x>".g:mucomplete#exit_ctrlx_keys
