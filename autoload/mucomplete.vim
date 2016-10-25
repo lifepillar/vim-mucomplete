@@ -127,6 +127,9 @@ fun! mucomplete#complete(rev)
 endf
 
 fun! mucomplete#autocomplete()
+  if get(g:, 'ulti_expand_or_jump_res', 0)
+    return
+  endif
   if match(strpart(getline('.'), 0, col('.') - 1),
         \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
         \      g:mucomplete#trigger_auto_pattern['default'])) > -1
