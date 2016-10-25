@@ -90,5 +90,5 @@ clang_complete) do not play well with chained completion either.
 If you have problems with chaining several completion methods the
 current workaround consists in using only one completion method.
 
-If you want to provide feedback on this issue, see
-https://github.com/lifepillar/vim-mucomplete/issues/14.
+If you want to provide feedback on this issue, see issue
+[#14](https://github.com/lifepillar/vim-mucomplete/issues/14).
