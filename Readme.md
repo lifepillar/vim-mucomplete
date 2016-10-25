@@ -87,8 +87,8 @@ when they have high priority and they return (possibly, not very
 quickly) some results. Also, some Omni Completion plugins (notably,
 clang_complete) do not play well with chained completion either.
 
-If you have problems with chaining several completion methods
-(especially, `'tags'`, `'line'`, and omni completion from plugins),
-the current workaround consists in using only one completion method.
+If you have problems with chaining several completion methods the
+current workaround consists in using only one completion method.
 
-I am investigating why that happens.
+If you want to provide feedback on this issue, see
+https://github.com/lifepillar/vim-mucomplete/issues/14.
