@@ -74,8 +74,8 @@ selected in different contexts. Used settings:
 set showmode shortmess-=c
 setl completeopt+=menu,menuone
 setl infercase
-let g:mucomplete#user_mappings = { 'sql' : ["\<c-c>a", "\<c-c>a\<c-p>"] }
-let g:mucomplete#chains = { 'sql' : ['file', 'sql', 'keyn'] }
+let g:mucomplete#user_mappings = { 'sqla' : ["\<c-c>a", "\<c-c>a\<c-p>"] }
+let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
 MUcompleteAutoOn *.sql
 ```
 
