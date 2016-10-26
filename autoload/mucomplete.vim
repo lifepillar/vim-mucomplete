@@ -74,7 +74,7 @@ let s:compl_mappings = extend({
       \ 'incl'    :  ["\<c-x>\<c-i>\<c-p>\<c-n>", "\<c-x>\<c-i>\<c-p>"],
       \ 'keyn'    :  ["\<c-x>\<c-n>\<c-p>\<c-n>", "\<c-x>\<c-n>\<c-p>"],
       \ 'keyp'    :  ["\<c-x>\<c-p>\<c-n>\<c-p>", "\<c-x>\<c-p>\<c-n>"],
-      \ 'line'    :  ["\<c-x>\<c-l>\<c-n>\<c-p>", "\<c-x>\<c-l>\<c-p>"],
+      \ 'line'    :  ["\<c-x>\<c-l>\<c-n>\<c-p>", "\<c-x>\<c-l>\<c-n>"],
       \ 'omni'    :  ["\<c-x>\<c-o>\<c-p>\<c-n>", "\<c-x>\<c-o>\<c-p>"],
       \ 'spel'    :  ["\<c-x>s\<c-p>\<c-n>"     , "\<c-x>s\<c-p>"     ],
       \ 'tags'    :  ["\<c-x>\<c-]>\<c-n>\<c-p>", "\<c-x>\<c-]>\<c-p>"],
