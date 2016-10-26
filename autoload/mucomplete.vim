@@ -86,10 +86,17 @@ let s:compl_methods = []
 let s:compl_text = ''
 let s:auto = 0
 let s:i = -1
+let s:pumvisible = 0
+
+fun! mucomplete#yup()
+  let s:pumvisible = 1
+  return ''
+endf
 
 " Workhorse function for chained completion. Do not call directly.
 fun! mucomplete#complete_chain()
-  if pumvisible()
+  if s:pumvisible
+    let s:pumvisible = 0
     return ''
   endif
   let s:i += 1
@@ -101,7 +108,7 @@ fun! mucomplete#complete_chain()
     let s:i += 1
   endwhile
   if s:i < len(s:compl_methods)
-    return s:compl_mappings[s:compl_methods[s:i]][s:auto] . "\<plug>(MUcompleteNxt)"
+    return s:compl_mappings[s:compl_methods[s:i]][s:auto] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
   endif
   return ''
 endf
