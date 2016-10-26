@@ -97,7 +97,9 @@ endf
 fun! mucomplete#complete_chain()
   if s:pumvisible
     let s:pumvisible = 0
-    return ''
+    return (s:auto && get(g:, 'mucomplete#auto_select', 0))
+          \ ? "\<down>"
+          \ : ''
   endif
   let s:i += 1
   while s:i < len(s:compl_methods) &&

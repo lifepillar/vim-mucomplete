@@ -137,6 +137,15 @@ use <c-j> and <c-k> instead of <tab> and <s-tab>, use: >
 ====================================================================
 Section 7: Customization                  *mucomplete-customization*
 
+                                        *'g:mucomplete#auto_select'*
+Set to 1 to have the first entry in the pop-up menu automatically
+selected, but not inserted. Only relevant when automatic completion
+is on (see |g:mucomplete#enable_auto_at_startup| and
+|:MUcompleteAutoOn|).
+>
+  let g:mucomplete#auto_select = 0
+<
+
                                        *'g:mucomplete#can_complete'*
 A Dictionary defining the conditions to be verified for a given
 method to be applied. Each condition is a function with one argument
