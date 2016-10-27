@@ -201,18 +201,18 @@ add filetype-specific completion chains. For example:
   let g:mucomplete#chains.markdown = ['keyn', 'spel', 'dict']
 <
 
+                             *'g:mucomplete#enable_auto_at_startup'*
+Set to 1 to enable automatic completion at startup.
+>
+  let g:mucomplete#enable_auto_at_startup = 0
+<
+
                                     *'g:mucomplete#exit_ctrlx_keys'*
 
 The key combo to exit ctrl-x submode. You should never need to
 change this value, unless you have remapped <c-b> in Insert mode.
 >
   let g:mucomplete#exit_ctrlx_keys = "\<c-b>\<bs>"
-<
-
-                             *'g:mucomplete#enable_auto_at_startup'*
-Set to 1 to enable automatic completion at startup.
->
-  let g:mucomplete#enable_auto_at_startup = 0
 <
 
                                         *'g:mucomplete#no_mappings'*
@@ -225,26 +225,6 @@ Set to 1 to prevent µcomplete to define any mapping.
 The regular expression defining a path separator.
 >
   let g:mucomplete#pathsep = '/'  " '\' on Windows
-<
-
-                                      *'g:mucomplete#user_mappings'*
-User-defined completion methods. For example, you may define a |sql|
-completion method by putting the following in you |.vimrc|:
->
-  let g:mucomplete#user_mappings = {
-      \ 'sql' : ["\<c-c>a", "\<c-c>a\<c-p>"]
-      \ }
-<
-
-The first entry in the array is the key mapping to be used when
-triggering completion manually and the second entry is the mapping
-to be used when automatic completion is enabled.
-
-User-defined completion methods may be used as predefined methods,
-e.g.:
->
-  let g:mucomplete#chains = {}
-  let g:mucomplete#chains.sql = ['sql', 'keyp', 'tags']
 <
 
                                *'g:mucomplete#trigger_auto_pattern'*
@@ -265,6 +245,26 @@ filetype-specific patterns. For example:
 This will trigger automatic completion after three alphabetic
 characters by default, except for cpp filetypes, where automatic
 completion will be triggered after two keyword characters.
+
+                                      *'g:mucomplete#user_mappings'*
+User-defined completion methods. For example, you may define a |sql|
+completion method by putting the following in you |.vimrc|:
+>
+  let g:mucomplete#user_mappings = {
+      \ 'sql' : ["\<c-c>a", "\<c-c>a\<c-p>"]
+      \ }
+<
+
+The first entry in the array is the key mapping to be used when
+triggering completion manually and the second entry is the mapping
+to be used when automatic completion is enabled.
+
+User-defined completion methods may be used as predefined methods,
+e.g.:
+>
+  let g:mucomplete#chains = {}
+  let g:mucomplete#chains.sql = ['sql', 'keyp', 'tags']
+<
 
 ====================================================================
 Section 8: Troubleshooting              *mucomplete-troubleshooting*
