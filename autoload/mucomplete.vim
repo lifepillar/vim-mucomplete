@@ -42,9 +42,9 @@ if has('lambda')
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'dict':  { t -> strlen(&l:dictionary) > 0 },
-        \     'file':  { t -> t =~# g:mucomplete#pathsep },
+        \     'file':  { t -> t =~# g:mucomplete#pathsep . '\f*$' },
         \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
-        \     'spel':  { t -> &l:spell },
+        \     'spel':  { t -> &l:spell && !empty(&l:spelllang) },
         \     'tags':  { t -> !empty(tagfiles()) },
         \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
         \     'user':  { t -> strlen(&l:completefunc) > 0 },
