@@ -223,7 +223,7 @@ Set to 1 to prevent µcomplete to define any mapping.
 
                                             *'g:mucomplete#pathsep'*
 The regular expression defining a path separator.
-<
+>
   let g:mucomplete#pathsep = '/'  " '\' on Windows
 <
 
