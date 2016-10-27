@@ -57,7 +57,7 @@ let g:mucomplete#can_complete = extend({
 " submode silently ends that mode (:h complete_CTRL-Y) and inserts the key.
 " Hence, after <c-x><c-b>, we are surely out of ctrl-x submode. The subsequent
 " <bs> is used to delete the inserted <c-b>. We use <c-b> because it is not
-" mapped (:h i_CTRL-B-gone). This trick is needed to have <c-p> (an <c-n>)
+" mapped (:h i_CTRL-B-gone). This trick is needed to have <c-p> (and <c-n>)
 " trigger keyword completion under all circumstances, in particular when the
 " current mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
 " <c-x><c-o> would do a different thing).
