@@ -4,8 +4,8 @@ Can't stand the dozen of MB of YouCompleteMe? Can't figure out the
 correct settings to tame NeoComplete? D'you think AutoComplPop is an
 old fashioned fusion group and Supertab a movie hero for children?
 
-Well below 200 LoC, µcomplete may be the minimalistic autocompletion
-plugin you were looking for!
+With a core of well below 200 LoC, µcomplete may be the minimalistic
+autocompletion plugin you were looking for!
 
 MUcomplete is an implementation of *chained (fallback) completion*,
 whereby several completion methods are attempted one after another
@@ -22,8 +22,8 @@ features.
 
 # Getting Started
 
-MUcomplete requires Vim compiled with `+insert_expand`, `+lambda`
-and `+menu`. Vim 8 or later is recommended.
+MUcomplete requires Vim compiled with `+insert_expand` and `+menu`.
+Vim 8 or later is recommended.
 
 Installation does not require anything special. If you need help,
 please read [How to Install]

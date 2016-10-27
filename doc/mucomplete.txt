@@ -35,8 +35,7 @@ guessing. It just makes use of built-in Vim features.
 ====================================================================
 Section 2: Requirements                    *mucomplete-requirements*
 
-MUcomplete requires Vim compiled with |+insert_expand|, |+lambda|
-and |+menu|.
+MUcomplete requires Vim compiled with |+insert_expand| and |+menu|.
 
 MUcomplete has been tested with Vim 8 only.
 
@@ -220,6 +219,12 @@ Set to 1 to enable automatic completion at startup.
 Set to 1 to prevent µcomplete to define any mapping.
 >
   let g:mucomplete#no_mappings = 0
+<
+
+                                            *'g:mucomplete#pathsep'*
+The regular expression defining a path separator.
+<
+  let g:mucomplete#pathsep = '/'  " '\' on Windows
 <
 
                                       *'g:mucomplete#user_mappings'*

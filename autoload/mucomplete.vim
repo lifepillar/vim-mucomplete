@@ -36,21 +36,26 @@ let g:mucomplete#chains = extend({
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }, get(g:, 'mucomplete#chains', {}))
 
-let s:slash = (has('win32') || has('win64') || has('win16') || has('win95')) ? '\' : '/'
+let g:mucomplete#pathsep = (has('win32') || has('win64') || has('win16') || has('win95')) ? '\' : '/'
 
 " Conditions to be verified for a given method to be applied.
-let s:yes_you_can = { _ -> 1 } " Try always
-let g:mucomplete#can_complete = extend({
-      \ 'default' : extend({
-      \     'dict':  { t -> strlen(&l:dictionary) > 0 },
-      \     'file':  { t -> t =~# s:slash },
-      \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
-      \     'spel':  { t -> &l:spell },
-      \     'tags':  { t -> !empty(tagfiles()) },
-      \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
-      \     'user':  { t -> strlen(&l:completefunc) > 0 }
-      \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
-      \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
+if has('lambda')
+  let s:yes_you_can = { _ -> 1 } " Try always
+  let g:mucomplete#can_complete = extend({
+        \ 'default' : extend({
+        \     'dict':  { t -> strlen(&l:dictionary) > 0 },
+        \     'file':  { t -> t =~# g:mucomplete#pathsep },
+        \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
+        \     'spel':  { t -> &l:spell },
+        \     'tags':  { t -> !empty(tagfiles()) },
+        \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
+        \     'user':  { t -> strlen(&l:completefunc) > 0 }
+        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
+        \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
+else
+  let s:yes_you_can = function('mucomplete#compat#yes_you_can')
+  let g:mucomplete#can_complete = mucomplete#compat#can_complete()
+endif
 
 " Note: In 'c-n' and 'c-p' below we use the fact that pressing <c-x> while in
 " ctrl-x submode doesn't do anything and any key that is not valid in ctrl-x
