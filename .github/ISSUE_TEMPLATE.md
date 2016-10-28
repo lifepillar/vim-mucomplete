@@ -8,14 +8,14 @@ For bug reports only, please provide the following details:
 If your problem has to do with specific completion methods, please provide the
 output of the relevant settings among the following:
 
-- [ ] (`'spel'`) `setl spell? spelllang`
-- [ ] (`'dict'`) `setl dictionary spell? spelllang`
-- [ ] (`'tags'`) `setl tags` and `echo tagfiles()`
-- [ ] (`'omni`') `setl ft omnifunc`
-- [ ] (`'user'`) `setl ft completefunc`
-- [ ] (`'thes'`) `setl thesaurus`
-- [ ] (`'defs'`, `'incl'`) `setl ft include`
-- [ ] (`'c-n'`, `'c-p'`, `'line'`) `setl ft cpt inc dict tsr spell? spl tags`
+- (`'spel'`) `setl spell? spelllang`
+- (`'dict'`) `setl dictionary spell? spelllang`
+- (`'tags'`) `setl tags` and `echo tagfiles()`
+- (`'omni`') `setl ft omnifunc`
+- (`'user'`) `setl ft completefunc`
+- (`'thes'`) `setl thesaurus`
+- (`'defs'`, `'incl'`) `setl ft include`
+- (`'c-n'`, `'c-p'`, `'line'`) `setl ft cpt inc dict tsr spell? spl tags`
                                     and `echo tagfiles()`
 
 Delete the parts of this text that are not relevant to your issue.
