@@ -14,7 +14,7 @@ fun! mucomplete#compat#dict(t)
 endf
 
 fun! mucomplete#compat#file(t)
-  return a:t =~# g:mucomplete#pathsep
+  return a:t =~# g:mucomplete#pathsep . '\f*$'
 endf
 
 fun! mucomplete#compat#omni(t)
@@ -22,7 +22,7 @@ fun! mucomplete#compat#omni(t)
 endf
 
 fun! mucomplete#compat#spel(t)
-  return &l:spell
+  return &l:spell && !empty(&l:spelllang)
 endf
 
 fun! mucomplete#compat#tags(t)
