@@ -271,33 +271,43 @@ Section 8: Troubleshooting              *mucomplete-troubleshooting*
 
 Before reporting a bug, please do the following:
 
-1. Enable verbose messages: >
-     set showmode
-     set shortmess-=c
+1. Use the following |vimrc_mucomplete| to rule out conflicts with
+   other plugins: >
+     set runtimepath+=/path/to/mucomplete/
+     set completeopt-=longest
+     set completeopt+=menu,menuone
+     set showmode shortmess-=c
 <
-
-2. Turn off automatic completion: >
-     :MUcompleteAutoOff
+   Add other µcomplete options as you see fit. Run with: >
+     vim -N -u vimrc_mucomplete
 <
+   Can you still reproduce your problem? If not, a conflict with
+   another plugin or a setting in your |vimrc| may be the culprit.
 
-3. Double-check your completion chain: >
+2. Double-check your completion chain: >
      echo g:mucomplete#chains
 <
+   Are the methods you expect to be used defined and in the correct
+   order?
 
-4. Some completion methods are enabled conditionally. For example,
+3. Some completion methods are enabled conditionally. For example,
    dictionary completion may be triggered only if |'dictionary'| is
    set in the current buffer. If you have trouble with
    a conditionally enabled completion method, please check whether
    the corresponding condition is satisfied (see
    |g:mucomplete#can_complete|).
 
-5. Try to complete a word using the corresponding mapping. For
+4. Turn off automatic completion: >
+     :MUcompleteAutoOff
+<
+   and try to complete a word using the corresponding mapping. For
    example, for omni completion, use |i_ctrl-x_ctrl-o|. Do you get
    a different output compared to what µcomplete provides? If not,
    then the problem is not µcomplete.
 
-6. If triggering completion manually does give you the expected
-   output, but µcomplete does not, open an issue on GitHub.
+   If triggering completion manually results in the expected
+   behaviour, but µcomplete behaves differently, open an issue on
+   GitHub.
 
 ====================================================================
 Section 9: Providing feedback                  *mucomplete-feedback*
