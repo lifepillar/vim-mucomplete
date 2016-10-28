@@ -300,8 +300,9 @@ Before reporting a bug, please do the following:
 4. Turn off automatic completion: >
      :MUcompleteAutoOff
 <
-   and try to complete a word using the corresponding mapping. For
-   example, for omni completion, use |i_ctrl-x_ctrl-o|. Do you get
+   and try to complete a word using the corresponding mapping (see
+   |ins-completion| for a list of available mappings). For example,
+   for omni completion, use |i_ctrl-x_ctrl-o|. Do you get
    a different output compared to what µcomplete provides? If not,
    then the problem is not µcomplete.
 
