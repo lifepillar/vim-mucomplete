@@ -49,7 +49,8 @@ if has('lambda')
         \     'spel':  { t -> &l:spell },
         \     'tags':  { t -> !empty(tagfiles()) },
         \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
-        \     'user':  { t -> strlen(&l:completefunc) > 0 }
+        \     'user':  { t -> strlen(&l:completefunc) > 0 },
+        \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
@@ -77,7 +78,7 @@ let s:compl_mappings = extend({
       \ 'keyp': "\<c-x>\<c-p>", 'line': "\<c-x>\<c-l>",
       \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
       \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
-      \ 'user': "\<c-x>\<c-u>"
+      \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 unlet s:cnp
 let s:compl_methods = []
