@@ -70,21 +70,14 @@ endif
 " Internal status
 let s:cnp = "\<c-x>" . get(g:, 'mucomplete#exit_ctrlx_keys', "\<c-b>\<bs>")
 let s:compl_mappings = extend({
-      \ 'c-n'     :  [s:cnp."\<c-n>", s:cnp."\<c-n>\<c-p>"],
-      \ 'c-p'     :  [s:cnp."\<c-p>", s:cnp."\<c-p>\<c-n>"],
-      \ 'cmd'     :  ["\<c-x>\<c-v>", "\<c-x>\<c-v>\<c-p>"],
-      \ 'defs'    :  ["\<c-x>\<c-d>", "\<c-x>\<c-d>\<c-p>"],
-      \ 'dict'    :  ["\<c-x>\<c-k>", "\<c-x>\<c-k>\<c-p>"],
-      \ 'file'    :  ["\<c-x>\<c-f>", "\<c-x>\<c-f>\<c-p>"],
-      \ 'incl'    :  ["\<c-x>\<c-i>", "\<c-x>\<c-i>\<c-p>"],
-      \ 'keyn'    :  ["\<c-x>\<c-n>", "\<c-x>\<c-n>\<c-p>"],
-      \ 'keyp'    :  ["\<c-x>\<c-p>", "\<c-x>\<c-p>\<c-n>"],
-      \ 'line'    :  ["\<c-x>\<c-l>", "\<c-x>\<c-l>\<c-n>"],
-      \ 'omni'    :  ["\<c-x>\<c-o>", "\<c-x>\<c-o>\<c-p>"],
-      \ 'spel'    :  ["\<c-x>s"     , "\<c-x>s\<c-p>"     ],
-      \ 'tags'    :  ["\<c-x>\<c-]>", "\<c-x>\<c-]>\<c-p>"],
-      \ 'thes'    :  ["\<c-x>\<c-t>", "\<c-x>\<c-t>\<c-p>"],
-      \ 'user'    :  ["\<c-x>\<c-u>", "\<c-x>\<c-u>\<c-p>"]
+      \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
+      \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
+      \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
+      \ 'incl': "\<c-x>\<c-i>", 'keyn': "\<c-x>\<c-n>",
+      \ 'keyp': "\<c-x>\<c-p>", 'line': "\<c-x>\<c-l>",
+      \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
+      \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
+      \ 'user': "\<c-x>\<c-u>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 unlet s:cnp
 let s:compl_methods = []
@@ -98,13 +91,21 @@ fun! mucomplete#yup()
   return ''
 endf
 
+let s:deselect_entry = extend({ 'c-p' : "\<c-n>", 'keyp': "\<c-n>" },
+      \ get(g:, 'mucomplete#user_mappings_deselect', {}), 'error')
+
+fun! s:act_on_pumvisible()
+  return s:auto
+        \ ? (get(s:deselect_entry, s:compl_methods[s:i], "\<c-p>")
+        \ . (get(g:, 'mucomplete#auto_select', 0) ? "\<down>" : ''))
+        \ : ''
+endf
+
 " Workhorse function for chained completion. Do not call directly.
 fun! mucomplete#complete_chain()
   if s:pumvisible
     let s:pumvisible = 0
-    return (s:auto && get(g:, 'mucomplete#auto_select', 0))
-          \ ? "\<down>"
-          \ : ''
+    return s:act_on_pumvisible()
   endif
   let s:i += 1
   while s:i < len(s:compl_methods) &&
@@ -115,7 +116,7 @@ fun! mucomplete#complete_chain()
     let s:i += 1
   endwhile
   if s:i < len(s:compl_methods)
-    return s:compl_mappings[s:compl_methods[s:i]][s:auto] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
+    return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
   endif
   return ''
 endf
