@@ -102,6 +102,11 @@ By default, µcomplete provides the completion methods described in
 |'thes'|: keywords in |'thesaurus'|;
 |'user'|: user defined completion (|'completefunc'|).
 
+If you have installed UltiSnips, there is also a method to get
+suggestions for snippets:
+
+|'ulti'|: UltiSnips snippets.
+
 Additional completion methods may be defined with
 |g:mucomplete#user_mappings|.
 
