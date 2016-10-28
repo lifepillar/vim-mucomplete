@@ -159,7 +159,8 @@ to whether the corresponding method can be applied or not.
       \       'spel':  { t -> &l:spell },
       \       'tags':  { t -> !empty(tagfiles()) },
       \       'thes':  { t -> strlen(&l:thesaurus) > 0 },
-      \       'user':  { t -> strlen(&l:completefunc) > 0 }
+      \       'user':  { t -> strlen(&l:completefunc) > 0 },
+      \       'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) }
       \   }
       \ }
 <
@@ -246,24 +247,44 @@ This will trigger automatic completion after three alphabetic
 characters by default, except for cpp filetypes, where automatic
 completion will be triggered after two keyword characters.
 
-                                      *'g:mucomplete#user_mappings'*
-User-defined completion methods. For example, you may define a |sql|
-completion method by putting the following in you |.vimrc|:
+                           *'g:mucomplete#ultisnips#match_at_start'*
+By default, the |'ulti'| method returns the snippets whose name
+starts with the current word. Set this to 0 to return all the
+snippets that contain the current word.
 >
-  let g:mucomplete#user_mappings = {
-      \ 'sql' : ["\<c-c>a", "\<c-c>a\<c-p>"]
-      \ }
+  let g:mucomplete#ultisnips#match_at_start = 1
 <
 
-The first entry in the array is the key mapping to be used when
-triggering completion manually and the second entry is the mapping
-to be used when automatic completion is enabled.
+                                      *'g:mucomplete#user_mappings'*
+User-defined completion methods. For example:
+>
+  let g:mucomplete#user_mappings = {
+      \ 'sqla' : "\<c-c>a"
+      \ }
+<
 
 User-defined completion methods may be used as predefined methods,
 e.g.:
 >
   let g:mucomplete#chains = {}
-  let g:mucomplete#chains.sql = ['sql', 'keyp', 'tags']
+  let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
+<
+
+                             *'g:mucomplete#user_mappings_deselect'*
+Used to specify, for a user completion method, a non-default key to
+switch to state 3 when the pop-up menu becomes visible (see
+|ins-completion-menu|). The default key is CTRL-P. This option is
+only relevant if automatic completion is on (see |:MUcompleteAutoOn|
+and |g:mucomplete#enable_auto_at_startup|).
+
+You do not need to set this variable, unless the completion method
+you are using selects by default an entry different from the first
+one.
+>
+  let g:mucomplete#user_mappings_deselect = {
+    \ 'c-p' : "\<c-n>",
+    \ 'keyp': "\<c-n>"
+    \ }
 <
 
 ====================================================================
