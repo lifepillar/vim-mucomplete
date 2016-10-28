@@ -11,7 +11,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 if !exists(":MUcompleteAutoOn")
-  command -nargs=? -complete=dir MUcompleteAutoOn :call mucomplete#enable_auto(<q-args>)
+  command -nargs=0 MUcompleteAutoOn :call mucomplete#enable_auto()
 endif
 
 if !exists(":MUcompleteAutoOff")

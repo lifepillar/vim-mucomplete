@@ -113,12 +113,11 @@ Additional completion methods may be defined with
 ====================================================================
 Section 5: Commands                            *mucomplete-commands*
 
-:MUcompleteAutoOn [pattern]
-  Enable automatic completion. The optional pattern is an |autocmd|
-  pattern (see {pat}).
+:MUcompleteAutoOn
+  Enable automatic completion.
 
 :MUcompleteAutoOff
-  Disable automatic completion in all buffers.
+  Disable automatic completion.
 
 ====================================================================
 Section 6: Mappings                            *mucomplete-mappings*
