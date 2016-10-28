@@ -63,7 +63,7 @@ setl infercase
 setl completeopt-=preview
 setl completeopt+=longest,menu,menuone
 let g:jedi#popup_on_dot = 0  " It may be 1 as well
-MUcompleteAutoOn
+let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 The example on the right shows how different completion methods (omni
@@ -76,7 +76,7 @@ setl completeopt+=menu,menuone
 setl infercase
 let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
 let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
-MUcompleteAutoOn
+let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 
