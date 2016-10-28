@@ -14,8 +14,8 @@ output of the relevant settings among the following:
 - (`'omni`') `setl ft omnifunc`
 - (`'user'`) `setl ft completefunc`
 - (`'thes'`) `setl thesaurus`
-- (`'defs'`, `'incl'`) `setl ft include`
-- (`'c-n'`, `'c-p'`, `'line'`) `setl ft cpt inc dict tsr spell? spl tags`
+- (`'defs'`, `'incl'`) `setl ft include path`
+- (`'c-n'`, `'c-p'`, `'line'`) `setl ft cpt inc pa dict tsr spell? spl tags`
                                     and `echo tagfiles()`
 
 Delete the parts of this text that are not relevant to your issue.
