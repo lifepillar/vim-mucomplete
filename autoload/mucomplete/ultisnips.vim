@@ -15,8 +15,7 @@ fun! mucomplete#ultisnips#complete() abort
   let l:candidates = map(filter(keys(g:current_ulti_dict_info), 'v:val =~ l:pat'),
         \  '{
         \      "word": v:val,
-        \      "menu": get(g:current_ulti_dict_info[v:val], "description", ""),
-        \      "kind": "[snip]",
+        \      "menu": "[snip] ". get(g:current_ulti_dict_info[v:val], "description", ""),
         \      "dup" : 1
         \   }')
   if !empty(l:candidates)
