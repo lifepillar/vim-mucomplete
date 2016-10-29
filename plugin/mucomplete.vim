@@ -10,14 +10,6 @@ let g:loaded_mucomplete = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-if !exists(":MUcompleteAutoOn")
-  command -nargs=0 MUcompleteAutoOn :call mucomplete#enable_auto()
-endif
-
-if !exists(":MUcompleteAutoOff")
-  command -nargs=0 MUcompleteAutoOff :call mucomplete#disable_auto()
-endif
-
 imap <expr> <silent> <plug>(MUcompleteNxt) mucomplete#complete_chain()
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#complete(0)
 imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#complete(1)
@@ -33,8 +25,18 @@ if !get(g:, 'mucomplete#no_mappings', 0)
   endif
 endif
 
-if get(g:, 'mucomplete#enable_auto_at_startup', 0)
-  MUcompleteAutoOn
+if exists('##TextChangedI') && exists('##CompleteDone')
+  if !exists(":MUcompleteAutoOn")
+    command -nargs=0 MUcompleteAutoOn :call mucomplete#enable_auto()
+  endif
+
+  if !exists(":MUcompleteAutoOff")
+    command -nargs=0 MUcompleteAutoOff :call mucomplete#disable_auto()
+  endif
+
+  if get(g:, 'mucomplete#enable_auto_at_startup', 0)
+    MUcompleteAutoOn
+  endif
 endif
 
 let &cpo = s:save_cpo
