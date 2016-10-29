@@ -188,6 +188,11 @@ This will perform a custom check for |'spel'| completion, and
 a custom check for |'omni'| completion in cpp buffers. In all other
 cases, the default conditions will be checked.
 
+                                             *'b:mucomplete_chain'*
+A List specifying a completion chain for the current buffer only.
+When this variable is defined, the value of |g:mucomplete#chains| is
+ignored.
+
                                              *'g:mucomplete#chains'*
 A Dictionary defining the Lists of completion chains. A completion
 chain is provided as a default; besides, filetype-specific

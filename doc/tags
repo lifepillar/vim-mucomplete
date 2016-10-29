@@ -1,3 +1,4 @@
+'b:mucomplete_chain'	mucomplete.txt	/*'b:mucomplete_chain'*
 'g:mucomplete#auto_select'	mucomplete.txt	/*'g:mucomplete#auto_select'*
 'g:mucomplete#can_complete'	mucomplete.txt	/*'g:mucomplete#can_complete'*
 'g:mucomplete#chains'	mucomplete.txt	/*'g:mucomplete#chains'*

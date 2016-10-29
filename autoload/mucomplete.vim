@@ -121,7 +121,8 @@ fun! mucomplete#complete_chain()
 endf
 
 fun! s:complete(rev)
-  let s:compl_methods = get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default'])
+  let s:compl_methods = get(b:, 'mucomplete_chain',
+        \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
   if a:rev
     let s:compl_methods = reverse(copy(s:compl_methods))
   endif
