@@ -112,12 +112,7 @@ fun! s:act_on_pumvisible()
         \ : ''
 endf
 
-" Workhorse function for chained completion. Do not call directly.
-fun! mucomplete#complete_chain()
-  if s:pumvisible
-    let s:pumvisible = 0
-    return s:act_on_pumvisible()
-  endif
+fun! mucomplete#next_method()
   let s:i += 1
   while s:i < len(s:compl_methods) &&
         \ !get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
@@ -130,6 +125,15 @@ fun! mucomplete#complete_chain()
     return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
   endif
   return ''
+endf
+
+" Workhorse function for chained completion. Do not call directly.
+fun! mucomplete#complete_chain()
+  if s:pumvisible
+    let s:pumvisible = 0
+    return s:act_on_pumvisible()
+  endif
+  return mucomplete#next_method()
 endf
 
 fun! s:complete(rev)
