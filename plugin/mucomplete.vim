@@ -34,6 +34,10 @@ if exists('##TextChangedI') && exists('##CompleteDone')
     command -nargs=0 MUcompleteAutoOff :call mucomplete#disable_auto()
   endif
 
+  if !exists(":MUcompleteAutoToggle")
+    command -nargs=0 MUcompleteAutoToggle :call mucomplete#toggle_auto()
+  endif
+
   if get(g:, 'mucomplete#enable_auto_at_startup', 0)
     MUcompleteAutoOn
   endif

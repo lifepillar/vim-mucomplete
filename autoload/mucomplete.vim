@@ -24,6 +24,16 @@ if exists('##TextChangedI') && exists('##CompleteDone')
       unlet s:completedone
     endif
   endf
+
+  fun! mucomplete#toggle_auto()
+    if exists('#MUcompleteAuto')
+      call mucomplete#disable_auto()
+      echomsg '[MUcomplete] Auto off'
+    else
+      call mucomplete#enable_auto()
+      echomsg '[MUcomplete] Auto on'
+    endif
+  endf
 endif
 
 " Patterns to decide when automatic completion should be triggered.

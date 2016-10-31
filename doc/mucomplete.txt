@@ -119,6 +119,9 @@ Section 5: Commands                            *mucomplete-commands*
 :MUcompleteAutoOff
   Disable automatic completion.
 
+:MUcompleteAutoToggle
+  Toggle automatic completion.
+
 ====================================================================
 Section 6: Mappings                            *mucomplete-mappings*
 
