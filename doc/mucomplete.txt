@@ -134,11 +134,28 @@ that, see |g:mucomplete#no_mappings|.
 <s-tab>
   Trigger backward chained completion.
 
+<c-l>
+  When the pop-up menu is visible, try the next completion method.
+
+<c-h>
+  When the pop-up menu is visible, try the previous completion
+  method.
+
 In your |.vimrc|, you may override such mappings. For example, to
-use <c-j> and <c-k> instead of <tab> and <s-tab>, use: >
+use <c-j> and <c-k> instead of <tab> and <s-tab>, use:
+>
   imap <c-j> <plug>(MUcompleteFwd)
   imap <c-k> <plug>(MUcompleteBwd)
 <
+To use, say, <c-j> and <c-k> as cycling keys, use the following:
+>
+  inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
+  imap <c-j> <plug>(MUcompleteCycFwd)
+  inoremap <silent> <plug>(MUcompleteBwdKey) <c-k>
+  imap <c-k> <plug>(MUcompleteCycBwd)
+<
+You may also use <tab> and <s-tab> for cycling through the
+completion methods: see |g:mucomplete#cycle_with_trigger|.
 
 ====================================================================
 Section 7: Customization                  *mucomplete-customization*
@@ -151,7 +168,6 @@ is on (see |g:mucomplete#enable_auto_at_startup| and
 >
   let g:mucomplete#auto_select = 0
 <
-
                                        *'g:mucomplete#can_complete'*
 A Dictionary defining the conditions to be verified for a given
 method to be applied. Each condition is a function with one argument
@@ -171,7 +187,6 @@ to whether the corresponding method can be applied or not.
       \   }
       \ }
 <
-
 If there is no key in |g:mucomplete#can_complete.default| for the
 current method, such method will be tried unconditionally.
 
@@ -186,7 +201,6 @@ conditions or add filetype-specific conditions. For example:
       \ 'omni': { t -> t =~# '::$' }
       \ }
 <
-
 This will perform a custom check for |'spel'| completion, and
 a custom check for |'omni'| completion in cpp buffers. In all other
 cases, the default conditions will be checked.
@@ -205,7 +219,6 @@ completion chains may be added by the user.
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }
 <
-
 In your |.vimrc|, you may override the default completion chain or
 add filetype-specific completion chains. For example:
 >
@@ -213,13 +226,21 @@ add filetype-specific completion chains. For example:
   let g:mucomplete#chains.default = ['omni', 'c-p']
   let g:mucomplete#chains.markdown = ['keyn', 'spel', 'dict']
 <
+                                 *'g:mucomplete#cycle_with_trigger'*
+Set to 1 to use <tab> and <s-tab> (or whatever your manual completion
+triggers are) to move back and forth, respectively, through the
+current completion chain.
+>
+  let g:mucomplete#cycle_with_trigger = 0
+<
+Note: if you set this to 1, you have to use the standard CTRL-N and
+CTRL-P to select the entries in the pop-up menu.
 
                              *'g:mucomplete#enable_auto_at_startup'*
 Set to 1 to enable automatic completion at startup.
 >
   let g:mucomplete#enable_auto_at_startup = 0
 <
-
                                     *'g:mucomplete#exit_ctrlx_keys'*
 
 The key combo to exit ctrl-x submode. You should never need to
@@ -227,19 +248,16 @@ change this value, unless you have remapped <c-b> in Insert mode.
 >
   let g:mucomplete#exit_ctrlx_keys = "\<c-b>\<bs>"
 <
-
                                         *'g:mucomplete#no_mappings'*
 Set to 1 to prevent µcomplete to define any mapping.
 >
   let g:mucomplete#no_mappings = 0
 <
-
                                             *'g:mucomplete#pathsep'*
 The regular expression defining a path separator.
 >
   let g:mucomplete#pathsep = '/'  " '\' on Windows
 <
-
                                *'g:mucomplete#trigger_auto_pattern'*
 A Dictionary of patterns to decide when automatic completion should
 be fired. Only relevant when automatic completion is on (see
@@ -247,7 +265,6 @@ be fired. Only relevant when automatic completion is on (see
 >
   let g:mucomplete#trigger_auto_pattern = { 'default' : '\k\k$' }
 <
-
 In your |.vimrc|, you may override the default pattern or add
 filetype-specific patterns. For example:
 >
@@ -266,7 +283,6 @@ snippets that contain the current word.
 >
   let g:mucomplete#ultisnips#match_at_start = 1
 <
-
                                       *'g:mucomplete#user_mappings'*
 User-defined completion methods. For example:
 >
@@ -274,14 +290,12 @@ User-defined completion methods. For example:
       \ 'sqla' : "\<c-c>a"
       \ }
 <
-
 User-defined completion methods may be used as predefined methods,
 e.g.:
 >
   let g:mucomplete#chains = {}
   let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
-
                              *'g:mucomplete#user_mappings_deselect'*
 Used to specify, for a user completion method, a non-default key to
 switch to state 3 when the pop-up menu becomes visible (see
@@ -298,7 +312,6 @@ one.
     \ 'keyp': "\<c-n>"
     \ }
 <
-
 ====================================================================
 Section 8: Troubleshooting              *mucomplete-troubleshooting*
 
