@@ -10,13 +10,13 @@ let g:loaded_mucomplete = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-imap <expr> <silent> <plug>(MUcompleteCycFwd) pumvisible()?mucomplete#cycle( 1):""
-imap <expr> <silent> <plug>(MUcompleteCycBwd) pumvisible()?mucomplete#cycle(-1):""
-imap <expr> <silent> <plug>(MUcompleteNxt)    mucomplete#verify_completion()
-imap <expr> <silent> <plug>(MUcompleteFwd)    pumvisible()?"\<c-n>":mucomplete#complete( 1)
-imap <expr> <silent> <plug>(MUcompleteBwd)    pumvisible()?"\<c-p>":mucomplete#complete(-1)
-inoremap    <silent> <plug>(MUcompleteTab)    <tab>
-inoremap    <silent> <plug>(MUcompleteCtd)    <c-d>
+imap <expr> <silent> <plug>(MUcompleteCycFwd) pumvisible()?mucomplete#cycle( 1):"\<plug>(MUcompleteFwdKey)"
+imap <expr> <silent> <plug>(MUcompleteCycBwd) pumvisible()?mucomplete#cycle(-1):"\<plug>(MUcompleteBwdKey)"
+imap <expr> <silent> <plug>(MUcompleteNxt) mucomplete#verify_completion()
+imap <expr> <silent> <plug>(MUcompleteFwd) pumvisible()?mucomplete#cycle_or_select( 1):mucomplete#complete( 1)
+imap <expr> <silent> <plug>(MUcompleteBwd) pumvisible()?mucomplete#cycle_or_select(-1):mucomplete#complete(-1)
+inoremap    <silent> <plug>(MUcompleteTab) <tab>
+inoremap    <silent> <plug>(MUcompleteCtd) <c-d>
 
 if !get(g:, 'mucomplete#no_mappings', 0)
   if !hasmapto('<plug>(MUcompleteFwd)', 'i')
@@ -26,9 +26,11 @@ if !get(g:, 'mucomplete#no_mappings', 0)
     imap <s-tab> <plug>(MUcompleteBwd)
   endif
   if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
+    inoremap <silent> <plug>(MUcompleteFwdKey) <c-l>
     imap <c-l> <plug>(MUcompleteCycFwd)
   endif
   if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
+    inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
     imap <c-h> <plug>(MUcompleteCycBwd)
   endif
 endif

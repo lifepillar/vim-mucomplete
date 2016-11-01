@@ -148,6 +148,13 @@ fun! mucomplete#next_method()
   return ''
 endf
 
+" Precondition: pumvisible() is true.
+fun! mucomplete#cycle_or_select(dir)
+  return get(g:, 'mucomplete#cycle_with_trigger', 0)
+        \ ? mucomplete#cycle(a:dir)
+        \ : (a:dir > 0 ? "\<c-n>" : "\<c-p>")
+endf
+
 " Precondition: pumvisible() is false.
 fun! mucomplete#complete(dir)
   let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
