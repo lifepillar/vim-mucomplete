@@ -94,7 +94,9 @@ unlet s:cnp
 let s:compl_methods = []
 let s:compl_text = ''
 let s:auto = 0
-let s:i = -1
+let s:dir = 1
+let s:cycle = 0
+let s:i = 0
 let s:pumvisible = 0
 
 fun! mucomplete#yup()
@@ -112,23 +114,14 @@ fun! s:act_on_pumvisible()
         \ : ''
 endf
 
-fun! mucomplete#next_method()
-  let s:i += 1
-  while s:i < len(s:compl_methods) &&
-        \ !get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
+fun! s:can_complete()
+  return get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
         \          s:compl_methods[s:i],
         \          get(g:mucomplete#can_complete['default'], s:compl_methods[s:i], s:yes_you_can)
         \ )(s:compl_text)
-    let s:i += 1
-  endwhile
-  if s:i < len(s:compl_methods)
-    return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
-  endif
-  return ''
 endf
 
-" Workhorse function for chained completion. Do not call directly.
-fun! mucomplete#complete_chain()
+fun! mucomplete#verify_completion()
   if s:pumvisible
     let s:pumvisible = 0
     return s:act_on_pumvisible()
@@ -136,25 +129,39 @@ fun! mucomplete#complete_chain()
   return mucomplete#next_method()
 endf
 
-fun! s:complete(rev)
-  let s:compl_methods = get(b:, 'mucomplete_chain',
-        \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
-  if a:rev
-    let s:compl_methods = reverse(copy(s:compl_methods))
-  endif
-  return mucomplete#complete_chain()
+" Precondition: pumvisible() is true.
+fun! mucomplete#cycle(dir)
+  let s:dir = a:dir
+  let s:cycle = 1
+  return "\<c-e>" . mucomplete#next_method()
 endf
 
-fun! mucomplete#complete(rev)
-  if pumvisible()
-    return a:rev ? "\<c-p>" : "\<c-n>"
+" Precondition: pumvisible() is false.
+fun! mucomplete#next_method()
+  let s:i = (s:cycle ? (s:i + 1 * s:dir + s:N) % s:N : s:i + 1 * s:dir)
+  while (s:i+1) % (s:N+1) != 0  && !s:can_complete()
+    let s:i += 1 * s:dir
+  endwhile
+  if (s:i+1) % (s:N+1) != 0
+    return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
   endif
-  let s:i = -1
-  let s:auto = exists('#MUcompleteAuto')
+  return ''
+endf
+
+" Precondition: pumvisible() is false.
+fun! mucomplete#complete(dir)
   let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
-  return strlen(s:compl_text) == 0
-        \ ? (a:rev ? "\<plug>(MUcompleteCtd)" : "\<plug>(MUcompleteTab)")
-        \ : s:complete(a:rev)
+  if strlen(s:compl_text) == 0
+    return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
+  endif
+  let s:auto = exists('#MUcompleteAuto')
+  let s:dir = a:dir
+  let s:cycle = 0
+  let s:compl_methods = get(b:, 'mucomplete_chain',
+        \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
+  let s:N = len(s:compl_methods)
+  let s:i = s:dir > 0 ? -1 : s:N
+  return mucomplete#next_method()
 endf
 
 fun! mucomplete#autocomplete()
