@@ -137,10 +137,10 @@ fun! mucomplete#cycle(dir)
 endf
 
 " Precondition: pumvisible() is false.
-fun! mucomplete#next_method()
-  let s:i = (s:cycle ? (s:i + 1 * s:dir + s:N) % s:N : s:i + 1 * s:dir)
+fun! s:next_method()
+  let s:i = (s:cycle ? (s:i + s:dir + s:N) % s:N : s:i + s:dir)
   while (s:i+1) % (s:N+1) != 0  && !s:can_complete()
-    let s:i += 1 * s:dir
+    let s:i = (s:cycle ? (s:i + s:dir + s:N) % s:N : s:i + s:dir)
   endwhile
   if (s:i+1) % (s:N+1) != 0
     return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
