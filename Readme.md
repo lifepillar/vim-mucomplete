@@ -4,8 +4,8 @@ Can't stand the dozen of MB of YouCompleteMe? Can't figure out the
 correct settings to tame NeoComplete? D'you think AutoComplPop is an
 old fashioned fusion group and Supertab a movie hero for children?
 
-With a core well below 200 lines of code, µcomplete may be the
-minimalistic autocompletion plugin you were looking for!
+With less code than documentation, µcomplete may be the minimalistic
+autocompletion plugin you were looking for!
 
 MUcomplete is an implementation of *chained (fallback) completion*,
 whereby several completion methods are attempted one after another
@@ -22,8 +22,8 @@ features.
 
 # Getting Started
 
-MUcomplete requires Vim compiled with `+insert_expand` and `+menu`.
-Vim 8 or later is recommended.
+MUcomplete requires Vim 7.4 or later compiled with `+insert_expand`
+and `+menu`.
 
 Installation does not require anything special. If you need help,
 please read [How to Install]
@@ -38,9 +38,12 @@ let g:mucomplete#enable_auto_at_startup = 1
 
 in your `.vimrc`.
 
+When the pop-up menu is visible, you may cycle back and forth through
+the completion methods in the current completion chain by pressing
+`<c-h>` and `<c-l>`, respectively.
+
 MUcomplete is fully customizable. See `:help mucomplete.txt` for
 detailed documentation.
-
 
 **Important:** by itself, µcomplete does not provide any
 “intellisense”/semantic completion. If you want that, you also need to
