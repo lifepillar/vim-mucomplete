@@ -99,15 +99,11 @@ let s:cycle = 0
 let s:i = 0
 let s:pumvisible = 0
 
-fun! mucomplete#yup()
-  let s:pumvisible = 1
-  return ''
-endf
-
 let s:deselect_entry = extend({ 'c-p' : "\<c-n>", 'keyp': "\<c-n>" },
       \ get(g:, 'mucomplete#user_mappings_deselect', {}), 'error')
 
 fun! s:act_on_pumvisible()
+  let s:pumvisible = 0
   return s:auto
         \ ? (get(s:deselect_entry, s:compl_methods[s:i], "\<c-p>")
         \ . (get(g:, 'mucomplete#auto_select', 0) ? "\<down>" : ''))
@@ -121,19 +117,9 @@ fun! s:can_complete()
         \ )(s:compl_text)
 endf
 
-fun! mucomplete#verify_completion()
-  if s:pumvisible
-    let s:pumvisible = 0
-    return s:act_on_pumvisible()
-  endif
-  return mucomplete#next_method()
-endf
-
-" Precondition: pumvisible() is true.
-fun! mucomplete#cycle(dir)
-  let s:dir = a:dir
-  let s:cycle = 1
-  return "\<c-e>" . mucomplete#next_method()
+fun! mucomplete#yup()
+  let s:pumvisible = 1
+  return ''
 endf
 
 " Precondition: pumvisible() is false.
@@ -146,6 +132,16 @@ fun! s:next_method()
     return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
   endif
   return ''
+endf
+
+fun! mucomplete#verify_completion()
+  return s:pumvisible ? s:act_on_pumvisible() : s:next_method()
+endf
+
+" Precondition: pumvisible() is true.
+fun! mucomplete#cycle(dir)
+  let [s:dir, s:cycle] = [a:dir, 1]
+  return "\<c-e>" . s:next_method()
 endf
 
 " Precondition: pumvisible() is true.
@@ -162,13 +158,12 @@ fun! mucomplete#complete(dir)
     return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
   endif
   let s:auto = exists('#MUcompleteAuto')
-  let s:dir = a:dir
-  let s:cycle = 0
+  let [s:dir, s:cycle] = [a:dir, 0]
   let s:compl_methods = get(b:, 'mucomplete_chain',
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
   let s:N = len(s:compl_methods)
   let s:i = s:dir > 0 ? -1 : s:N
-  return mucomplete#next_method()
+  return s:next_method()
 endf
 
 fun! mucomplete#autocomplete()
