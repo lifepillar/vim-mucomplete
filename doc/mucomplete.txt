@@ -35,12 +35,11 @@ guessing. It just makes use of built-in Vim features.
 ====================================================================
 Section 2: Requirements                    *mucomplete-requirements*
 
-MUcomplete requires Vim compiled with |+insert_expand| and |+menu|.
+MUcomplete requires Vim 7.4 compiled with |+insert_expand| and
+|+menu|.
 
-MUcomplete has been tested with Vim 8 only.
-
-Note: |<c-b>| should not be mapped in Insert mode (see
-|i_ctrl-b-gone| and |g:mucomplete#exit_ctrlx_keys|).
+If you have mapped |<c-b>| in Insert mode, you need to set
+|g:mucomplete#exit_ctrlx_keys|.
 
 ====================================================================
 Section 3: Getting started                        *mucomplete-howto*
