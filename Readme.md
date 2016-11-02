@@ -22,8 +22,8 @@ features.
 
 # Getting Started
 
-MUcomplete requires Vim 7.4 or later compiled with `+insert_expand`
-and `+menu`.
+MUcomplete requires Vim 7.3 compiled with |+insert_expand| and
+|+menu|. Automatic completion is available in Vim 7.4 or later.
 
 Installation does not require anything special. If you need help,
 please read [How to Install]
