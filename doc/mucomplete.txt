@@ -68,7 +68,8 @@ cycle back and forth, respectively, through your completion chain.
 
 In detail, this is the algorithm used by µcomplete:
 
-1. Retrieve the current completion chain from |g:mucomplete#chains|.
+1. Retrieve the current completion chain from |b:mucomplete_chain|,
+   if defined, otherwise from |g:mucomplete#chains|.
 
 2. For each method listed in the completion chain:
 
@@ -76,7 +77,7 @@ In detail, this is the algorithm used by µcomplete:
          corresponding function defined for the current filetype in
          |g:mucomplete#can_complete|.
 
-   2(b). If the method can be applied, invoke the corresponding
+   2(b). If the method can be applied, type the corresponding
          mapping.
 
    2(c). If some results are returned, show them in a pop-up menu
@@ -132,17 +133,20 @@ The following mappings are enabled by default. If you do not want
 that, see |g:mucomplete#no_mappings|.
 
 <tab>
-  Trigger forward chained completion.
+  Trigger forward chained completion. When the pop-up menu is
+  visible, select the next menu entry.
 
 <s-tab>
-  Trigger backward chained completion.
+  Trigger backward chained completion. When the pop-up menu is
+  visible, select the previous menu entry.
 
 <c-l>
-  When the pop-up menu is visible, try the next completion method.
+  When the pop-up menu is visible, try the next completion method
+  that can be applied.
 
 <c-h>
   When the pop-up menu is visible, try the previous completion
-  method.
+  method that can be applied.
 
 In your |.vimrc|, you may override such mappings. For example, to
 use <c-j> and <c-k> instead of <tab> and <s-tab>, use:
@@ -157,8 +161,10 @@ To use, say, <c-j> and <c-k> as cycling keys, use the following:
   inoremap <silent> <plug>(MUcompleteBwdKey) <c-k>
   imap <c-k> <plug>(MUcompleteCycBwd)
 <
-You may also use <tab> and <s-tab> for cycling through the
-completion methods: see |g:mucomplete#cycle_with_trigger|.
+You may also use <tab> and <s-tab> (or whatever mappings you have
+defined to trigger manual completion) for cycling through the
+completion methods instead of selecting menu entries: see
+|g:mucomplete#cycle_with_trigger|.
 
 ====================================================================
 Section 7: Customization                  *mucomplete-customization*
