@@ -49,7 +49,7 @@ Recommended Vim settings:
   set completeopt+=menu,menuone
   set shortmess+=c
 <
-For automatic completion, you most likely will want one of:
+Besides, for automatic completion, you most likely will want one of:
 >
   set completeopt+=noinsert
 <
