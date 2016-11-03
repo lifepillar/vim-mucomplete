@@ -142,11 +142,15 @@ that, see |g:mucomplete#no_mappings|.
 
 <tab>
   Trigger forward chained completion. When the pop-up menu is
-  visible, select the next menu entry.
+  visible, select the next menu entry or try the next completion
+  method depending on the value of
+  |g:mucomplete#cycle_with_trigger|.
 
 <s-tab>
   Trigger backward chained completion. When the pop-up menu is
-  visible, select the previous menu entry.
+  visible, select the previous menu entry or try the previous
+  completion method depending on the value of
+  |g:mucomplete#cycle_with_trigger|.
 
 <c-l>
   When the pop-up menu is visible, try the next completion method
@@ -162,12 +166,12 @@ use <c-j> and <c-k> instead of <tab> and <s-tab>, use:
   imap <c-j> <plug>(MUcompleteFwd)
   imap <c-k> <plug>(MUcompleteBwd)
 <
-To use, say, <c-j> and <c-k> as cycling keys, use the following:
+To use, say, <left> and <right> as cycling keys, use the following:
 >
-  inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
-  imap <c-j> <plug>(MUcompleteCycFwd)
-  inoremap <silent> <plug>(MUcompleteBwdKey) <c-k>
-  imap <c-k> <plug>(MUcompleteCycBwd)
+  inoremap <silent> <plug>(MUcompleteFwdKey) <right>
+  imap <right> <plug>(MUcompleteCycFwd)
+  inoremap <silent> <plug>(MUcompleteBwdKey) <left>
+  imap <left> <plug>(MUcompleteCycBwd)
 <
 You may also use <tab> and <s-tab> (or whatever mappings you have
 defined to trigger manual completion) for cycling through the
@@ -179,9 +183,10 @@ Section 7: Customization                  *mucomplete-customization*
 
                                        *'g:mucomplete#can_complete'*
 A Dictionary defining the conditions to be verified for a given
-method to be applied. Each condition is a function with one argument
-(the text to be completed), which returns either 1 or 0, according
-to whether the corresponding method can be applied or not.
+method to be applied. Each condition is a |lambda|, |function()| or
+|funcref()| with one argument (the text to be completed), which
+returns either 1 or 0, according to whether the corresponding method
+can be applied or not.
 >
   let g:mucomplete#can_complete = {
       \   'default' : {
@@ -196,8 +201,8 @@ to whether the corresponding method can be applied or not.
       \   }
       \ }
 <
-If there is no key in |g:mucomplete#can_complete.default| for the
-current method, such method will be tried unconditionally.
+If no key is found in |g:mucomplete#can_complete| for the current
+method, such method will be tried unconditionally.
 
 In your |.vimrc|, you may override some or all the default
 conditions or add filetype-specific conditions. For example:
@@ -263,7 +268,8 @@ Set to 1 to prevent µcomplete to define any mapping.
   let g:mucomplete#no_mappings = 0
 <
                                             *'g:mucomplete#pathsep'*
-The regular expression defining a path separator.
+The regular expression defining a path separator. Used for file name
+completion.
 >
   let g:mucomplete#pathsep = '/'  " '\' on Windows
 <
@@ -313,8 +319,7 @@ Before reporting a bug, please do the following:
 1. Use the following |vimrc_mucomplete| to rule out conflicts with
    other plugins: >
      set runtimepath+=/path/to/mucomplete/
-     set completeopt-=longest
-     set completeopt+=menu,menuone
+     set completeopt=menu,menuone,noinsert
      set showmode shortmess-=c
 <
    Add other µcomplete options as you see fit. Run with: >
@@ -326,8 +331,9 @@ Before reporting a bug, please do the following:
 2. Double-check your completion chain: >
      echo g:mucomplete#chains
 <
-   Are the methods you expect to be used defined and in the correct
-   order?
+   Also, check whether |b:mucomplete_chain| is defined, because its
+   value shadows the global chains. Are the methods you expect to be
+   used defined and in the correct order?
 
 3. Some completion methods are enabled conditionally. For example,
    dictionary completion may be triggered only if |'dictionary'| is
