@@ -75,7 +75,7 @@ which provides semantic completion for Python. Used settings:
 set noshowmode shortmess+=c
 setl infercase
 setl completeopt-=preview
-setl completeopt+=longest,menu,menuone
+setl completeopt+=longest,menu,menuone,noinsert,noselect
 let g:jedi#popup_on_dot = 0  " It may be 1 as well
 let g:mucomplete#enable_auto_at_startup = 1
 ```
@@ -86,7 +86,7 @@ selected in different contexts. Used settings:
 
 ```vim
 set showmode shortmess-=c
-setl completeopt+=menu,menuone
+setl completeopt+=menu,menuone,noinsert,noselect
 setl infercase
 let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
 let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
