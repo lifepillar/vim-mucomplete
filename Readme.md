@@ -29,8 +29,19 @@ Installation does not require anything special. If you need help,
 please read [How to Install]
 (https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
 
-No configuration is required, just start pressing `<tab>` or `<s-tab>`
-to complete a word. If you want to enable automatic completion, put
+Recommended Vim settings:
+
+```vim
+  set completeopt+=menu,menuone
+  set shortmess+=c
+  " For automatic completion, you most likely want one of:
+  set completeopt+=noinsert " or
+  set completeopt+=noinsert,noselect
+```
+
+No other configuration is needed. Just start pressing `<tab>` or
+`<s-tab>` to complete a word. If you want to enable automatic
+completion, put
 
 ```vim
 let g:mucomplete#enable_auto_at_startup = 1

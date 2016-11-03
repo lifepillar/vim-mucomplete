@@ -98,16 +98,14 @@ let s:dir = 1
 let s:cycle = 0
 let s:i = 0
 let s:pumvisible = 0
-
-let s:deselect_entry = extend({ 'c-p' : "\<c-n>", 'keyp': "\<c-n>" },
-      \ get(g:, 'mucomplete#user_mappings_deselect', {}), 'error')
+let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
 
 fun! s:act_on_pumvisible()
   let s:pumvisible = 0
-  return s:auto
-        \ ? (get(s:deselect_entry, s:compl_methods[s:i], "\<c-p>")
-        \ . (get(g:, 'mucomplete#auto_select', 0) ? "\<down>" : ''))
-        \ : ''
+  return s:auto ? '' : (stridx(&l:completeopt, 'noselect') == -1
+        \               ? (stridx(&l:completeopt, 'noinsert') == - 1 ? '' : "\<up>\<c-n>")
+        \               : get(s:select_entry, s:compl_methods[s:i], "\<c-n>\<up>")
+        \              )
 endf
 
 fun! s:can_complete()

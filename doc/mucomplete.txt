@@ -45,10 +45,18 @@ If you have mapped |<c-b>| in Insert mode, you need to set
 Section 3: Getting started                        *mucomplete-howto*
 
 Recommended Vim settings:
-
-  `set completeopt+=menu,menuone`
-  `set shortmess+=c`
-
+>
+  set completeopt+=menu,menuone
+  set shortmess+=c
+<
+For automatic completion, you most likely will want one of:
+>
+  set completeopt+=noinsert
+<
+or
+>
+  set completeopt+=noinsert,noselect
+<
 Press <tab> in Insert mode to complete a word. This will
 sequentially trigger the methods specified in |g:mucomplete#chains|,
 until some results are found. You may use <s-tab> to try the same
@@ -169,14 +177,6 @@ completion methods instead of selecting menu entries: see
 ====================================================================
 Section 7: Customization                  *mucomplete-customization*
 
-                                        *'g:mucomplete#auto_select'*
-Set to 1 to have the first entry in the pop-up menu automatically
-selected, but not inserted. Only relevant when automatic completion
-is on (see |g:mucomplete#enable_auto_at_startup| and
-|:MUcompleteAutoOn|).
->
-  let g:mucomplete#auto_select = 0
-<
                                        *'g:mucomplete#can_complete'*
 A Dictionary defining the conditions to be verified for a given
 method to be applied. Each condition is a function with one argument
@@ -304,22 +304,6 @@ e.g.:
 >
   let g:mucomplete#chains = {}
   let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
-<
-                             *'g:mucomplete#user_mappings_deselect'*
-Used to specify, for a user completion method, a non-default key to
-switch to state 3 when the pop-up menu becomes visible (see
-|ins-completion-menu|). The default key is CTRL-P. This option is
-only relevant if automatic completion is on (see |:MUcompleteAutoOn|
-and |g:mucomplete#enable_auto_at_startup|).
-
-You do not need to set this variable, unless the completion method
-you are using selects by default an entry different from the first
-one.
->
-  let g:mucomplete#user_mappings_deselect = {
-    \ 'c-p' : "\<c-n>",
-    \ 'keyp': "\<c-n>"
-    \ }
 <
 ====================================================================
 Section 8: Troubleshooting              *mucomplete-troubleshooting*
