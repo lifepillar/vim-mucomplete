@@ -37,6 +37,7 @@ Section 2: Requirements                    *mucomplete-requirements*
 
 MUcomplete requires Vim 7.3 compiled with |+insert_expand| and
 |+menu|. Automatic completion is available in Vim 7.4 or later.
+MUcomplete is developed and tested on Vim 8.
 
 If you have mapped |<c-b>| in Insert mode, you need to set
 |g:mucomplete#exit_ctrlx_keys|.
