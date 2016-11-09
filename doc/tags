@@ -5,7 +5,6 @@
 'g:mucomplete#enable_auto_at_startup'	mucomplete.txt	/*'g:mucomplete#enable_auto_at_startup'*
 'g:mucomplete#exit_ctrlx_keys'	mucomplete.txt	/*'g:mucomplete#exit_ctrlx_keys'*
 'g:mucomplete#no_mappings'	mucomplete.txt	/*'g:mucomplete#no_mappings'*
-'g:mucomplete#pathsep'	mucomplete.txt	/*'g:mucomplete#pathsep'*
 'g:mucomplete#trigger_auto_pattern'	mucomplete.txt	/*'g:mucomplete#trigger_auto_pattern'*
 'g:mucomplete#ultisnips#match_at_start'	mucomplete.txt	/*'g:mucomplete#ultisnips#match_at_start'*
 'g:mucomplete#user_mappings'	mucomplete.txt	/*'g:mucomplete#user_mappings'*

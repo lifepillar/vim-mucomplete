@@ -192,7 +192,7 @@ can be applied or not.
   let g:mucomplete#can_complete = {
       \   'default' : {
       \       'dict':  { t -> strlen(&l:dictionary) > 0 },
-      \       'file':  { t -> t =~# g:mucomplete#pathsep . '\f*$' },
+      \       'file':  { t -> t =~# '/\f*$' },
       \       'omni':  { t -> strlen(&l:omnifunc) > 0 },
       \       'spel':  { t -> &l:spell && !empty(&l:spelllang) },
       \       'tags':  { t -> !empty(tagfiles()) },
@@ -267,12 +267,6 @@ change this value, unless you have remapped <c-b> in Insert mode.
 Set to 1 to prevent µcomplete to define any mapping.
 >
   let g:mucomplete#no_mappings = 0
-<
-                                            *'g:mucomplete#pathsep'*
-The regular expression defining a path separator. Used for file name
-completion.
->
-  let g:mucomplete#pathsep = '/'  " '\' on Windows
 <
                                *'g:mucomplete#trigger_auto_pattern'*
 A Dictionary of patterns to decide when automatic completion should

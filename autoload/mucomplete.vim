@@ -46,15 +46,14 @@ let g:mucomplete#chains = extend({
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }, get(g:, 'mucomplete#chains', {}))
 
-let g:mucomplete#pathsep = (has('win32') || has('win64') || has('win16') || has('win95')) ? '\' : '/'
-
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
+  let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
   let s:yes_you_can = { _ -> 1 } " Try always
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'dict':  { t -> strlen(&l:dictionary) > 0 },
-        \     'file':  { t -> t =~# g:mucomplete#pathsep . '\f*$' },
+        \     'file':  { t -> t =~# s:pathsep . '\f*$' },
         \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
         \     'spel':  { t -> &l:spell && !empty(&l:spelllang) },
         \     'tags':  { t -> !empty(tagfiles()) },

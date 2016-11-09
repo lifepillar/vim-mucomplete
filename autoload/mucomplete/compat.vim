@@ -5,6 +5,8 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
+
 fun! mucomplete#compat#yes_you_can(t)
   return 1
 endf
@@ -14,7 +16,7 @@ fun! mucomplete#compat#dict(t)
 endf
 
 fun! mucomplete#compat#file(t)
-  return a:t =~# g:mucomplete#pathsep . '\f*$'
+  return a:t =~# s:pathsep . '\f*$'
 endf
 
 fun! mucomplete#compat#omni(t)
