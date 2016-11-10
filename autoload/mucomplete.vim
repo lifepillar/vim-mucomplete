@@ -5,12 +5,25 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
+
+fun! s:act_on_textchanged()
+  if s:completedone
+    let s:completedone = 0
+    if match(strpart(getline('.'), 0, col('.') - 1), s:pathsep) > -1
+      silent call mucomplete#autocomplete()
+    endif
+  else
+    silent call mucomplete#autocomplete()
+  endif
+endf
+
 if exists('##TextChangedI') && exists('##CompleteDone')
   fun! mucomplete#enable_auto()
     let s:completedone = 0
     augroup MUcompleteAuto
       autocmd!
-      autocmd TextChangedI * noautocmd if s:completedone | let s:completedone = 0 | else | silent call mucomplete#autocomplete() | endif
+      autocmd TextChangedI * noautocmd call s:act_on_textchanged()
       autocmd CompleteDone * noautocmd let s:completedone = 1
     augroup END
   endf
@@ -38,7 +51,7 @@ endif
 
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
-      \ 'default' : '\k\k$'
+      \ 'default' : '\k\k$\|'.s:pathsep.'$'
       \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
 
 " Completion chains
@@ -48,7 +61,6 @@ let g:mucomplete#chains = extend({
 
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
-  let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
   let s:yes_you_can = { _ -> 1 } " Try always
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
@@ -59,7 +71,8 @@ if has('lambda')
         \     'tags':  { t -> !empty(tagfiles()) },
         \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
         \     'user':  { t -> strlen(&l:completefunc) > 0 },
-        \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) }
+        \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) },
+        \     'path':  { t -> t =~# s:pathsep . '\f*$' }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
@@ -87,7 +100,8 @@ let s:compl_mappings = extend({
       \ 'keyp': "\<c-x>\<c-p>", 'line': "\<c-x>\<c-l>",
       \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
       \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
-      \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>"
+      \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
+      \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 unlet s:cnp
 let s:compl_methods = []
