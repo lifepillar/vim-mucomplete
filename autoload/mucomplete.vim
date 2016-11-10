@@ -7,18 +7,18 @@ set cpo&vim
 
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
 
-fun! s:act_on_textchanged()
-  if s:completedone
-    let s:completedone = 0
-    if match(strpart(getline('.'), 0, col('.') - 1), s:pathsep) > -1
+if exists('##TextChangedI') && exists('##CompleteDone')
+  fun! s:act_on_textchanged()
+    if s:completedone
+      let s:completedone = 0
+      if match(strpart(getline('.'), 0, col('.') - 1), s:pathsep) > -1
+        silent call mucomplete#autocomplete()
+      endif
+    else
       silent call mucomplete#autocomplete()
     endif
-  else
-    silent call mucomplete#autocomplete()
-  endif
-endf
+  endf
 
-if exists('##TextChangedI') && exists('##CompleteDone')
   fun! mucomplete#enable_auto()
     let s:completedone = 0
     augroup MUcompleteAuto
