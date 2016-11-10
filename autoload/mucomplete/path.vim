@@ -8,9 +8,9 @@ set cpo&vim
 fun! mucomplete#path#complete() abort
   let l:prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '\f\+$')
   if strlen(l:prefix) > 0
-    let l:candidates = map(map(glob(l:prefix.'*', 0, 1, 1), 'fnamemodify(v:val, ":t")'),
+    let l:candidates = map(glob(l:prefix.'*', 0, 1, 1),
           \  '{
-          \      "word": v:val,
+          \      "word": fnamemodify(v:val, ":t"),
           \      "menu": (isdirectory(v:val) ? "[dir]" : "[file]")
           \   }')
     if !empty(l:candidates)
