@@ -6,6 +6,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
+let s:escaped_sep = escape(s:pathsep, '\')
 
 if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
@@ -51,7 +52,7 @@ endif
 
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
-      \ 'default' : '\k\k$\|'.s:pathsep.'$'
+      \ 'default' : '\k\k$\|'.s:escaped_sep.'$'
       \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
 
 " Completion chains
@@ -65,14 +66,14 @@ if has('lambda')
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'dict':  { t -> strlen(&l:dictionary) > 0 },
-        \     'file':  { t -> t =~# s:pathsep . '\f*$' },
+        \     'file':  { t -> t =~# s:escaped_sep . '\f*$' },
         \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
         \     'spel':  { t -> &l:spell && !empty(&l:spelllang) },
         \     'tags':  { t -> !empty(tagfiles()) },
         \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
         \     'user':  { t -> strlen(&l:completefunc) > 0 },
         \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) },
-        \     'path':  { t -> t =~# s:pathsep . '\f*$' }
+        \     'path':  { t -> t =~# s:escaped_sep . '\f*$' }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
