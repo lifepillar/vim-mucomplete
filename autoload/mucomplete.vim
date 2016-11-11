@@ -12,8 +12,12 @@ if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
     if s:completedone
       let s:completedone = 0
-      if match(strpart(getline('.'), 0, col('.') - 1), s:pathsep) > -1
-        silent call mucomplete#autocomplete()
+      if index(['file','path'], get(s:compl_methods, s:i, '')) > -1 && match(strpart(getline('.'), 0, col('.') - 1), s:escaped_sep.'$') > -1
+        if s:compl_methods[s:i] ==# 'path'
+          silent call mucomplete#path#complete()
+        else " 'file'
+          silent call feedkeys("\<c-x>\<c-f>", 'i')
+        endif
       endif
     else
       silent call mucomplete#autocomplete()
