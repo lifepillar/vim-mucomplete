@@ -107,8 +107,8 @@ if has('lambda')
         \     'tags':  { t -> !empty(tagfiles()) },
         \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
         \     'user':  { t -> strlen(&l:completefunc) > 0 },
-        \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) },
-        \     'path':  { t -> t =~# s:pathsep . '\f*$' }
+        \     'path':  { t -> t =~# s:pathsep . '\f*$' },
+        \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
