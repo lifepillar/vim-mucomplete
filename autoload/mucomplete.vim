@@ -37,8 +37,7 @@ let s:cycle = 0
 let s:i = 0
 let s:pumvisible = 0
 let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
-let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
-let s:escaped_sep = escape(s:pathsep, '\')
+let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 
 if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
@@ -102,14 +101,14 @@ if has('lambda')
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'dict':  { t -> strlen(&l:dictionary) > 0 },
-        \     'file':  { t -> t =~# s:escaped_sep . '\f*$' },
+        \     'file':  { t -> t =~# s:pathsep . '\f*$' },
         \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
         \     'spel':  { t -> &l:spell && !empty(&l:spelllang) },
         \     'tags':  { t -> !empty(tagfiles()) },
         \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
         \     'user':  { t -> strlen(&l:completefunc) > 0 },
         \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) },
-        \     'path':  { t -> t =~# s:escaped_sep . '\f*$' }
+        \     'path':  { t -> t =~# s:pathsep . '\f*$' }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
