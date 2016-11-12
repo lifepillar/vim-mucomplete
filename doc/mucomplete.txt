@@ -14,11 +14,12 @@ CONTENTS                                       *mucomplete-contents*
     2. Requirements ......... |mucomplete-requirements|
     3. Getting started ...... |mucomplete-howto|
     4. Completion methods ... |mucomplete-methods|
-    5. Commands ............. |mucomplete-commands|
-    6. Mappings ............. |mucomplete-mappings|
-    7. Customization ........ |mucomplete-customization|
-    8. Troubleshooting ...... |mucomplete-troubleshooting|
-    9. Providing feedback ... |mucomplete-feedback|
+    5. Path completion ...... |mucomplete-path-complete|
+    6. Commands ............. |mucomplete-commands|
+    7. Mappings ............. |mucomplete-mappings|
+    8. Customization ........ |mucomplete-customization|
+    9. Troubleshooting ...... |mucomplete-troubleshooting|
+   10. Providing feedback ... |mucomplete-feedback|
 
 ====================================================================
 Section 1: Introduction                    *mucomplete-introduction*
@@ -115,7 +116,12 @@ By default, µcomplete provides the completion methods described in
 |'thes'|: keywords in |'thesaurus'|;
 |'user'|: user defined completion (|'completefunc'|).
 
-If you have installed UltiSnips, there is also a method to get
+Besides, µcomplete implements its own alternative file completion
+method:
+
+|'path'|: file names (µcomplete's implementation).
+
+And if you have installed UltiSnips, there is also a method to get
 suggestions for snippets:
 
 |'ulti'|: UltiSnips snippets.
@@ -124,7 +130,37 @@ Additional completion methods may be defined with
 |g:mucomplete#user_mappings|.
 
 ====================================================================
-Section 5: Commands                            *mucomplete-commands*
+Section 5: Path completion                *mucomplete-path-complete*
+
+By default, µcomplete uses the |'file'| completion method, which is
+based on Vim's built-in file completion (see |i_CTRL-X_CTRL-F|). The
+|'file'| method works exactly as |i_CTRL-X_CTRL_F|, with one
+exception: if you have enabled automatic completion, pressing CTRL-Y
+to accept a path automatically triggers the completion menu for the
+next portion of the path. Some people like ZSH behaviour, whereby
+typing a slash enters the current directory. This can be easily
+implemented by defining the following mapping in your |.vimrc|:
+>
+  inoremap <expr> / pumvisible() ? "\<c-y>" : '/'
+<
+MUcomplete also implements its own path completion method, called
+|'path'|. This differs from |'file'| because no slash is appended
+when completing a path, and paths with spaces are expanded
+correctly. It works like in YouCompleteMe.
+
+If you use one of the methods above, you may want to adjust the
+value of |g:mucomplete#trigger_auto_pattern| as follows:
+>
+  let g:mucomplete#trigger_auto_pattern = \
+    \ { 'default': '\k\k$\|/$'' }
+<
+to trigger autocompletion after typing a slash.
+
+All of the above holds for Windows users by replacing slashes with
+backslashes.
+
+====================================================================
+Section 6: Commands                            *mucomplete-commands*
 
 :MUcompleteAutoOn
   Enable automatic completion.
@@ -136,7 +172,7 @@ Section 5: Commands                            *mucomplete-commands*
   Toggle automatic completion.
 
 ====================================================================
-Section 6: Mappings                            *mucomplete-mappings*
+Section 7: Mappings                            *mucomplete-mappings*
 
 The following mappings are enabled by default. If you do not want
 that, see |g:mucomplete#no_mappings|.
@@ -307,7 +343,7 @@ e.g.:
   let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
 ====================================================================
-Section 8: Troubleshooting              *mucomplete-troubleshooting*
+Section 9: Troubleshooting              *mucomplete-troubleshooting*
 
 Before reporting a bug, please do the following:
 
@@ -351,7 +387,7 @@ Before reporting a bug, please do the following:
    GitHub.
 
 ====================================================================
-Section 9: Providing feedback                  *mucomplete-feedback*
+Section 10: Providing feedback                 *mucomplete-feedback*
 
 For bug reports and feature requests please use:
 
