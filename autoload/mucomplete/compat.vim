@@ -5,7 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
+let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 
 fun! mucomplete#compat#yes_you_can(t)
   return 1
@@ -21,6 +21,10 @@ endf
 
 fun! mucomplete#compat#omni(t)
   return strlen(&l:omnifunc) > 0
+endf
+
+fun! mucomplete#compat#path(t)
+  return a:t =~# s:pathsep . '\f*$'
 endf
 
 fun! mucomplete#compat#spel(t)
@@ -53,6 +57,7 @@ fun! mucomplete#compat#can_complete()
         \     'tags':  function('mucomplete#compat#tags'),
         \     'thes':  function('mucomplete#compat#thes'),
         \     'user':  function('mucomplete#compat#user'),
+        \     'path':  function('mucomplete#compat#path'),
         \     'ulti':  function('mucomplete#compat#ulti')
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
