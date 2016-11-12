@@ -51,12 +51,9 @@ Recommended Vim settings:
   set completeopt+=menu,menuone
   set shortmess+=c
 <
-For automatic completion, you most likely want one of:
+For automatic completion, you most likely want one of these:
 >
   set completeopt+=noinsert
-<
-or
->
   set completeopt+=noinsert,noselect
 <
 Press <tab> in Insert mode to complete a word. This will
