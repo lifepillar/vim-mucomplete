@@ -56,7 +56,7 @@ endif
 
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
-      \ 'default' : '\k\k$\|'.s:escaped_sep.'$'
+      \ 'default' : '\k\k$'
       \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
 
 " Completion chains
