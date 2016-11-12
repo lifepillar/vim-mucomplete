@@ -15,11 +15,12 @@ CONTENTS                                       *mucomplete-contents*
     3. Getting started ...... |mucomplete-howto|
     4. Completion methods ... |mucomplete-methods|
     5. Path completion ...... |mucomplete-path-complete|
-    6. Commands ............. |mucomplete-commands|
-    7. Mappings ............. |mucomplete-mappings|
-    8. Customization ........ |mucomplete-customization|
-    9. Troubleshooting ...... |mucomplete-troubleshooting|
-   10. Providing feedback ... |mucomplete-feedback|
+    6. Spelling suggestions . |mucomplete-spel-complete|
+    7. Commands ............. |mucomplete-commands|
+    8. Mappings ............. |mucomplete-mappings|
+    9. Customization ........ |mucomplete-customization|
+   10. Troubleshooting ...... |mucomplete-troubleshooting|
+   11. Providing feedback ... |mucomplete-feedback|
 
 ====================================================================
 Section 1: Introduction                    *mucomplete-introduction*
@@ -117,9 +118,10 @@ MUcomplete supports all the completion methods described in
 |'user'|: user defined completion (|'completefunc'|).
 
 Besides, µcomplete implements its own alternative file completion
-method:
+and spelling suggestions:
 
 |'path'|: file names (µcomplete's implementation).
+|'uspl'|: spelling suggestions (µcomplete's implementation).
 
 And if you have installed UltiSnips, there is also a method to get
 suggestions for snippets:
@@ -167,7 +169,22 @@ All of the above holds for Windows users by replacing slashes with
 backslashes.
 
 ====================================================================
-Section 6: Commands                            *mucomplete-commands*
+Section 6: Spelling suggestions           *mucomplete-spel-complete*
+
+The |'spel'| method invokes i_CTRL-X_s to perform the completion.
+Such mapping causes Vim to search for a badly spelled word in the
+current line anywhere before the cursor. This is especially puzzling
+when automatic completion is on, because such behaviour may make the
+cursor jump to a previous, possibly distant, column.
+
+For this reason, µcomplete implements an alternative completion
+method, called |'uspl'|. This still uses Vim's built-in spelling
+features, but limits the suggestions to the word immediately before
+the cursor. This is the recommended spelling method to use if you
+enable automatic completion.
+
+====================================================================
+Section 7: Commands                            *mucomplete-commands*
 
 :MUcompleteAutoOn
   Enable automatic completion.
@@ -179,7 +196,7 @@ Section 6: Commands                            *mucomplete-commands*
   Toggle automatic completion.
 
 ====================================================================
-Section 7: Mappings                            *mucomplete-mappings*
+Section 8: Mappings                            *mucomplete-mappings*
 
 The following mappings are enabled by default. If you do not want
 that, see |g:mucomplete#no_mappings|.
@@ -223,7 +240,7 @@ completion methods instead of selecting menu entries: see
 |g:mucomplete#cycle_with_trigger|.
 
 ====================================================================
-Section 7: Customization                  *mucomplete-customization*
+Section 8: Customization                  *mucomplete-customization*
 
                                        *'g:mucomplete#can_complete'*
 A Dictionary defining the conditions to be verified for a given
@@ -359,7 +376,7 @@ e.g.:
   let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
 ====================================================================
-Section 9: Troubleshooting              *mucomplete-troubleshooting*
+Section 10: Troubleshooting             *mucomplete-troubleshooting*
 
 Before reporting a bug, please do the following:
 
@@ -403,7 +420,7 @@ Before reporting a bug, please do the following:
    bug.
 
 ====================================================================
-Section 10: Providing feedback                 *mucomplete-feedback*
+Section 11: Providing feedback                 *mucomplete-feedback*
 
 For bug reports and feature requests please use:
 

@@ -18,5 +18,6 @@ mucomplete-mappings	mucomplete.txt	/*mucomplete-mappings*
 mucomplete-methods	mucomplete.txt	/*mucomplete-methods*
 mucomplete-path-complete	mucomplete.txt	/*mucomplete-path-complete*
 mucomplete-requirements	mucomplete.txt	/*mucomplete-requirements*
+mucomplete-spel-complete	mucomplete.txt	/*mucomplete-spel-complete*
 mucomplete-troubleshooting	mucomplete.txt	/*mucomplete-troubleshooting*
 mucomplete.txt	mucomplete.txt	/*mucomplete.txt*
