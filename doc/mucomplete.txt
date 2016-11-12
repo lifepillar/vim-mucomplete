@@ -171,11 +171,11 @@ backslashes.
 ====================================================================
 Section 6: Spelling suggestions           *mucomplete-spel-complete*
 
-The |'spel'| method invokes i_CTRL-X_s to perform the completion.
+The |'spel'| method invokes |i_CTRL-X_s| to perform the completion.
 Such mapping causes Vim to search for a badly spelled word in the
 current line anywhere before the cursor. This is especially puzzling
-when automatic completion is on, because such behaviour may make the
-cursor jump to a previous, possibly distant, column.
+when automatic completion is on, because Vim's behaviour may make
+the cursor jump to a previous, possibly distant, column.
 
 For this reason, µcomplete implements an alternative completion
 method, called |'uspl'|. This still uses Vim's built-in spelling
