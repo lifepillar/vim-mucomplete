@@ -68,9 +68,10 @@ then pressing <tab> will cause omni completion to be attempted first
 (provided that |'omnifunc'| is defined). If |'omnifunc'| is not
 defined or the omni completion function returns no results, then
 µcomplete will fallback to local keyword completion (|'keyn'|).
-Pressing <s-tab> will trigger the same methods in reverse order. You
-may define arbitrarily long completion chains, and even
-filetype-specific or buffer-specific completion chains.
+Pressing <s-tab> will trigger keyword completion first, and fallback
+to omni completion if necessary. You may define arbitrarily long
+completion chains, and even filetype-specific or buffer-specific
+completion chains.
 
 Sometimes, the first method returning results is not the one you
 want. With the pop-up menu visible, you may type <c-h> and <c-l> to
@@ -134,14 +135,15 @@ Additional completion methods may be defined with
 ====================================================================
 Section 5: Path completion                *mucomplete-path-complete*
 
-By default, µcomplete uses the |'file'| completion method, which is
-based on Vim's built-in file completion (see |i_CTRL-X_CTRL-F|). The
-|'file'| method works exactly as |i_CTRL-X_CTRL_F|, with one
-exception: if you have enabled automatic completion, pressing CTRL-Y
-to accept a path automatically triggers the completion menu for the
-next portion of the path. Some people like ZSH behaviour, whereby
-typing a slash enters the current directory. This can be easily
-achieved by defining the following mapping in your |vimrc|:
+MUcomplete's default completion chain includes the |'file'|
+completion method, which is based on Vim's built-in file completion
+(see |i_CTRL-X_CTRL-F|). The |'file'| method works exactly as
+|i_CTRL-X_CTRL_F|, with one exception: if you have enabled automatic
+completion, pressing CTRL-Y to accept a path automatically triggers
+the completion menu for the next portion of the path. Some people
+like ZSH behaviour, whereby typing a slash enters the current
+directory. This can be easily achieved by defining the following
+mapping in your |vimrc|:
 >
   inoremap <expr> / pumvisible() ? "\<c-y>" : '/'
 <
