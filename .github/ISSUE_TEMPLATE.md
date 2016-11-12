@@ -6,7 +6,7 @@ For bug reports only, please provide the following details:
 - [ ] MUcomplete settings in my `.vimrc`, if any: …
 
 If your problem has to do with specific completion methods, please provide the
-output of the relevant settings among the following:
+output of the relevant settings (choose all that apply):
 
 - (`'spel'`) `setl spell? spelllang`
 - (`'dict'`) `setl dictionary spell? spelllang`
@@ -17,5 +17,6 @@ output of the relevant settings among the following:
 - (`'defs'`, `'incl'`) `setl ft include path`
 - (`'c-n'`, `'c-p'`, `'line'`) `setl ft cpt inc pa dict tsr spell? spl tags`
                                     and `echo tagfiles()`
+- (`'file'`, `'path'`) `set isfname`
 
 Delete the parts of this text that are not relevant to your issue.
