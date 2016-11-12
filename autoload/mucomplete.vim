@@ -5,6 +5,38 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+" Note: In 'c-n' and 'c-p' below we use the fact that pressing <c-x> while in
+" ctrl-x submode doesn't do anything and any key that is not valid in ctrl-x
+" submode silently ends that mode (:h complete_CTRL-Y) and inserts the key.
+" Hence, after <c-x><c-b>, we are surely out of ctrl-x submode. The subsequent
+" <bs> is used to delete the inserted <c-b>. We use <c-b> because it is not
+" mapped (:h i_CTRL-B-gone). This trick is needed to have <c-p> (and <c-n>)
+" trigger keyword completion under all circumstances, in particular when the
+" current mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
+" <c-x><c-o> would do a different thing).
+
+" Internal status
+let s:cnp = "\<c-x>" . get(g:, 'mucomplete#exit_ctrlx_keys', "\<c-b>\<bs>")
+let s:compl_mappings = extend({
+      \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
+      \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
+      \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
+      \ 'incl': "\<c-x>\<c-i>", 'keyn': "\<c-x>\<c-n>",
+      \ 'keyp': "\<c-x>\<c-p>", 'line': "\<c-x>\<c-l>",
+      \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
+      \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
+      \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
+      \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>"
+      \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
+unlet s:cnp
+let s:compl_methods = []
+let s:compl_text = ''
+let s:auto = 0
+let s:dir = 1
+let s:cycle = 0
+let s:i = 0
+let s:pumvisible = 0
+let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\' : '/'
 let s:escaped_sep = escape(s:pathsep, '\')
 
@@ -84,39 +116,6 @@ else
   let s:yes_you_can = function('mucomplete#compat#yes_you_can')
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
 endif
-
-" Note: In 'c-n' and 'c-p' below we use the fact that pressing <c-x> while in
-" ctrl-x submode doesn't do anything and any key that is not valid in ctrl-x
-" submode silently ends that mode (:h complete_CTRL-Y) and inserts the key.
-" Hence, after <c-x><c-b>, we are surely out of ctrl-x submode. The subsequent
-" <bs> is used to delete the inserted <c-b>. We use <c-b> because it is not
-" mapped (:h i_CTRL-B-gone). This trick is needed to have <c-p> (and <c-n>)
-" trigger keyword completion under all circumstances, in particular when the
-" current mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
-" <c-x><c-o> would do a different thing).
-
-" Internal status
-let s:cnp = "\<c-x>" . get(g:, 'mucomplete#exit_ctrlx_keys', "\<c-b>\<bs>")
-let s:compl_mappings = extend({
-      \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
-      \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
-      \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
-      \ 'incl': "\<c-x>\<c-i>", 'keyn': "\<c-x>\<c-n>",
-      \ 'keyp': "\<c-x>\<c-p>", 'line': "\<c-x>\<c-l>",
-      \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
-      \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
-      \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
-      \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>"
-      \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
-unlet s:cnp
-let s:compl_methods = []
-let s:compl_text = ''
-let s:auto = 0
-let s:dir = 1
-let s:cycle = 0
-let s:i = 0
-let s:pumvisible = 0
-let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
 
 fun! s:act_on_pumvisible()
   let s:pumvisible = 0
