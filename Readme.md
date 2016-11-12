@@ -93,7 +93,7 @@ let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
 let g:mucomplete#enable_auto_at_startup = 1
 ```
 
-# Known Issues
+# Compatibility
 
 See [Compatibility with Other Plugins]
 (https://github.com/lifepillar/vim-mucomplete/wiki/Compatibility-with-Other-Plugins).
