@@ -15,7 +15,7 @@ endf
 
 fun! mucomplete#spel#complete() abort
   let l:col = 1 + match(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
-  let l:suggestions = map(filter(split(s:suggestions, "\n"), 'v:val =~ "^\\s*\\d"'), "matchstr(v:val, '\"\\zs.\\+\\ze\"')")
+  let l:suggestions = map(filter(split(s:suggestions, "\n"), 'v:val =~# "\\m^\\s*\\d"'), "matchstr(v:val, '\"\\zs.\\+\\ze\"')")
   if !empty(l:suggestions)
     call complete(l:col, l:suggestions)
   endif
