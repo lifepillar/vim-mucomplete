@@ -5,21 +5,21 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:hat = get(g:, 'mucomplete#ultisnips#match_at_start', 1) ? '^' : ''
+let s:cmp = 'stridx(l:pat, v:val)' . (get(g:, 'mucomplete#ultisnips#match_at_start', 1) ? '==0' : '>=0')
 
 fun! mucomplete#ultisnips#complete() abort
   if empty(UltiSnips#SnippetsInCurrentScope(1))
     return ''
   endif
-  let l:pat = s:hat . matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
-  let l:candidates = map(filter(keys(g:current_ulti_dict_info), 'v:val =~ l:pat'),
+  let l:pat = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
+  let l:candidates = map(filter(keys(g:current_ulti_dict_info), s:cmp),
         \  '{
         \      "word": v:val,
         \      "menu": "[snip] ". get(g:current_ulti_dict_info[v:val], "description", ""),
         \      "dup" : 1
         \   }')
   if !empty(l:candidates)
-    call complete(col('.') - len(l:pat) + len(s:hat), l:candidates)
+    call complete(col('.') - len(l:pat), l:candidates)
   endif
   return ''
 endf
