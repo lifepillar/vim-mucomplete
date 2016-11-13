@@ -252,13 +252,13 @@ can be applied or not.
   let g:mucomplete#can_complete = {
       \   'default' : {
       \       'dict':  { t -> strlen(&l:dictionary) > 0 },
-      \       'file':  { t -> t =~# '/\f*$' },
+      \       'file':  { t -> t =~# '\m\%(/\|\~\)\f*$' },
       \       'omni':  { t -> strlen(&l:omnifunc) > 0 },
       \       'spel':  { t -> &l:spell && !empty(&l:spelllang) },
       \       'tags':  { t -> !empty(tagfiles()) },
       \       'thes':  { t -> strlen(&l:thesaurus) > 0 },
       \       'user':  { t -> strlen(&l:completefunc) > 0 },
-      \       'path':  { t -> t =~# '/\f*$' },
+      \       'path':  { t -> t =~# '\m\%(/\|\~\)\f*$' },
       \       'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) }
       \   }
       \ }
