@@ -44,7 +44,7 @@ if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
     if s:completedone
       let s:completedone = 0
-      if index(['file','path'], get(s:compl_methods, s:i, '')) > -1 && getline('.')[col('.')-2] =~ '\f'
+      if index(['file','path'], get(s:compl_methods, s:i, '')) > -1 && getline('.')[col('.')-2] =~# '\m\f'
         if s:compl_methods[s:i] ==# 'path'
           silent call mucomplete#path#complete()
         else " 'file'
