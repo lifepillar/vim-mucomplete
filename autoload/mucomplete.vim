@@ -122,10 +122,12 @@ endif
 
 fun! s:act_on_pumvisible()
   let s:pumvisible = 0
-  return s:auto ? '' : (stridx(&l:completeopt, 'noselect') == -1
-        \               ? (stridx(&l:completeopt, 'noinsert') == - 1 ? '' : "\<up>\<c-n>")
-        \               : get(s:select_entry, s:compl_methods[s:i], "\<c-n>\<up>")
-        \              )
+  return s:auto || index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1
+        \ ? ''
+        \ : (stridx(&l:completeopt, 'noselect') == -1
+        \     ? (stridx(&l:completeopt, 'noinsert') == - 1 ? '' : "\<up>\<c-n>")
+        \     : get(s:select_entry, s:compl_methods[s:i], "\<c-n>\<up>")
+        \   )
 endf
 
 fun! s:can_complete()
