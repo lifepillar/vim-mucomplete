@@ -291,7 +291,7 @@ A Dictionary defining the Lists of completion chains. A completion
 chain is provided as a default; besides, filetype-specific
 completion chains may be added by the user.
 >
-  let g:mucomplete_chains = {
+  let g:mucomplete#chains = {
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
       \ }
 <
