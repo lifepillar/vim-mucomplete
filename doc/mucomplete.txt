@@ -144,7 +144,10 @@ like ZSH behaviour, whereby typing a slash enters the current
 directory. This can be easily achieved by defining the following
 mapping in your |vimrc|:
 >
-  inoremap <expr> / pumvisible() ? "\<c-y>" : '/'
+  function! IsBehindDir()
+    return strpart(getline('.'), 0, col('.') - 1)  =~# '\f\+/$' 
+  endfunction
+  inoremap <expr> / pumvisible() && IsBehindDir() ? "\<c-y>" : '/'
 <
 A limitation of the |'file'| method is that it does not expand paths
 containing spaces (in principle, one could add a space to |isfname|,
