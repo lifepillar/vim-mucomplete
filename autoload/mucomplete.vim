@@ -63,6 +63,7 @@ if exists('##TextChangedI') && exists('##CompleteDone')
       autocmd TextChangedI * noautocmd call s:act_on_textchanged()
       autocmd CompleteDone * noautocmd let s:completedone = 1
     augroup END
+    let s:auto = 1
   endf
 
   fun! mucomplete#disable_auto()
@@ -73,6 +74,7 @@ if exists('##TextChangedI') && exists('##CompleteDone')
     if exists('s:completedone')
       unlet s:completedone
     endif
+    let s:auto = 0
   endf
 
   fun! mucomplete#toggle_auto()
@@ -173,7 +175,6 @@ fun! mucomplete#complete(dir)
   if strlen(s:compl_text) == 0
     return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
   endif
-  let s:auto = exists('#MUcompleteAuto')
   let [s:dir, s:cycle] = [a:dir, 0]
   let s:compl_methods = get(b:, 'mucomplete_chain',
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
