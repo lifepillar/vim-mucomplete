@@ -182,9 +182,10 @@ the cursor jump to a previous, possibly distant, column.
 
 For this reason, µcomplete implements an alternative completion
 method, called |'uspl'|. This still uses Vim's built-in spelling
-features, but limits the suggestions to the word immediately before
-the cursor. This is the recommended spelling method to use if you
-enable automatic completion.
+features and provides exactly the same spelling suggestions as the
+|'spel'| method, but only the word immediately before the cursor is
+considered. This is the recommended spelling method to use,
+especially if you enable automatic completion.
 
 ====================================================================
 Section 7: Commands                            *mucomplete-commands*
