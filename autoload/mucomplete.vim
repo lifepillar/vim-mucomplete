@@ -44,12 +44,10 @@ if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
     if s:completedone
       let s:completedone = 0
-      if index(['file','path'], get(s:compl_methods, s:i, '')) > -1 && getline('.')[col('.')-2] =~# '\m\f'
-        if s:compl_methods[s:i] ==# 'path'
-          silent call mucomplete#path#complete()
-        else " 'file'
-          silent call feedkeys("\<c-x>\<c-f>", 'i')
-        endif
+      if get(s:compl_methods, s:i, '') ==# 'path' && getline('.')[col('.')-2] =~# '\m\f'
+        silent call mucomplete#path#complete()
+      elseif get(s:compl_methods, s:i, '') ==# 'file' && getline('.')[col('.')-2] =~# '\m\f'
+        silent call feedkeys("\<c-x>\<c-f>", 'i')
       endif
     elseif !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
           \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
