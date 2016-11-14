@@ -51,8 +51,10 @@ if exists('##TextChangedI') && exists('##CompleteDone')
           silent call feedkeys("\<c-x>\<c-f>", 'i')
         endif
       endif
-    elseif !&g:paste
-      silent call mucomplete#autocomplete()
+    elseif !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
+          \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
+          \      g:mucomplete#trigger_auto_pattern['default'])) > -1
+      silent call feedkeys("\<plug>(MUcompleteFwd)", 'i')
     endif
   endf
 
@@ -183,14 +185,6 @@ fun! mucomplete#complete(dir)
   let s:N = len(s:compl_methods)
   let s:i = s:dir > 0 ? -1 : s:N
   return s:next_method()
-endf
-
-fun! mucomplete#autocomplete()
-  if match(strpart(getline('.'), 0, col('.') - 1),
-        \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
-        \      g:mucomplete#trigger_auto_pattern['default'])) > -1
-    silent call feedkeys("\<plug>(MUcompleteFwd)", 'i')
-  endif
 endf
 
 let &cpo = s:save_cpo
