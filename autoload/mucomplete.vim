@@ -15,7 +15,6 @@ set cpo&vim
 " current mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
 " <c-x><c-o> would do a different thing).
 
-" Internal status
 let s:cnp = "\<c-x>" . get(g:, 'mucomplete#exit_ctrlx_keys', "\<c-b>\<bs>")
 let s:compl_mappings = extend({
       \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
@@ -30,6 +29,9 @@ let s:compl_mappings = extend({
       \ 'uspl': "\<c-o>:call mucomplete#spel#gather()\<cr>\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 unlet s:cnp
+let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
+let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
+" Internal state
 let s:compl_methods = []
 let s:compl_text = ''
 let s:auto = 0
@@ -37,8 +39,6 @@ let s:dir = 1
 let s:cycle = 0
 let s:i = 0
 let s:pumvisible = 0
-let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
-let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 
 if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
