@@ -51,7 +51,7 @@ if exists('##TextChangedI') && exists('##CompleteDone')
           silent call feedkeys("\<c-x>\<c-f>", 'i')
         endif
       endif
-    else
+    elseif !&g:paste
       silent call mucomplete#autocomplete()
     endif
   endf
@@ -186,7 +186,7 @@ fun! mucomplete#complete(dir)
 endf
 
 fun! mucomplete#autocomplete()
-  if !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
+  if match(strpart(getline('.'), 0, col('.') - 1),
         \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
         \      g:mucomplete#trigger_auto_pattern['default'])) > -1
     silent call feedkeys("\<plug>(MUcompleteFwd)", 'i')
