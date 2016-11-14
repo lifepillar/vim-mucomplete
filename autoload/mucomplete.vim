@@ -71,9 +71,6 @@ if exists('##TextChangedI') && exists('##CompleteDone')
       autocmd! MUcompleteAuto
       augroup! MUcompleteAuto
     endif
-    if exists('s:completedone')
-      unlet s:completedone
-    endif
     let s:auto = 0
   endf
 
