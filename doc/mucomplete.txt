@@ -1,4 +1,4 @@
-*mucomplete.txt*  Chained autocompletion!
+*mucomplete.txt*  Welcome to the world of fallback completion!
 
 Author:  Lifepillar <https://github.com/lifepillar>
 License: Public Domain
