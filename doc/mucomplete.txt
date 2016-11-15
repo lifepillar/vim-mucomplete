@@ -161,6 +161,8 @@ correctly. Apart from the fact the spaces are dealt with, the
 define path names. Both methods complete relative paths, too
 (relative to the current working directory).
 
+Note: |'path'| completion requires Vim 7.3.465 or later.
+
 If you use one of the methods above, you may want to adjust the
 value of |g:mucomplete#trigger_auto_pattern| to trigger
 autocompletion after typing a slash. For example:
