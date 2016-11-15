@@ -1,3 +1,9 @@
+>We're coming down to the ground
+>
+>There's no better place to go
+>
+>(Peter Gabriel)
+
 # MUcomplete
 
 Can't stand the dozen of MB of YouCompleteMe? Can't figure out the
@@ -97,5 +103,3 @@ let g:mucomplete#enable_auto_at_startup = 1
 
 See [Compatibility with Other Plugins]
 (https://github.com/lifepillar/vim-mucomplete/wiki/Compatibility-with-Other-Plugins).
-
-
