@@ -5,7 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-if v:version > 704 || v:version == 703 && has("patch465")
+if v:version > 703 || v:version == 703 && has("patch465")
 
   fun! mucomplete#path#complete() abort
     let l:prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '\f\%(\f\|\s\)*$')
