@@ -15,7 +15,8 @@ autocompletion plugin you were looking for!
 
 MUcomplete is an implementation of *chained (fallback) completion*,
 whereby several completion methods are attempted one after another
-until a result is returned.
+until a result is returned. MUcomplete brings Vim completion down to
+earth again.
 
 Under the hood, µcomplete does nothing more than typing some
 completion mappings for you, either when you press `<tab>`/`<s-tab>`
