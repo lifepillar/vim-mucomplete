@@ -145,7 +145,7 @@ directory. This can be easily achieved by defining the following
 mapping in your |vimrc|:
 >
   function! IsBehindDir()
-    return strpart(getline('.'), 0, col('.') - 1)  =~# '\f\+/$' 
+    return strpart(getline('.'), 0, col('.') - 1)  =~# '\f\+/$'
   endfunction
   inoremap <expr> / pumvisible() && IsBehindDir() ? "\<c-y>" : '/'
 <
