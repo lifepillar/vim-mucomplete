@@ -35,7 +35,7 @@ if v:version > 704 || v:version == 703 && has("patch465")
 
 else
 
-  echoerr "'path' completion not supported with this Vim version."
+  echoerr "'path' completion is not supported with this Vim version."
 
   fun! mucomplete#path#complete() abort
     return ''
