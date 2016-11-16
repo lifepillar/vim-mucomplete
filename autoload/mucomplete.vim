@@ -52,7 +52,7 @@ if exists('##TextChangedI') && exists('##CompleteDone')
     elseif !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
           \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
           \      g:mucomplete#trigger_auto_pattern['default'])) > -1
-      silent call feedkeys("\<plug>(MUcompleteFwd)", 'i')
+      silent call feedkeys("\<plug>(MUcompleteAuto)", 'i')
     endif
   endf
 
@@ -61,7 +61,7 @@ if exists('##TextChangedI') && exists('##CompleteDone')
     augroup MUcompleteAuto
       autocmd!
       autocmd TextChangedI * noautocmd call s:act_on_textchanged()
-      autocmd CompleteDone * noautocmd let s:completedone = 1
+      autocmd CompleteDone * noautocmd let [s:completedone,g:mucomplete_with_key]=[1,0]
     augroup END
     let s:auto = 1
   endf
@@ -84,6 +84,9 @@ if exists('##TextChangedI') && exists('##CompleteDone')
     endif
   endf
 endif
+
+" Flag that tells whether completion was started manually or automatically.
+let g:complete_with_key = 0
 
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
@@ -180,6 +183,15 @@ fun! mucomplete#complete(dir)
   let s:N = len(s:compl_methods)
   let s:i = s:dir > 0 ? -1 : s:N
   return s:next_method()
+endf
+
+fun! mucomplete#tab_complete(dir)
+  if pumvisible()
+    return mucomplete#cycle_or_select(a:dir)
+  else
+    let g:mucomplete_with_key = 1
+    return mucomplete#complete(a:dir)
+  endif
 endf
 
 let &cpo = s:save_cpo
