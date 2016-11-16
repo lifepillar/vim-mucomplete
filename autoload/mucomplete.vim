@@ -44,6 +44,7 @@ if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
     if s:completedone
       let s:completedone = 0
+      let g:mucomplete_with_key = 0
       if get(s:compl_methods, s:i, '') ==# 'path' && getline('.')[col('.')-2] =~# '\m\f'
         silent call mucomplete#path#complete()
       elseif get(s:compl_methods, s:i, '') ==# 'file' && getline('.')[col('.')-2] =~# '\m\f'
@@ -58,10 +59,11 @@ if exists('##TextChangedI') && exists('##CompleteDone')
 
   fun! mucomplete#enable_auto()
     let s:completedone = 0
+    let g:mucomplete_with_key = 0
     augroup MUcompleteAuto
       autocmd!
       autocmd TextChangedI * noautocmd call s:act_on_textchanged()
-      autocmd CompleteDone * noautocmd let [s:completedone,g:mucomplete_with_key]=[1,0]
+      autocmd CompleteDone * noautocmd let s:completedone = 1
     augroup END
     let s:auto = 1
   endf
@@ -84,9 +86,6 @@ if exists('##TextChangedI') && exists('##CompleteDone')
     endif
   endf
 endif
-
-" Flag that tells whether completion was started manually or automatically.
-let g:complete_with_key = 0
 
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
