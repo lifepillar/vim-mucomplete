@@ -21,7 +21,7 @@ let s:compl_mappings = extend({
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
       \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
       \ 'incl': "\<c-x>\<c-i>", 'keyn': "\<c-x>\<c-n>",
-      \ 'keyp': "\<c-x>\<c-p>", 'line': "\<c-x>\<c-l>",
+      \ 'keyp': "\<c-x>\<c-p>", 'line': s:cnp."\<c-x>\<c-l>",
       \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
       \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
       \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
