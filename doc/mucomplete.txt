@@ -381,6 +381,12 @@ e.g.:
   let g:mucomplete#chains = {}
   let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
+                                           *'g:mucomplete_with_key'*
+Read-only flag that tells whether completion was initiated manually
+by the user, or it was triggered automatically.
+
+Note: do not set the value of this variable!
+
 ====================================================================
 Section 10: Troubleshooting             *mucomplete-troubleshooting*
 
