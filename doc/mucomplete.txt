@@ -157,14 +157,15 @@ mapping in your |vimrc|:
   inoremap <expr> / pumvisible() && IsBehindDir() ? "\<c-y>" : '/'
 <
 A limitation of the |'file'| method is that it does not expand paths
-containing spaces (in principle, one could add a space to |isfname|,
-but that is not recommended: see |isfname| for the details).
+containing spaces (in principle, one could add a space to
+|'isfname'|, but that is not recommended: see |'isfname'| for the
+details).
 
 MUcomplete also implements its own path completion method, called
 |'path'|. This differs from |'file'| because no slash is appended
 when completing a path, and paths with spaces are expanded
 correctly. Apart from the fact the spaces are dealt with, the
-|'path'| method still uses |isfname| to decide which characters
+|'path'| method still uses |'isfname'| to decide which characters
 define path names. Both methods complete relative paths, too
 (relative to the current working directory).
 
@@ -398,8 +399,8 @@ variable!
 Section 10: Tips & tricks                          *mucomplete-tips*
 
 Use different values of completeopt ~
-If you want to use different values of |completeopt| for manual and
-automatic completion, you may adapt the following snippet:
+If you want to use different values of |'completeopt'| for manual
+and automatic completion, you may adapt the following snippet:
 >
   fun! s:toggle_completeopt()
     if exists('#MUcompleteAuto')
@@ -454,8 +455,8 @@ plugins.
 
 PHP + UltiSnips ~
 In some versions of Vim, there is a known compatibility issue
-between PHP's |omnifunc| function and UltiSnips. This bug is hit by
-µcomplete when
+between PHP's |'omnifunc'| function and UltiSnips. This bug is hit
+by µcomplete when
 
 - automatic completion is on;
 - the |'omni'| method is in your completion chain;
