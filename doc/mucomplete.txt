@@ -200,13 +200,13 @@ especially if you enable automatic completion.
 ====================================================================
 Section 7: Commands                            *mucomplete-commands*
 
-:MUcompleteAutoOn
+`:MUcompleteAutoOn`
   Enable automatic completion.
 
-:MUcompleteAutoOff
+`:MUcompleteAutoOff`
   Disable automatic completion.
 
-:MUcompleteAutoToggle
+`:MUcompleteAutoToggle`
   Toggle automatic completion.
 
 ====================================================================
