@@ -433,13 +433,13 @@ synonyms after each key press would be too slow (beside being
 pointless). In your |vimrc| you may define:
 >
   let g:mucomplete#can_complete = {}
-	let g:mucomplete#can_complete.default = {
+  let g:mucomplete#can_complete.default = {
     \ 'thes': {
     \         t -> g:mucomplete_with_key && strlen(&l:thesaurus) > 0
     \         }
     \ }
   # Add 'thes' to your completion chains, e.g.:
-	let g:mucomplete#chains = { 'default': ['keyn', 'thes'] }
+  let g:mucomplete#chains = { 'default': ['keyn', 'thes'] }
 <
 Then, searching for synonyms will happen only when you press <tab>
 or <s-tab> (and keyword completion returns no results); during
@@ -467,30 +467,30 @@ PHP:
 
 - remove |'omni'| from PHP's completion chain;
 - disable automatic completion (and do not trigger completion during
-	snippet expansion).
+  snippet expansion).
 
 Note: this is not a bug in µcomplete.
 
 SnipMate ~
 In your |vimrc|, set:
 >
-	let g:snipMate['no_match_completion_feedkeys_chars'] = ''
+  let g:snipMate['no_match_completion_feedkeys_chars'] = ''
 <
 Then, define a custom completion method:
 >
-	let g:mucomplete#user_mappings = {
+  let g:mucomplete#user_mappings = {
       \ 'snip' : "\<plug>snipMateShow"
       \ }
 <
 and add it to your completion chain(s). For example:
 >
-	let g:mucomplete#chains = { 'default': ['snip', 'keyn'] }
+  let g:mucomplete#chains = { 'default': ['snip', 'keyn'] }
 <
 You may also find it convenient to define SnipMate's trigger as
 follows:
 >
-	imap <expr> <c-j> (pumvisible() ? "\<c-y>" : "") 
-		\               . "\<plug>snipMateNextOrTrigger"
+  imap <expr> <c-j> (pumvisible() ? "\<c-y>" : "")
+    \               . "\<plug>snipMateNextOrTrigger"
 <
 so you can expand a snippet while the pop-up menu is still visible.
 If you want to use <tab> to expand snippets, you have to either
@@ -501,7 +501,7 @@ disable µcomplete's mappings (see |g:mucomplete#no_mappings|) or map
 vim-peekabo ~
 To get it go along with µcomplete, set:
 >
-	let g:peekaboo_ins_prefix = '<c-x>'
+  let g:peekaboo_ins_prefix = '<c-x>'
 <
 Note: now you need to press <c-x><c-r> to view the registers.
 
