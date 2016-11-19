@@ -67,7 +67,7 @@ completion chain is `['omni', 'keyn']` (see |mucomplete-methods|),
 then pressing <tab> will cause omni completion to be attempted first
 (provided that |'omnifunc'| is defined). If |'omnifunc'| is not
 defined or the omni completion function returns no results, then
-µcomplete will fallback to local keyword completion (|'keyn'|).
+µcomplete will fallback to local keyword completion (`'keyn'`).
 Pressing <s-tab> will trigger keyword completion first, and fallback
 to omni completion if necessary. You may define arbitrarily long
 completion chains, and even filetype-specific or buffer-specific
@@ -108,32 +108,32 @@ MUcomplete supports all the completion methods described in
 |ins-completion| (not all of them are enabled by default, see
 |g:mucomplete#chains|):
 
-|'c-n'| : keywords in |'complete'| (search forwards);
-|'c-p'| : keywords in |'complete'| (search backwards);
-|'cmd'| : Vim command line;
-|'defs'|: definitions or macros;
-|'dict'|: keywords in |'dictionary'|;
-|'file'|: file names;
-|'incl'|: keywords in the current and included files;
-|'keyn'|: keywords in the current file (search forwards);
-|'keyp'|: keywords in the current file (search backwards);
-|'line'|: whole lines;
-|'omni'|: omni completion (|'omnifunc'|);
-|'spel'|: spelling suggestions;
-|'tags'|: tags;
-|'thes'|: keywords in |'thesaurus'|;
-|'user'|: user defined completion (|'completefunc'|).
+`'c-n'` : keywords in |'complete'| (search forwards);
+`'c-p'` : keywords in |'complete'| (search backwards);
+`'cmd'` : Vim command line;
+`'defs'`: definitions or macros;
+`'dict'`: keywords in |'dictionary'|;
+`'file'`: file names;
+`'incl'`: keywords in the current and included files;
+`'keyn'`: keywords in the current file (search forwards);
+`'keyp'`: keywords in the current file (search backwards);
+`'line'`: whole lines;
+`'omni'`: omni completion (|'omnifunc'|);
+`'spel'`: spelling suggestions;
+`'tags'`: tags;
+`'thes'`: keywords in |'thesaurus'|;
+`'user'`: user defined completion (|'completefunc'|).
 
 Besides, µcomplete implements its own alternative file completion
 and spelling suggestions:
 
-|'path'|: file names (µcomplete's implementation).
-|'uspl'|: spelling suggestions (µcomplete's implementation).
+`'path'`: file names (µcomplete's implementation).
+`'uspl'`: spelling suggestions (µcomplete's implementation).
 
 And if you have installed UltiSnips, there is also a method to get
 suggestions for snippets:
 
-|'ulti'|: UltiSnips snippets.
+`'ulti'`: UltiSnips snippets.
 
 Additional completion methods may be defined with
 |g:mucomplete#user_mappings|.
@@ -141,9 +141,9 @@ Additional completion methods may be defined with
 ====================================================================
 Section 5: Path completion                *mucomplete-path-complete*
 
-MUcomplete's default completion chain includes the |'file'|
+MUcomplete's default completion chain includes the `'file'`
 completion method, which is based on Vim's built-in file completion
-(see |i_CTRL-X_CTRL-F|). The |'file'| method works exactly as
+(see |i_CTRL-X_CTRL-F|). The `'file'` method works exactly as
 |i_CTRL-X_CTRL_F|, with one exception: if you have enabled automatic
 completion, pressing CTRL-Y to accept a path automatically triggers
 the completion menu for the next portion of the path. Some people
@@ -156,20 +156,20 @@ mapping in your |vimrc|:
   endfunction
   inoremap <expr> / pumvisible() && IsBehindDir() ? "\<c-y>" : '/'
 <
-A limitation of the |'file'| method is that it does not expand paths
+A limitation of the `'file'` method is that it does not expand paths
 containing spaces (in principle, one could add a space to
 |'isfname'|, but that is not recommended: see |'isfname'| for the
 details).
 
 MUcomplete also implements its own path completion method, called
-|'path'|. This differs from |'file'| because no slash is appended
+`'path'`. This differs from `'file'` because no slash is appended
 when completing a path, and paths with spaces are expanded
 correctly. Apart from the fact the spaces are dealt with, the
-|'path'| method still uses |'isfname'| to decide which characters
+`'path'` method still uses |'isfname'| to decide which characters
 define path names. Both methods complete relative paths, too
 (relative to the current working directory).
 
-Note: |'path'| completion requires Vim 7.3.465 or later.
+Note: `'path'` completion requires Vim 7.3.465 or later.
 
 If you use one of the methods above, you may want to adjust the
 value of |g:mucomplete#trigger_auto_pattern| to trigger
@@ -184,16 +184,16 @@ backslashes.
 ====================================================================
 Section 6: Spelling suggestions           *mucomplete-spel-complete*
 
-The |'spel'| method invokes |i_CTRL-X_s| to perform the completion.
+The `'spel'` method invokes |i_CTRL-X_s| to perform the completion.
 Such mapping causes Vim to search for a badly spelled word in the
 current line anywhere before the cursor. This is especially puzzling
 when automatic completion is on, because Vim's behaviour may make
 the cursor jump to a previous, possibly distant, column.
 
 For this reason, µcomplete implements an alternative completion
-method, called |'uspl'|. This still uses Vim's built-in spelling
+method, called `'uspl'`. This still uses Vim's built-in spelling
 features and provides exactly the same spelling suggestions as the
-|'spel'| method, but only the word immediately before the cursor is
+`'spel'` method, but only the word immediately before the cursor is
 considered. This is the recommended spelling method to use,
 especially if you enable automatic completion.
 
@@ -291,8 +291,8 @@ conditions or add filetype-specific conditions. For example:
       \ 'omni': { t -> t =~# '::$' }
       \ }
 <
-This will perform a custom check for |'spel'| completion, and
-a custom check for |'omni'| completion in cpp buffers. In all other
+This will perform a custom check for `'spel'` completion, and
+a custom check for `'omni'` completion in cpp buffers. In all other
 cases, the default conditions will be checked.
 
                                              *'b:mucomplete_chain'*
@@ -364,7 +364,7 @@ characters by default, except for cpp filetypes, where automatic
 completion will be triggered after two keyword characters.
 
                            *'g:mucomplete#ultisnips#match_at_start'*
-By default, the |'ulti'| method returns the snippets whose name
+By default, the `'ulti'` method returns the snippets whose name
 starts with the current word. Set this to 0 to return all the
 snippets that contain the current word.
 >
@@ -392,8 +392,8 @@ e.g.:
                                            *'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually
 by the user, or it was triggered automatically. See
-|mucomplete-tips| for an example. Note: do not set the value of this
-variable!
+|mucomplete-tips| for an example.
+Note: do not set the value of this variable!
 
 ====================================================================
 Section 10: Tips & tricks                          *mucomplete-tips*
@@ -417,8 +417,8 @@ and automatic completion, you may adapt the following snippet:
         \  | call <sid>toggle_completeopt()
 <
 Put the code above in your |vimrc|. Please keep in mind that
-|noinsert| is ignored in manual completion, except for spelling
-suggestions (|'spel'| and |'uspl'| methods).
+noinsert is ignored in manual completion, except for spelling
+suggestions (`'spel'` and `'uspl'` methods).
 
 Enable a completion method only when typing <tab> ~
 Some completion methods are inherently slow, and it doesn't make
@@ -459,14 +459,14 @@ between PHP's |'omnifunc'| function and UltiSnips. This bug is hit
 by µcomplete when
 
 - automatic completion is on;
-- the |'omni'| method is in your completion chain;
+- the `'omni'` method is in your completion chain;
 - you try to move between the different parts of a snippet while
   expanding a snippet (and you discover that you can't).
 
 There are two workarounds if you still want to use UltiSnips with
 PHP:
 
-- remove |'omni'| from PHP's completion chain;
+- remove `'omni'` from PHP's completion chain;
 - disable automatic completion (and do not trigger completion during
   snippet expansion).
 
