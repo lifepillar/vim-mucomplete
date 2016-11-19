@@ -10,6 +10,7 @@
 'g:mucomplete#user_mappings'	mucomplete.txt	/*'g:mucomplete#user_mappings'*
 'g:mucomplete_with_key'	mucomplete.txt	/*'g:mucomplete_with_key'*
 mucomplete-commands	mucomplete.txt	/*mucomplete-commands*
+mucomplete-compatibility	mucomplete.txt	/*mucomplete-compatibility*
 mucomplete-contents	mucomplete.txt	/*mucomplete-contents*
 mucomplete-customization	mucomplete.txt	/*mucomplete-customization*
 mucomplete-feedback	mucomplete.txt	/*mucomplete-feedback*
@@ -20,5 +21,6 @@ mucomplete-methods	mucomplete.txt	/*mucomplete-methods*
 mucomplete-path-complete	mucomplete.txt	/*mucomplete-path-complete*
 mucomplete-requirements	mucomplete.txt	/*mucomplete-requirements*
 mucomplete-spel-complete	mucomplete.txt	/*mucomplete-spel-complete*
+mucomplete-tips	mucomplete.txt	/*mucomplete-tips*
 mucomplete-troubleshooting	mucomplete.txt	/*mucomplete-troubleshooting*
 mucomplete.txt	mucomplete.txt	/*mucomplete.txt*

@@ -19,8 +19,10 @@ CONTENTS                                       *mucomplete-contents*
     7. Commands ............. |mucomplete-commands|
     8. Mappings ............. |mucomplete-mappings|
     9. Customization ........ |mucomplete-customization|
-   10. Troubleshooting ...... |mucomplete-troubleshooting|
-   11. Providing feedback ... |mucomplete-feedback|
+   10. Tips & tricks ........ |mucomplete-tips|
+   11. Compatibility ........ |mucomplete-compatibility|
+   12. Troubleshooting ...... |mucomplete-troubleshooting|
+   13. Providing feedback ... |mucomplete-feedback|
 
 ====================================================================
 Section 1: Introduction                    *mucomplete-introduction*
@@ -75,6 +77,11 @@ Sometimes, the first method returning results is not the one you
 want. With the pop-up menu visible, you may type <c-h> and <c-l> to
 cycle back and forth, respectively, through the current completion
 chain.
+
+If you want completion to be triggered automatically, set
+|g:mucomplete#enable_auto_at_startup|.
+
+Note: completion is disabled when |'paste'| is on.
 
 In detail, this is the algorithm used by µcomplete:
 
@@ -309,9 +316,9 @@ add filetype-specific completion chains. For example:
   let g:mucomplete#chains.markdown = ['keyn', 'spel', 'dict']
 <
                                  *'g:mucomplete#cycle_with_trigger'*
-Set to 1 to use <s-tab> and <tab> (or whatever your manual completion
-triggers are) to move back and forth, respectively, through the
-current completion chain.
+Set to 1 to use <s-tab> and <tab> (or whatever your manual
+completion triggers are) to move back and forth, respectively,
+through the current completion chain.
 >
   let g:mucomplete#cycle_with_trigger = 0
 <
@@ -383,12 +390,123 @@ e.g.:
 <
                                            *'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually
-by the user, or it was triggered automatically.
-
-Note: do not set the value of this variable!
+by the user, or it was triggered automatically. See
+|mucomplete-tips| for an example. Note: do not set the value of this
+variable!
 
 ====================================================================
-Section 10: Troubleshooting             *mucomplete-troubleshooting*
+Section 10: Tips & tricks                          *mucomplete-tips*
+
+Use different values of completeopt ~
+If you want to use different values of |completeopt| for manual and
+automatic completion, you may adapt the following snippet:
+>
+  fun! s:toggle_completeopt()
+    if exists('#MUcompleteAuto')
+      set completeopt+=noinsert,noselect
+    else
+      set completeopt-=noinsert,noselect
+    endif
+  endf
+  command! MUcompleteAutoToggle call mucomplete#toggle_auto()
+        \  | call <sid>toggle_completeopt()
+  command! MUcompleteAutoOn     call mucomplete#enable_auto()
+        \  | call <sid>toggle_completeopt()
+  command! MUcompleteAutoOff    call mucomplete#disable_auto()
+        \  | call <sid>toggle_completeopt()
+<
+Put the code above in your |vimrc|. Please keep in mind that
+|noinsert| is ignored in manual completion, except for spelling
+suggestions (|'spel'| and |'uspl'| methods).
+
+Enable a completion method only when typing <tab> ~
+Some completion methods are inherently slow, and it doesn't make
+much sense to trigger them automatically, because they would be
+called too frequently. Yet, you might want to trigger them manually
+by pressing <tab> (or whatever your manual completion trigger is).
+This can be achieved by testing the value of |g:mucomplete_with_key|
+in a custom check.
+
+For instance, suppose that you have enabled automatic completion.
+You want to enable thesaurus completion as well, but searching for
+synonyms after each key press would be too slow (beside being
+pointless). In your |vimrc| you may define:
+>
+  let g:mucomplete#can_complete = {}
+	let g:mucomplete#can_complete.default = {
+    \ 'thes': {
+    \         t -> g:mucomplete_with_key && strlen(&l:thesaurus) > 0
+    \         }
+    \ }
+  # Add 'thes' to your completion chains, e.g.:
+	let g:mucomplete#chains = { 'default': ['keyn', 'thes'] }
+<
+Then, searching for synonyms will happen only when you press <tab>
+or <s-tab> (and keyword completion returns no results); during
+normal typing, only keyword completion will be active.
+
+====================================================================
+Section 11: Compatibility                 *mucomplete-compatibility*
+
+MUcomplete tries to be a responsible citizen in Vimland. This
+section describes how to make it peacefully cohexist with other
+plugins.
+
+PHP + UltiSnips ~
+In some versions of Vim, there is a known compatibility issue
+between PHP's |omnifunc| function and UltiSnips. This bug is hit by
+µcomplete when
+
+- automatic completion is on;
+- the |'omni'| method is in your completion chain;
+- you try to move between the different parts of a snippet while
+  expanding a snippet (and you discover that you can't).
+
+There are two workarounds if you still want to use UltiSnips with
+PHP:
+
+- remove |'omni'| from PHP's completion chain;
+- disable automatic completion (and do not trigger completion during
+	snippet expansion).
+
+Note: this is not a bug in µcomplete.
+
+SnipMate ~
+In your |vimrc|, set:
+>
+	let g:snipMate['no_match_completion_feedkeys_chars'] = ''
+<
+Then, define a custom completion method:
+>
+	let g:mucomplete#user_mappings = {
+      \ 'snip' : "\<plug>snipMateShow"
+      \ }
+<
+and add it to your completion chain(s). For example:
+>
+	let g:mucomplete#chains = { 'default': ['snip', 'keyn'] }
+<
+You may also find it convenient to define SnipMate's trigger as
+follows:
+>
+	imap <expr> <c-j> (pumvisible() ? "\<c-y>" : "") 
+		\               . "\<plug>snipMateNextOrTrigger"
+<
+so you can expand a snippet while the pop-up menu is still visible.
+If you want to use <tab> to expand snippets, you have to either
+disable µcomplete's mappings (see |g:mucomplete#no_mappings|) or map
+µcomplete's manual completion trigger to something else (see
+|mucomplete-mappings|).
+
+vim-peekabo ~
+To get it go along with µcomplete, set:
+>
+	let g:peekaboo_ins_prefix = '<c-x>'
+<
+Note: now you need to press <c-x><c-r> to view the registers.
+
+====================================================================
+Section 12: Troubleshooting             *mucomplete-troubleshooting*
 
 Before reporting a bug, please do the following:
 
@@ -432,7 +550,7 @@ Before reporting a bug, please do the following:
    bug.
 
 ====================================================================
-Section 11: Providing feedback                 *mucomplete-feedback*
+Section 13: Providing feedback                 *mucomplete-feedback*
 
 For bug reports and feature requests please use:
 
