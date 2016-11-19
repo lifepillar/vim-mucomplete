@@ -102,5 +102,4 @@ let g:mucomplete#enable_auto_at_startup = 1
 
 # Compatibility
 
-See [Compatibility with Other Plugins]
-(https://github.com/lifepillar/vim-mucomplete/wiki/Compatibility-with-Other-Plugins).
+See `:help mucomplete-compatibility`.
