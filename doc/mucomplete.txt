@@ -450,7 +450,7 @@ normal typing, only keyword completion will be active.
 Section 11: Compatibility                 *mucomplete-compatibility*
 
 MUcomplete tries to be a responsible citizen in Vimland. This
-section describes how to make it peacefully cohexist with other
+section describes how to make it peacefully coexist with other
 plugins.
 
 PHP + UltiSnips ~
