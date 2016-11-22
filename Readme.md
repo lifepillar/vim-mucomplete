@@ -30,7 +30,8 @@ It just makes use of core Vim features.
 
 MUcomplete requires Vim 7.2 compiled with `+insert_expand` and
 `+menu`. Automatic completion is available in Vim 7.4 or later.
-MUcomplete is developed and tested on Vim 8.
+MUcomplete is developed and tested on Vim 8. It works in NeoVim as
+well.
 
 Installation does not require anything special. If you need help,
 please read [How to Install]
