@@ -106,7 +106,7 @@ Section 4: Completion methods                   *mucomplete-methods*
 
 MUcomplete supports all the completion methods described in
 |ins-completion| (not all of them are enabled by default, see
-|g:mucomplete#chains|):
+|g:mucomplete#chains|). Each method is defined by a string:
 
 `'c-n'` : keywords in |'complete'| (search forwards);
 `'c-p'` : keywords in |'complete'| (search backwards);
@@ -130,8 +130,9 @@ and spelling suggestions:
 `'path'`: file names (µcomplete's implementation).
 `'uspl'`: spelling suggestions (µcomplete's implementation).
 
-And if you have installed UltiSnips, there is also a method to get
-suggestions for snippets:
+If you have installed UltiSnips, there is also a method to get
+suggestions for snippets (if you use SnipMate, see
+|mucomplete-tips|):
 
 `'ulti'`: UltiSnips snippets.
 
@@ -301,9 +302,7 @@ When this variable is defined, the value of |g:mucomplete#chains| is
 ignored.
 
                                              *'g:mucomplete#chains'*
-A Dictionary defining the Lists of completion chains. A completion
-chain is provided as a default; besides, filetype-specific
-completion chains may be added by the user.
+A Dictionary defining the Lists of completion chains.
 >
   let g:mucomplete#chains = {
       \ 'default' : ['file', 'omni', 'keyn', 'dict']
@@ -314,7 +313,7 @@ add filetype-specific completion chains. For example:
 >
   let g:mucomplete#chains = {}
   let g:mucomplete#chains.default = ['omni', 'c-p']
-  let g:mucomplete#chains.markdown = ['keyn', 'spel', 'dict']
+  let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
                                  *'g:mucomplete#cycle_with_trigger'*
 Set to 1 to use <s-tab> and <tab> (or whatever your manual
@@ -365,8 +364,8 @@ completion will be triggered after two keyword characters.
 
                            *'g:mucomplete#ultisnips#match_at_start'*
 By default, the `'ulti'` method returns the snippets whose name
-starts with the current word. Set this to 0 to return all the
-snippets that contain the current word.
+starts with the word in front of the cursor. Set this to 0 to return
+all the snippets that contain the word in front of the cursor.
 >
   let g:mucomplete#ultisnips#match_at_start = 1
 <
@@ -377,11 +376,11 @@ A Dictionary of user-defined completion methods. For example:
       \ 'sqla' : "\<c-c>a"
       \ }
 <
-Each key is an arbitrary string providing the name of the completion
-method (but you cannot override the predefined names) and the
-corresponding value is the mapping that triggers the desired
-completion (see |sql-completion-static| for the definition of
-<c-c>a).
+Each key in the dictionary is an arbitrary string providing the name
+of the completion method (but you cannot override the predefined
+names) and the corresponding value is the mapping that triggers the
+desired completion (see |sql-completion-static| for the definition
+of <c-c>a).
 
 User-defined completion methods may be used as predefined methods,
 e.g.:
@@ -391,9 +390,8 @@ e.g.:
 <
                                            *'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually
-by the user, or it was triggered automatically. See
-|mucomplete-tips| for an example.
-Note: do not set the value of this variable!
+by the user or it was triggered automatically. See |mucomplete-tips|
+for an example. Note: do not set the value of this variable!
 
 ====================================================================
 Section 10: Tips & tricks                          *mucomplete-tips*
