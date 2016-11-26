@@ -92,8 +92,7 @@ In detail, this is the algorithm used by µcomplete:
    the current filetype:
 
    2(a). Check whether the method can be applied by invoking the
-         corresponding function in |g:mucomplete#can_complete| that
-         applies to the current filetype.
+         corresponding function in |g:mucomplete#can_complete|.
 
    2(b). If the method can be applied, invoke the corresponding
          mapping.
@@ -274,7 +273,8 @@ can be applied or not.
       \       'thes':  { t -> strlen(&l:thesaurus) > 0 },
       \       'user':  { t -> strlen(&l:completefunc) > 0 },
       \       'path':  { t -> t =~# '\m\%(/\|\~\)\f*$' },
-      \       'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) }
+      \       'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) },
+      \       'uspl':  { t -> &l:spell && !empty(&l:spelllang) }
       \   }
       \ }
 <
@@ -286,13 +286,13 @@ conditions or add filetype-specific conditions. For example:
 >
   let g:mucomplete#can_complete = {}
   let g:mucomplete#can_complete.default = {
-      \ 'spel' : { t -> &l:spell && &l:spelllang == 'en' }
+      \ 'uspl' : { t -> &l:spell && &l:spelllang == 'en' }
       \ }
   let g:mucomplete#can_complete.cpp = {
       \ 'omni': { t -> t =~# '::$' }
       \ }
 <
-This will perform a custom check for `'spel'` completion, and
+This will perform a custom check for `'uspl'` completion, and
 a custom check for `'omni'` completion in cpp buffers. In all other
 cases, the default conditions will be checked.
 
@@ -318,7 +318,8 @@ add filetype-specific completion chains. For example:
                                  *'g:mucomplete#cycle_with_trigger'*
 Set to 1 to use <s-tab> and <tab> (or whatever your manual
 completion triggers are) to move back and forth, respectively,
-through the current completion chain.
+through the current completion chain when the pop-up menu is
+visible.
 >
   let g:mucomplete#cycle_with_trigger = 0
 <
@@ -373,19 +374,20 @@ all the snippets that contain the word in front of the cursor.
 A Dictionary of user-defined completion methods. For example:
 >
   let g:mucomplete#user_mappings = {
-      \ 'sqla' : "\<c-c>a"
+      \ 'sqla' : "\<c-c>a",
+      \ 'xyz'  : "\<c-r>=MyCustomComplete()\<cr>"
       \ }
 <
 Each key in the dictionary is an arbitrary string providing the name
 of the completion method (but you cannot override the predefined
 names) and the corresponding value is the mapping that triggers the
-desired completion (see |sql-completion-static| for the definition
-of <c-c>a).
+desired completion.
 
-User-defined completion methods may be used as predefined methods,
-e.g.:
+User-defined completion methods may be used as predefined methods.
+For instance:
 >
   let g:mucomplete#chains = {}
+  let g:mucomplete#chains.default = ['keyp', 'xyz']
   let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
                                            *'g:mucomplete_with_key'*
@@ -415,7 +417,7 @@ and automatic completion, you may adapt the following snippet:
         \  | call <sid>toggle_completeopt()
 <
 Put the code above in your |vimrc|. Please keep in mind that
-noinsert is ignored in manual completion, except for spelling
+`noinsert` is ignored in manual completion, except for spelling
 suggestions (`'spel'` and `'uspl'` methods).
 
 Enable a completion method only when typing <tab> ~
@@ -426,10 +428,10 @@ by pressing <tab> (or whatever your manual completion trigger is).
 This can be achieved by testing the value of |g:mucomplete_with_key|
 in a custom check.
 
-For instance, suppose that you have enabled automatic completion.
-You want to enable thesaurus completion as well, but searching for
-synonyms after each key press would be too slow (beside being
-pointless). In your |vimrc| you may define:
+For instance, suppose that you have automatic completion on and you
+want to use thesaurus completion. Searching for synonyms after each
+key press would be too slow (beside being pointless). To work around
+this problem, in your |vimrc| you may define:
 >
   let g:mucomplete#can_complete = {}
   let g:mucomplete#can_complete.default = {
@@ -498,7 +500,9 @@ disable µcomplete's mappings (see |g:mucomplete#no_mappings|) or map
 |mucomplete-mappings|).
 
 vim-peekabo ~
-To get it go along with µcomplete, set:
+By default, vim-peekabo remaps <c-r> in Insert mode. Since µcomplete
+relies on <c-r> in an essential way, you have to change
+vim-peekabo's mapping:
 >
   let g:peekaboo_ins_prefix = '<c-x>'
 <
@@ -511,17 +515,20 @@ Before reporting a bug, please do the following:
 
 1. Use the following `vimrc_mucomplete` to rule out conflicts with
    other plugins: >
+
      set runtimepath+=/path/to/mucomplete/
      set completeopt=menu,menuone,noinsert
      set showmode shortmess-=c
 <
    Add other µcomplete options as you see fit. Run with: >
+
      vim -N -u vimrc_mucomplete
 <
    Can you still reproduce your problem? If not, a conflict with
    another plugin or a setting in your |vimrc| may be the culprit.
 
-2. Double-check your completion chain: >
+2. Double-check your completion chains: >
+
      echo g:mucomplete#chains
 <
    Also, check whether |b:mucomplete_chain| is defined, because its
@@ -536,6 +543,7 @@ Before reporting a bug, please do the following:
    |g:mucomplete#can_complete|).
 
 4. Turn off automatic completion: >
+
      :MUcompleteAutoOff
 <
    and try to complete a word using the corresponding mapping (see
