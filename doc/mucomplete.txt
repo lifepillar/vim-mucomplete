@@ -88,14 +88,13 @@ In detail, this is the algorithm used by µcomplete:
 1. Retrieve the current completion chain from |b:mucomplete_chain|,
    if defined, otherwise from |g:mucomplete#chains|.
 
-2. For each method listed in the completion chain that applies to
-   the current filetype:
+2. For each method listed in the given completion chain:
 
    2(a). Check whether the method can be applied by invoking the
          corresponding function in |g:mucomplete#can_complete|.
 
    2(b). If the method can be applied, invoke the corresponding
-         mapping.
+         mapping and go to 2(c); otherwise, try the next method.
 
    2(c). If some results are returned, show them in a pop-up menu
          and stop; otherwise, try the next method.
