@@ -528,7 +528,7 @@ disable µcomplete's mappings (see |g:mucomplete#no_mappings|) or map
 
 vim-peekabo ~
 By default, vim-peekabo remaps <c-r> in Insert mode. Since µcomplete
-relies on <c-r> in an essential way, you have to change
+relies on |i_CTRL-R| in an essential way, you have to change
 vim-peekabo's mapping:
 >
   let g:peekaboo_ins_prefix = '<c-x>'
