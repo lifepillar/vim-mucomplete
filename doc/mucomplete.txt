@@ -49,9 +49,12 @@ If you have mapped |<c-b>| in Insert mode, you need to set
 ====================================================================
 Section 3: Getting started                        *mucomplete-howto*
 
-Recommended Vim settings:
+Mandatory Vim settings:
 >
   set completeopt+=menu,menuone
+<
+Other recommended settings:
+>
   set shortmess+=c
 <
 For automatic completion, you most likely want one of these:

@@ -37,10 +37,15 @@ Installation does not require anything special. If you need help,
 please read [How to Install]
 (https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
 
-Recommended Vim settings:
+Mandatory Vim settings:
 
 ```vim
   set completeopt+=menu,menuone
+```
+
+Other recommended settings:
+
+```
   set shortmess+=c
   " For automatic completion, you most likely want one of:
   set completeopt+=noinsert " or
