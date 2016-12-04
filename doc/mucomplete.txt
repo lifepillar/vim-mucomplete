@@ -448,6 +448,31 @@ Then, searching for synonyms will happen only when you press <tab>
 or <s-tab> (and keyword completion returns no results); during
 normal typing, only keyword completion will be active.
 
+Optimize your completion chains ~
+The `'c-n'`, `'c-p'` and `'line'` methods allow you to aggregate
+completion suggestions from several sources (see |'complete'|),
+including dictionaries and tags. While this is handy, it may have
+a couple of drawbacks: first, you may get too many suggestions,
+making completion less useful; second, you may incur an efficiency
+penalty, especially if you have big tag files or dictionaries or
+many included files. This may slows you down noticeably, in
+particular when automatic completion is on.
+
+You may optimize your workflow by using longer completion chains and
+reducing the options in |'complete'| accordingly. For example,
+instead of:
+>
+  let g:mucomplete#chains = { 'default' : ['c-p'] }
+<
+you might use:
+>
+  set complete-=i
+  set complete-=t
+  let g:mucomplete#chains = { 'default' : ['c-p', 'incl', 'tags'] }
+<
+so that searching included files and/or tags will happen only when
+completion cannot be performed otherwise.
+
 ====================================================================
 Section 11: Compatibility                 *mucomplete-compatibility*
 
