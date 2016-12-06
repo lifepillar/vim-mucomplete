@@ -32,14 +32,14 @@ unlet s:cnp
 let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 " Internal state
-let s:compl_methods = []
-let s:compl_text = ''
-let s:auto = 0
-let s:dir = 1
-let s:cycle = 0
-let s:i = 0
-let s:N = 0
-let s:pumvisible = 0
+let s:compl_methods = [] " Current completion chain
+let s:N = 0              " Length of the current completion chain
+let s:i = 0              " Index of the current completion method in the completion chain
+let s:compl_text = ''    " Text to be completed
+let s:auto = 0           " Is autocompletion enabled?
+let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
+let s:cycle = 0          " Should µcomplete treat the completion chain as cyclic?
+let s:pumvisible = 0     " Has the pop-up menu become visible?
 
 if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
