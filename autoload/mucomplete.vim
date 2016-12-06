@@ -17,6 +17,7 @@ set cpo&vim
 
 let s:cnp = "\<c-x>" . get(g:, 'mucomplete#exit_ctrlx_keys', "\<c-b>\<bs>")
 let s:compl_mappings = extend({
+      \ 'abbr': "\<c-r>=mucomplete#abbr#complete()\<cr>",
       \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
       \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
