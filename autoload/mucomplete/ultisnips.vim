@@ -5,7 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:cmp = 'stridx(l:pat, v:val)' . (get(g:, 'mucomplete#ultisnips#match_at_start', 1) ? '==0' : '>=0')
+let s:cmp = 'stridx(v:val, l:pat)' . (get(g:, 'mucomplete#ultisnips#match_at_start', 1) ? '==0' : '>=0')
 
 fun! mucomplete#ultisnips#complete() abort
   if empty(UltiSnips#SnippetsInCurrentScope(1))
