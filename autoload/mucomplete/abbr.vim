@@ -16,7 +16,6 @@ fun! mucomplete#abbr#complete() abort
         \ '{ "word" : v:val.lhs,
         \    "menu" : v:val.rhs,
         \ }')
-  let g:abbrev = l:abbrev
   if !empty(l:abbrev)
     call complete(col('.') - len(l:word), l:abbrev)
   endif
