@@ -38,6 +38,7 @@ let s:auto = 0
 let s:dir = 1
 let s:cycle = 0
 let s:i = 0
+let s:N = 0
 let s:pumvisible = 0
 
 if exists('##TextChangedI') && exists('##CompleteDone')
