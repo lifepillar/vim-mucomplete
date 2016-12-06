@@ -7,9 +7,11 @@ set cpo&vim
 
 fun! mucomplete#spel#complete() abort
   let l:col         = 1 + match(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
-  let l:badword     = spellbadword(matchstr(getline('.'), '\S\+\%'.col('.').'c'))
-  let l:suggestions = !empty(l:badword[1])
-                    \ ? spellsuggest(l:badword[0], get(g:, 'mucomplete#spel#max', 25))
+  let l:word        = get(g:, 'mucomplete#spel#good_words', 0)
+                    \ ? matchstr(getline('.'), '\S\+\%'.col('.').'c')
+                    \ : spellbadword(matchstr(getline('.'), '\S\+\%'.col('.').'c'))[0]
+  let l:suggestions = !empty(l:word)
+                    \ ? spellsuggest(l:word, get(g:, 'mucomplete#spel#max', 25))
                     \ : []
 
   if !empty(l:suggestions)
