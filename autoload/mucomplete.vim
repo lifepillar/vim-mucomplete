@@ -149,9 +149,9 @@ fun! s:next_method()
     let s:i = (s:cycle ? (s:i + s:dir + s:N) % s:N : s:i + s:dir)
   endwhile
   if (s:i+1) % (s:N+1) != 0 && index(s:i_history, s:i) == -1
-      if s:cycle
-          let s:i_history += [s:i]
-      endif
+    if s:cycle
+      let s:i_history += [s:i]
+    endif
     return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
   endif
   return ''
