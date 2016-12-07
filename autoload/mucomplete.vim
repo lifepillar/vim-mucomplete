@@ -142,29 +142,42 @@ fun! mucomplete#yup()
   return ''
 endf
 
+fun! s:next_completion()
+  return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
+endf
+
+" Precondition: pumvisible() is false.
+fun! s:next_method_cyclic()
+  while 1
+    if index(s:i_history, s:i) > -1 " Loop detected: break it
+      return ''
+    endif
+    let s:i_history += [s:i]
+    let s:i = (s:i + s:dir + s:N) % s:N
+    if s:can_complete()
+      break
+    endif
+  endwhile
+  return s:next_completion()
+endf
+
 " Precondition: pumvisible() is false.
 fun! s:next_method()
-  let s:i = (s:cycle ? (s:i + s:dir + s:N) % s:N : s:i + s:dir)
-  while (s:i+1) % (s:N+1) != 0  && !s:can_complete()
-    let s:i = (s:cycle ? (s:i + s:dir + s:N) % s:N : s:i + s:dir)
+  let s:i += s:dir
+  while (s:i+1) % (s:N+1) != 0 && !s:can_complete()
+    let s:i += s:dir
   endwhile
-  if (s:i+1) % (s:N+1) != 0 && index(s:i_history, s:i) == -1
-    if s:cycle
-      let s:i_history += [s:i]
-    endif
-    return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
-  endif
-  return ''
+  return (s:i+1) % (s:N+1) != 0 ? s:next_completion() : ''
 endf
 
 fun! mucomplete#verify_completion()
-  return s:pumvisible ? s:act_on_pumvisible() : s:next_method()
+  return s:pumvisible ? s:act_on_pumvisible() : (s:cycle ? s:next_method_cyclic() : s:next_method())
 endf
 
 " Precondition: pumvisible() is true.
 fun! mucomplete#cycle(dir)
   let [s:dir, s:cycle, s:i_history] = [a:dir, 1, []]
-  return "\<c-e>" . s:next_method()
+  return "\<c-e>" . s:next_method_cyclic()
 endf
 
 " Precondition: pumvisible() is true.
