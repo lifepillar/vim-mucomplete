@@ -191,10 +191,11 @@ the cursor jump to a previous, possibly distant, column.
 
 For this reason, µcomplete implements an alternative completion
 method, called `'uspl'`. This still uses Vim's built-in spelling
-features and provides exactly the same spelling suggestions as the
-`'spel'` method, but only the word immediately before the cursor is
-considered. This is the recommended spelling method to use,
-especially if you enable automatic completion.
+features (see |spellbadword()| and |spellsuggest()|), but only the
+word immediately before the cursor is considered. It also has
+a couple of options (see |mucomplete-customization|). This is the
+recommended spelling method to use, especially if you enable
+automatic completion.
 
 ====================================================================
 Section 7: Commands                            *mucomplete-commands*
@@ -360,6 +361,21 @@ Set to 1 to enable automatic completion at startup.
 Set to 1 to prevent µcomplete to define any mapping.
 >
   let g:mucomplete#no_mappings = 0
+<
+                                    *'g:mucomplete#spel#good_words'*
+Set to 1 if you want spelling suggestions (similar words) even for
+words that are spelled correctly. By default, no suggestions are
+returned for good words by the `'uspl'` method.
+>
+  let g:mucomplete#spel#good_words = 0
+<
+Note: this setting does not affect the `'spel'` method.
+
+                                           *'g:mucomplete#spel#max'*
+The maximum number of spelling suggestions offered by the `'uspl'`
+method.
+>
+  let g:mucomplete#spel#max = 25
 <
                                *'g:mucomplete#trigger_auto_pattern'*
 A Dictionary of patterns to decide when automatic completion should
