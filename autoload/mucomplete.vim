@@ -148,7 +148,10 @@ fun! s:next_method()
   while (s:i+1) % (s:N+1) != 0  && !s:can_complete()
     let s:i = (s:cycle ? (s:i + s:dir + s:N) % s:N : s:i + s:dir)
   endwhile
-  if (s:i+1) % (s:N+1) != 0
+  if (s:i+1) % (s:N+1) != 0 && index(s:i_history, s:i) == -1
+    if s:cycle
+      let s:i_history += [s:i]
+    endif
     return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
   endif
   return ''
@@ -160,7 +163,7 @@ endf
 
 " Precondition: pumvisible() is true.
 fun! mucomplete#cycle(dir)
-  let [s:dir, s:cycle] = [a:dir, 1]
+  let [s:dir, s:cycle, s:i_history] = [a:dir, 1, []]
   return "\<c-e>" . s:next_method()
 endf
 
@@ -182,6 +185,7 @@ fun! mucomplete#complete(dir)
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
   let s:N = len(s:compl_methods)
   let s:i = s:dir > 0 ? -1 : s:N
+  let s:i_history = []
   return s:next_method()
 endf
 
