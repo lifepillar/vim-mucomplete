@@ -5,8 +5,18 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+if exists('*matchstrpos')
+  fun! s:getword()
+    return matchstrpos(getline('.'), '\S\+\%'.col('.').'c')
+  endf
+else
+  fun! s:getword()
+    return [matchstr(getline('.'), '\S\+\%'.col('.').'c'), match(getline('.'), '\S\+\%'.col('.').'c'), 0]
+  endf
+endif
+
 fun! mucomplete#spel#complete() abort
-  let [l:word, l:col, l:_] = matchstrpos(getline('.'), '\S\+\%'.col('.').'c')
+  let [l:word, l:col, l:_] = s:getword()
   let l:suggestions = spellsuggest(
         \               get(g:, 'mucomplete#spel#good_words', 0)
         \               ? l:word
