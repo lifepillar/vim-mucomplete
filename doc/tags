@@ -1,10 +1,12 @@
 'b:mucomplete_chain'	mucomplete.txt	/*'b:mucomplete_chain'*
 'g:mucomplete#can_complete'	mucomplete.txt	/*'g:mucomplete#can_complete'*
 'g:mucomplete#chains'	mucomplete.txt	/*'g:mucomplete#chains'*
+'g:mucomplete#ctrlx_mode_out'	mucomplete.txt	/*'g:mucomplete#ctrlx_mode_out'*
 'g:mucomplete#cycle_with_trigger'	mucomplete.txt	/*'g:mucomplete#cycle_with_trigger'*
 'g:mucomplete#enable_auto_at_startup'	mucomplete.txt	/*'g:mucomplete#enable_auto_at_startup'*
-'g:mucomplete#exit_ctrlx_keys'	mucomplete.txt	/*'g:mucomplete#exit_ctrlx_keys'*
 'g:mucomplete#no_mappings'	mucomplete.txt	/*'g:mucomplete#no_mappings'*
+'g:mucomplete#spel#good_words'	mucomplete.txt	/*'g:mucomplete#spel#good_words'*
+'g:mucomplete#spel#max'	mucomplete.txt	/*'g:mucomplete#spel#max'*
 'g:mucomplete#trigger_auto_pattern'	mucomplete.txt	/*'g:mucomplete#trigger_auto_pattern'*
 'g:mucomplete#ultisnips#match_at_start'	mucomplete.txt	/*'g:mucomplete#ultisnips#match_at_start'*
 'g:mucomplete#user_mappings'	mucomplete.txt	/*'g:mucomplete#user_mappings'*
