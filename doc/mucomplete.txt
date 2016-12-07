@@ -419,8 +419,8 @@ and automatic completion, you may adapt the following snippet:
         \  | call <sid>toggle_completeopt()
 <
 Put the code above in your |vimrc|. Please keep in mind that
-`noinsert` is ignored in manual completion, except for spelling
-suggestions (`'spel'` and `'uspl'` methods).
+`noinsert` and `noselect` are ignored in manual completion, except
+for spelling suggestions (`'spel'` and `'uspl'` methods).
 
 Enable a completion method only when typing <tab> ~
 Some completion methods are inherently slow, and it doesn't make

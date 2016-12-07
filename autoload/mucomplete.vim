@@ -29,7 +29,7 @@ let s:compl_mappings = extend({
       \ 'uspl': "\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 unlet s:cnp
-let s:select_entry = { 'c-p' : "\<c-p>\<down>", 'keyp': "\<c-p>\<down>" }
+let s:select_entry = { 'c-p' : "\<c-p>", 'keyp': "\<c-p>" }
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 " Internal state
 let s:compl_methods = [] " Current completion chain
@@ -123,11 +123,11 @@ endif
 
 fun! s:act_on_pumvisible()
   let s:pumvisible = 0
-  return s:auto || index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1
+  return s:auto || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? ''
         \ : (stridx(&l:completeopt, 'noselect') == -1
         \     ? (stridx(&l:completeopt, 'noinsert') == - 1 ? '' : "\<up>\<c-n>")
-        \     : get(s:select_entry, s:compl_methods[s:i], "\<c-n>\<up>")
+        \     : get(s:select_entry, s:compl_methods[s:i], "\<c-n>")
         \   )
 endf
 
