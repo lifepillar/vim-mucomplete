@@ -8,7 +8,7 @@ set cpo&vim
 if v:version > 703 || v:version == 703 && has("patch465")
 
   fun! mucomplete#path#complete() abort
-    let l:prefix = matchstr(strpart(getline('.'), 0, col('.') - 1), '\f\%(\f\|\s\)*$')
+    let l:prefix = matchstr(getline('.'), '\f\%(\f\|\s\)*\%'.col('.').'c')
     while strlen(l:prefix) > 0 " Try to find an existing path (consider paths with spaces, too)
       if l:prefix ==# '~'
         let l:prefix = glob('~', 0, 1, 1)

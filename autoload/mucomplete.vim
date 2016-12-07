@@ -173,7 +173,7 @@ endf
 
 " Precondition: pumvisible() is false.
 fun! mucomplete#complete(dir)
-  let s:compl_text = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
+  let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
   if strlen(s:compl_text) == 0
     return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
   endif

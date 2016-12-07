@@ -11,7 +11,7 @@ fun! mucomplete#ultisnips#complete() abort
   if empty(UltiSnips#SnippetsInCurrentScope(1))
     return ''
   endif
-  let l:pat = matchstr(strpart(getline('.'), 0, col('.') - 1), '\S\+$')
+  let l:pat = matchstr(getline('.'), '\S\+\%'.col('.').'c')
   let l:candidates = map(filter(keys(g:current_ulti_dict_info), s:cmp),
         \  '{
         \      "word": v:val,
