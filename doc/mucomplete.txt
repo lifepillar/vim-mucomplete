@@ -377,6 +377,8 @@ method.
 >
   let g:mucomplete#spel#max = 25
 <
+Note: this setting does not affect the `'spel'` method.
+
                                *'g:mucomplete#trigger_auto_pattern'*
 A Dictionary of patterns to decide when automatic completion should
 be fired. Only relevant when automatic completion is on (see
