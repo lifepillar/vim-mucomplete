@@ -43,9 +43,6 @@ MUcomplete requires Vim 7.2 compiled with |+insert_expand| and
 |+menu|. Automatic completion is available in Vim 7.4 or later.
 MUcomplete is developed and tested on Vim 8.
 
-If you have mapped |<c-b>| in Insert mode, you need to set
-|g:mucomplete#exit_ctrlx_keys|.
-
 ====================================================================
 Section 3: Getting started                        *mucomplete-howto*
 
@@ -317,6 +314,32 @@ add filetype-specific completion chains. For example:
   let g:mucomplete#chains.default = ['omni', 'c-p']
   let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
+                                     *'g:mucomplete#ctrlx_mode_out'*
+The key combo to exit CTRL-X sub-mode. You should never need to
+change this value, unless you have mapped <c-g><c-g> in Insert mode.
+>
+  let g:mucomplete#ctrlx_mode_out = "\<c-g>\<c-g>"
+<
+Choose the value of this variable very carefully: a wrong setting
+will break µcomplete! In general, the mapping should behave as
+follows:
+
+1. if Vim is in CTRL-X sub-mode, the mapping should cause Vim to
+   exit CTRL-X sub-mode without inserting any text;
+2. if Vim is not in CTRL-X sub-mode, the mapping should do nothing.
+
+If you don't know what CTRL-X sub-mode is or you don't understand
+why the default value is defined that way, that's a hint that you
+should not try and change this variable :) Anyway, see |i_CTRL-X|
+for the details.
+
+The following are alternative choices that may (or may not) work
+depending on your mappings and your plugins:
+>
+  let g:mucomplete#ctrlx_mode_out = "\<c-x>\<c-b>\<bs>"
+  let g:mucomplete#ctrlx_mode_out = "\<c-x>\<c-g>\<bs>"
+  let g:mucomplete#ctrlx_mode_out = "\<c-x>\<c-z>\<bs>"
+<
                                  *'g:mucomplete#cycle_with_trigger'*
 Set to 1 to use <s-tab> and <tab> (or whatever your manual
 completion triggers are) to move back and forth, respectively,
@@ -332,13 +355,6 @@ CTRL-P to select the entries in the pop-up menu.
 Set to 1 to enable automatic completion at startup.
 >
   let g:mucomplete#enable_auto_at_startup = 0
-<
-                                    *'g:mucomplete#exit_ctrlx_keys'*
-
-The key combo to exit CTRL-X submode. You should never need to
-change this value, unless you have remapped CTRL-B in Insert mode.
->
-  let g:mucomplete#exit_ctrlx_keys = "\<c-b>\<bs>"
 <
                                         *'g:mucomplete#no_mappings'*
 Set to 1 to prevent µcomplete to define any mapping.

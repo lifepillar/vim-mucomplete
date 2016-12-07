@@ -5,17 +5,13 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-" Note: In 'c-n' and 'c-p' below we use the fact that pressing <c-x> while in
-" ctrl-x submode doesn't do anything and any key that is not valid in ctrl-x
-" submode silently ends that mode (:h complete_CTRL-Y) and inserts the key.
-" Hence, after <c-x><c-b>, we are surely out of ctrl-x submode. The subsequent
-" <bs> is used to delete the inserted <c-b>. We use <c-b> because it is not
-" mapped (:h i_CTRL-B-gone). This trick is needed to have <c-p> (and <c-n>)
-" trigger keyword completion under all circumstances, in particular when the
-" current mode is the ctrl-x submode. (pressing <c-p>, say, immediately after
-" <c-x><c-o> would do a different thing).
+if !empty(mapcheck("\<c-g>\<c-g>", 'i'))
+  echohl WarningMsg
+  echomsg '[MUcomplete] Warning: <c-g><c-g> is mapped. See :h mucomplete#ctrlx_mode_out'
+  echohl none
+endif
 
-let s:cnp = "\<c-x>" . get(g:, 'mucomplete#exit_ctrlx_keys', "\<c-b>\<bs>")
+let s:cnp = get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
 let s:compl_mappings = extend({
       \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
