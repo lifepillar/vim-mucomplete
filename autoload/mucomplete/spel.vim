@@ -10,8 +10,8 @@ fun! mucomplete#spel#complete() abort
   let l:suggestions = spellsuggest(
         \               get(g:, 'mucomplete#spel#good_words', 0)
         \               ? l:word
-        \               : spellbadword(l:word, get(g:, 'mucomplete#spel#max', 25))[0]
-        \               )
+        \               : spellbadword(l:word)[0]
+        \               , get(g:, 'mucomplete#spel#max', 25))
   if !empty(l:suggestions)
     call complete(1 + l:col, l:suggestions)
   endif
