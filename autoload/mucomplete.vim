@@ -161,7 +161,7 @@ endf
 " Precondition: pumvisible() is true.
 fun! mucomplete#cycle(dir)
   let [s:dir, s:cycle] = [a:dir, 1]
-  return "\<c-e>" . s:next_method()
+  return exists('s:N') ? "\<c-e>" . s:next_method() : ''
 endf
 
 " Precondition: pumvisible() is true.
