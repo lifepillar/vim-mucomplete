@@ -39,6 +39,7 @@ let s:compl_text = ''    " Text to be completed
 let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cycle = 0          " Should µcomplete treat the completion chain as cyclic?
+let s:i_history = []     " To detect loops when using <c-h>/<c-l>
 let s:pumvisible = 0     " Has the pop-up menu become visible?
 
 if exists('##TextChangedI') && exists('##CompleteDone')
@@ -147,27 +148,27 @@ fun! s:next_completion()
 endf
 
 " Precondition: pumvisible() is false.
-fun! s:next_method_cyclic()
-  while 1
-    if index(s:i_history, s:i) > -1 " Loop detected: break it
-      return ''
-    endif
-    let s:i_history += [s:i]
-    let s:i = (s:i + s:dir + s:N) % s:N
-    if s:can_complete()
-      break
-    endif
-  endwhile
-  return s:next_completion()
-endf
-
-" Precondition: pumvisible() is false.
 fun! s:next_method()
   let s:i += s:dir
   while (s:i+1) % (s:N+1) != 0 && !s:can_complete()
     let s:i += s:dir
   endwhile
   return (s:i+1) % (s:N+1) != 0 ? s:next_completion() : ''
+endf
+
+" Precondition: pumvisible() is false.
+fun! s:next_method_cyclic()
+  while 1
+    let s:i = (s:i + s:dir + s:N) % s:N
+    if index(s:i_history, s:i) > -1
+      return ''
+    endif
+    call add(s:i_history, s:i)
+    if s:can_complete()
+      break
+    endif
+  endwhile
+  return s:next_completion()
 endf
 
 fun! mucomplete#verify_completion()
@@ -198,7 +199,6 @@ fun! mucomplete#complete(dir)
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
   let s:N = len(s:compl_methods)
   let s:i = s:dir > 0 ? -1 : s:N
-  let s:i_history = []
   return s:next_method()
 endf
 
