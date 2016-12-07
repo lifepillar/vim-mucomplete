@@ -5,12 +5,12 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:suggestions = ''
-redir => s:suggestions
+let s:abbrev = ''
+redir => s:abbrev
 silent iabbrev
 redir END
 
-let s:abbrev = map(reverse(split(s:suggestions, "\n")), '{
+let s:abbrev = map(reverse(split(s:abbrev, "\n")), '{
       \ "lhs" : matchstr(v:val, "\\mi\\s\\+\\zs\\k\\+"),
       \ "rhs" : matchstr(v:val, "\\m\\*\\s\\+\\zs.*"),
       \ }')
