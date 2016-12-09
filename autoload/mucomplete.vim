@@ -168,7 +168,12 @@ fun! s:next_method_cyclic()
 endf
 
 fun! mucomplete#verify_completion()
-  return s:pumvisible ? s:act_on_pumvisible() : (s:cycle ? s:next_method_cyclic() : s:next_method())
+  return s:pumvisible
+            \ ? s:act_on_pumvisible()
+            \ : (s:compl_methods[s:i] ==# 'cmd'
+            \   ? get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
+            \   : '')
+            \   . (s:cycle ? s:next_method_cyclic() : s:next_method())
 endf
 
 " Precondition: pumvisible() is true.
