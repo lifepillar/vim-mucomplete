@@ -21,7 +21,7 @@ fun! mucomplete#dict#complete() abort
   let [l:word, l:col, l:_] = s:getword()
 
   let l:suggestions = []
-  for l:list in map(split(&l:dictionary, ','), "readfile(v:val)")
+  for l:list in map(map(split(&l:dictionary, '\m\\\@<!,'), 'substitute(v:val, "\\", "", "g")'), "readfile(v:val)")
       call extend(l:suggestions, l:list)
   endfor
 
