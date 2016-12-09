@@ -18,7 +18,12 @@ endif
 fun! mucomplete#dict#complete() abort
   let [l:word, l:col, l:_] = s:getword()
 
-  let l:suggestions = filter(readfile(&l:dictionary), 'stridx(v:val, l:word) == 0')
+  let l:suggestions = []
+  for l:list in map(split(&l:dictionary, ','), "readfile(v:val)")
+      call extend(l:suggestions, l:list)
+  endfor
+
+  call filter(l:suggestions, 'stridx(v:val, l:word) == 0')
 
   if !empty(l:suggestions)
     call complete(1 + l:col, l:suggestions)
