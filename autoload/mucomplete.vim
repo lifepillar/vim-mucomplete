@@ -15,7 +15,7 @@ let s:cnp = get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
 let s:compl_mappings = extend({
       \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
-      \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
+      \ 'dict': "\<c-r>=mucomplete#dict#complete()\<cr>", 'file': "\<c-x>\<c-f>",
       \ 'incl': "\<c-x>\<c-i>", 'keyn': "\<c-x>\<c-n>",
       \ 'keyp': "\<c-x>\<c-p>", 'line': s:cnp."\<c-x>\<c-l>",
       \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
