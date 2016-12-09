@@ -5,6 +5,8 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+let s:cmp = 'stridx(v:val, l:word)' . (get(g:, 'mucomplete#dict#match_at_start', 1) ? '==0' : '>=0')
+
 if exists('*matchstrpos')
   fun! s:getword()
     return matchstrpos(getline('.'), '\S\+\%'.col('.').'c')
@@ -23,7 +25,7 @@ fun! mucomplete#dict#complete() abort
       call extend(l:suggestions, l:list)
   endfor
 
-  call filter(l:suggestions, 'stridx(v:val, l:word) == 0')
+  call filter(l:suggestions, s:cmp)
 
   if !empty(l:suggestions)
     call complete(1 + l:col, l:suggestions)
