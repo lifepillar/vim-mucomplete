@@ -11,20 +11,19 @@ if !empty(mapcheck("\<c-g>\<c-g>", 'i'))
   echohl none
 endif
 
-let s:cnp = get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
+let s:ctrlx_out = get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
 let s:compl_mappings = extend({
-      \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
+      \ 'c-n' : s:ctrlx_out."\<c-n>", 'c-p' : s:ctrlx_out."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
       \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
       \ 'incl': "\<c-x>\<c-i>", 'keyn': "\<c-x>\<c-n>",
-      \ 'keyp': "\<c-x>\<c-p>", 'line': s:cnp."\<c-x>\<c-l>",
+      \ 'keyp': "\<c-x>\<c-p>", 'line': s:ctrlx_out."\<c-x>\<c-l>",
       \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
       \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
       \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': "\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
-unlet s:cnp
 let s:select_entry = { 'c-p' : "\<c-p>", 'keyp': "\<c-p>" }
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 " Internal state
@@ -170,10 +169,8 @@ endf
 fun! mucomplete#verify_completion()
   return s:pumvisible
             \ ? s:act_on_pumvisible()
-            \ : (s:compl_methods[s:i] ==# 'cmd'
-            \   ? get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
-            \   : '')
-            \   . (s:cycle ? s:next_method_cyclic() : s:next_method())
+            \ : (s:compl_methods[s:i] ==# 'cmd' ? s:ctrlx_out : '')
+            \ . (s:cycle ? s:next_method_cyclic() : s:next_method())
 endf
 
 " Precondition: pumvisible() is true.
