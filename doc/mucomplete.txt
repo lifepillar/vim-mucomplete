@@ -305,14 +305,14 @@ ignored.
 A Dictionary defining the Lists of completion chains.
 >
   let g:mucomplete#chains = {
-      \ 'default' : ['file', 'omni', 'keyn', 'dict']
+      \ 'default' : ['file', 'omni', 'keyn', 'dict'],
+      \ 'vim'     : ['file', 'cmd', 'keyn']
       \ }
 <
-In your |vimrc|, you may override the default completion chain or
-add filetype-specific completion chains. For example:
+In your |vimrc|, you may override the defaults or add
+filetype-specific completion chains. For example:
 >
-  let g:mucomplete#chains = {}
-  let g:mucomplete#chains.default = ['omni', 'c-p']
+  let g:mucomplete#chains = { 'default': ['omni', 'c-p'] }
   let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
                                      *'g:mucomplete#ctrlx_mode_out'*
