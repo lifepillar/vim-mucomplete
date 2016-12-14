@@ -13,6 +13,7 @@ endif
 
 let s:cnp = get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
 let s:compl_mappings = extend({
+      \ 'abbr': "\<c-r>=mucomplete#abbr#complete()\<cr>",
       \ 'c-n' : s:cnp."\<c-n>", 'c-p' : s:cnp."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
       \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
