@@ -64,7 +64,7 @@ in your `.vimrc`.
 
 When the pop-up menu is visible, you may cycle back and forth through
 the completion methods in the current completion chain by pressing
-`<c-h>` and `<c-l>`, respectively.
+`<c-h>` and `<c-j>`, respectively.
 
 MUcomplete is fully customizable. See `:help mucomplete.txt` for
 detailed documentation.

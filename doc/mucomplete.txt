@@ -74,7 +74,7 @@ completion chains, and even filetype-specific or buffer-specific
 completion chains.
 
 Sometimes, the first method returning results is not the one you
-want. With the pop-up menu visible, you may type <c-h> and <c-l> to
+want. With the pop-up menu visible, you may type <c-h> and <c-j> to
 cycle back and forth, respectively, through the current completion
 chain.
 
@@ -227,7 +227,7 @@ that, see |g:mucomplete#no_mappings|.
   completion method depending on the value of
   |g:mucomplete#cycle_with_trigger|.
 
-<c-l>
+<c-j>
   When the pop-up menu is visible, try the next completion method
   that can be applied.
 
@@ -248,10 +248,13 @@ To use, say, <left> and <right> as cycling keys, use the following:
   inoremap <silent> <plug>(MUcompleteBwdKey) <left>
   imap <left> <plug>(MUcompleteCycBwd)
 <
-You may also use <tab> and <s-tab> (or whatever mappings you have
-defined to trigger manual completion) for cycling through the
-completion methods instead of selecting menu entries: see
-|g:mucomplete#cycle_with_trigger|.
+Note: if you decide to use your own cycling keys, please be aware
+that the keys that are valid in CTRL-X mode are not mapped (see
+|ins-completion|). This means, for example, that if you map `<c-k>`
+as a cycling key, such mapping will be shadowed when the pop-up menu
+is offering dictionary suggestions, because CTRL-K is already used
+by Vim during dictionary completion to search for the next matching
+keyword (see |i_CTRL-X_CTRL-K|).
 
 ====================================================================
 Section 8: Customization                  *mucomplete-customization*
