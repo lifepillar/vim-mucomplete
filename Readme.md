@@ -106,14 +106,16 @@ let g:mucomplete#enable_auto_at_startup = 1
 
 ![µcomplete with clang-complete](https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif)
 
-The example above shows µcomplete with
+The example above shows µcomplete used with
 [clang-complete](https://github.com/Rip-Rip/clang_complete). You may also see
 how it is possible to switch between different completion methods (omni
-completion and keyword completion in this case) using `<c-j>` and `<c-h>` (pay
-attention when `lo` is completed). Relevant settings:
+completion and keyword completion in this case) when the pop-up menu is visible,
+using `<c-j>` and `<c-h>` (pay attention when `lo` is completed). Relevant
+settings:
 
 ```vim
 set noshowmode shortmess+=c
+set noinfercase
 set completeopt-=preview
 set completeopt+=menuone,noinsert,noselect
 let g:clang_library_path = '/usr/local/opt/llvm/lib/libclang.dylib'
