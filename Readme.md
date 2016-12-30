@@ -40,7 +40,7 @@ please read [How to Install]
 Mandatory Vim settings:
 
 ```vim
-  set completeopt+=menu,menuone
+  set completeopt+=menuone
 ```
 
 Other recommended settings:
@@ -87,7 +87,7 @@ which provides semantic completion for Python. Used settings:
 ```vim
 set noshowmode shortmess+=c
 set completeopt-=preview
-set completeopt+=longest,menu,menuone,noinsert,noselect
+set completeopt+=longest,menuone,noinsert,noselect
 let g:jedi#popup_on_dot = 0  " It may be 1 as well
 let g:mucomplete#enable_auto_at_startup = 1
 ```
@@ -98,7 +98,7 @@ selected in different contexts. Used settings:
 
 ```vim
 set showmode shortmess-=c
-set completeopt+=menu,menuone,noinsert,noselect
+set completeopt+=menuone,noinsert,noselect
 let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
 let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
 let g:mucomplete#enable_auto_at_startup = 1

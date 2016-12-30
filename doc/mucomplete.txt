@@ -48,7 +48,7 @@ Section 3: Getting started                        *mucomplete-howto*
 
 Mandatory Vim settings:
 >
-  set completeopt+=menu,menuone
+  set completeopt+=menuone
 <
 Other recommended settings:
 >
@@ -581,7 +581,7 @@ Before reporting a bug, please do the following:
    other plugins: >
 
      set runtimepath+=/path/to/mucomplete/
-     set completeopt=menu,menuone,noinsert
+     set completeopt=menuone,noinsert
      set showmode shortmess-=c
 <
    Add other µcomplete options as you see fit. Run with: >
