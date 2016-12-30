@@ -45,7 +45,7 @@ Mandatory Vim settings:
 
 Other recommended settings:
 
-```
+```vim
   set shortmess+=c
   " For automatic completion, you most likely want one of:
   set completeopt+=noinsert " or
