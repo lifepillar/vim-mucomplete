@@ -103,7 +103,8 @@ let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
 let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
 let g:mucomplete#enable_auto_at_startup = 1
 ```
-<img src="https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif" alt="µcomplete with clang-complete" style="width:50%;margin:0 auto;display:table" />
+
+![µcomplete with clang-complete](https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif)
 
 The example above shows µcomplete used with
 [clang-complete](https://github.com/Rip-Rip/clang_complete). You may also see
