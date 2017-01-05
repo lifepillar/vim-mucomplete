@@ -19,7 +19,7 @@ imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#tab_complete(-1)
 inoremap    <silent> <plug>(MUcompleteTab) <tab>
 inoremap    <silent> <plug>(MUcompleteCtd) <c-d>
 
-if !get(g:, 'mucomplete#no_mappings', 0)
+if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   if !hasmapto('<plug>(MUcompleteFwd)', 'i')
     imap <tab>   <plug>(MUcompleteFwd)
   endif
