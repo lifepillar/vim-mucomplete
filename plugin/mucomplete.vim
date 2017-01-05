@@ -21,7 +21,7 @@ inoremap    <silent> <plug>(MUcompleteCtd) <c-d>
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   if !hasmapto('<plug>(MUcompleteFwd)', 'i')
-    imap <tab>   <plug>(MUcompleteFwd)
+    imap <tab> <plug>(MUcompleteFwd)
   endif
   if !hasmapto('<plug>(MUcompleteBwd)', 'i')
     imap <s-tab> <plug>(MUcompleteBwd)
