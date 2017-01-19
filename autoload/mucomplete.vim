@@ -5,7 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-if !empty(mapcheck("\<c-g>\<c-g>", 'i'))
+if !empty(mapcheck("\<c-g>\<c-g>", 'i')) && (!exists('g:mucomplete#ctrlx_mode_out') || g:mucomplete#ctrlx_mode_out == "\<c-g>\<c-g>")
   echohl WarningMsg
   echomsg '[MUcomplete] Warning: <c-g><c-g> is mapped. See :h mucomplete#ctrlx_mode_out'
   echohl none
