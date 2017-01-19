@@ -320,8 +320,13 @@ filetype-specific completion chains. For example:
   let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
                                      *'g:mucomplete#ctrlx_mode_out'*
-The key combo to exit CTRL-X sub-mode. You should never need to
-change this value, unless you have mapped <c-g><c-g> in Insert mode.
+The key combo to exit CTRL-X sub-mode (if you don't know what CTRL-X
+sub-mode is, see |i_CTRL-X|). You should never need to change this
+value, unless you, or some plugin you are using, map <c-g><c-g> in
+Insert mode. If that is the case, µcomplete will display a warning
+at startup (if automatic completion is enabled) or as soon as you
+perform the first tab-completion. In case of a conflict, you should
+set this variable to a different value (see below).
 >
   let g:mucomplete#ctrlx_mode_out = "\<c-g>\<c-g>"
 <
@@ -332,11 +337,6 @@ follows:
 1. if Vim is in CTRL-X sub-mode, the mapping should cause Vim to
    exit CTRL-X sub-mode without inserting any text;
 2. if Vim is not in CTRL-X sub-mode, the mapping should do nothing.
-
-If you don't know what CTRL-X sub-mode is or you don't understand
-why the default value is defined that way, that's a hint that you
-should not try and change this variable :) Anyway, see |i_CTRL-X|
-for the details.
 
 The following are alternative choices that may (or may not) work
 depending on your mappings and your plugins:
@@ -517,6 +517,11 @@ Section 11: Compatibility                 *mucomplete-compatibility*
 MUcomplete tries to be a responsible citizen in Vimland. This
 section describes how to make it peacefully coexist with other
 plugins.
+
+MatchEm ~
+MatchEm seems to conflict with µcomplete's default value for
+|g:mucomplete#ctrlx_mode_out|. Please set a different value in your
+|vimrc| (See |g:mucomplete#ctrlx_mode_out| for some possibilities.)
 
 PHP + UltiSnips ~
 In some versions of Vim, there is a known compatibility issue
