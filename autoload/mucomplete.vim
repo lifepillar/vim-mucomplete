@@ -34,7 +34,7 @@ let s:compl_text = ''    " Text to be completed
 let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cycle = 0          " Should µcomplete treat the completion chain as cyclic?
-let s:i_history = []     " To detect loops when using <c-h>/<c-l>
+let s:i_history = []     " To detect loops when using <c-h>/<c-j>
 let s:pumvisible = 0     " Has the pop-up menu become visible?
 
 if exists('##TextChangedI') && exists('##CompleteDone')
