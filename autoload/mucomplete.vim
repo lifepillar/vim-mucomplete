@@ -5,13 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-if !empty(mapcheck("\<c-g>\<c-g>", 'i')) && (!exists('g:mucomplete#ctrlx_mode_out') || g:mucomplete#ctrlx_mode_out == "\<c-g>\<c-g>")
-  echohl WarningMsg
-  echomsg '[MUcomplete] Warning: <c-g><c-g> is mapped. See :h mucomplete#ctrlx_mode_out'
-  echohl none
-endif
-
-let s:ctrlx_out = get(g:, 'mucomplete#ctrlx_mode_out', "\<c-g>\<c-g>")
+let s:ctrlx_out = "\<c-r>=\"\<c-g>\<c-g>\"\<cr>"
 let s:compl_mappings = extend({
       \ 'c-n' : s:ctrlx_out."\<c-n>", 'c-p' : s:ctrlx_out."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
@@ -191,7 +185,7 @@ endf
 fun! mucomplete#complete(dir)
   let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
   if strlen(s:compl_text) == 0
-    return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
+    return (a:dir > 0 ? "\<c-r>=\"\<tab>\"\<cr>" : "\<c-r>=\"\<c-d>\"\<cr>")
   endif
   let [s:dir, s:cycle] = [a:dir, 0]
   let s:compl_methods = get(b:, 'mucomplete_chain',
