@@ -16,8 +16,6 @@ imap <expr> <silent> <plug>(MUcompleteNxt) mucomplete#verify_completion()
 imap <expr> <silent> <plug>(MUcompleteAuto) mucomplete#complete(1)
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#tab_complete( 1)
 imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#tab_complete(-1)
-inoremap    <silent> <plug>(MUcompleteTab) <tab>
-inoremap    <silent> <plug>(MUcompleteCtd) <c-d>
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   if !hasmapto('<plug>(MUcompleteFwd)', 'i')
