@@ -7,11 +7,11 @@ set cpo&vim
 
 if exists('*matchstrpos')
   fun! s:getword()
-    return matchstrpos(getline('.'), '\S\+\%'.col('.').'c')
+    return matchstrpos(getline('.'), '\w\+\%'.col('.').'c')
   endf
 else
   fun! s:getword()
-    return [matchstr(getline('.'), '\S\+\%'.col('.').'c'), match(getline('.'), '\S\+\%'.col('.').'c'), 0]
+    return [matchstr(getline('.'), '\w\+\%'.col('.').'c'), match(getline('.'), '\w\+\%'.col('.').'c'), 0]
   endf
 endif
 
