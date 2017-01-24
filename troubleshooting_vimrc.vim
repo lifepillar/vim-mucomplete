@@ -1,6 +1,13 @@
 " vim: foldmethod=marker foldenable
 " Do not change this section {{{
 set nocompatible
+set nobackup noswapfile
+if has('persistent_undo')
+  set noundofile
+endif
+if has('writebackup')
+  set nowritebackup
+endif
 if has('viminfo')
   set viminfo=""
 endif
