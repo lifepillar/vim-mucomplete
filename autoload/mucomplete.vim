@@ -5,7 +5,12 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:ctrlx_out = "\<c-r>=\"\<c-g>\<c-g>\"\<cr>"
+fun! mucomplete#ctrlx_out()
+  call feedkeys("\<c-g>\<c-g>", 'n')
+  return ''
+endf
+
+let s:ctrlx_out = "\<c-r>=mucomplete#ctrlx_out()\<cr>"
 let s:compl_mappings = extend({
       \ 'c-n' : s:ctrlx_out."\<c-n>", 'c-p' : s:ctrlx_out."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
