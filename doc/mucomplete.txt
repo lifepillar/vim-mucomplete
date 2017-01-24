@@ -552,19 +552,11 @@ Section 12: Troubleshooting             *mucomplete-troubleshooting*
 
 Before reporting a bug, please do the following:
 
-1. Use the following `vimrc_mucomplete` to rule out conflicts with
-   other plugins: >
-
-     if has('packages')
-       set packpath=
-     endif
-     set runtimepath=/path/to/mucomplete/
-     set completeopt=menuone,noinsert
-     set showmode shortmess-=c
-<
-   Add other µcomplete options as you see fit. Run with: >
-
-     vim -N -u vimrc_mucomplete
+1. In order to rule out conflicts with other settings, please copy
+   `troubleshooting_vimrc.vim` from µcomplete's directory, edit it,
+   and run Vim with:
+>
+     vim -u troubleshooting_vimrc.vim
 <
    Can you still reproduce your problem? If not, a conflict with
    another plugin or a setting in your |vimrc| may be the culprit.
