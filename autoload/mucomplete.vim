@@ -5,12 +5,11 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-fun! mucomplete#ctrlx_out()
-  call feedkeys("\<c-g>\<c-g>", 'in')
-  return ''
-endf
+inoremap <silent> <plug>(MUcompleteOut) <c-g><c-g>
+inoremap <silent> <plug>(MUcompleteTab) <tab>
+inoremap <silent> <plug>(MUcompleteCtd) <c-d>
 
-let s:ctrlx_out = "\<c-r>=mucomplete#ctrlx_out()\<cr>"
+let s:ctrlx_out = "\<plug>(MUcompleteOut)"
 let s:compl_mappings = extend({
       \ 'c-n' : s:ctrlx_out."\<c-n>", 'c-p' : s:ctrlx_out."\<c-p>",
       \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
@@ -190,7 +189,7 @@ endf
 fun! mucomplete#complete(dir)
   let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
   if strlen(s:compl_text) == 0
-    return (a:dir > 0 ? "\<c-r>=\"\<tab>\"\<cr>" : "\<c-r>=\"\<c-d>\"\<cr>")
+    return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
   endif
   let [s:dir, s:cycle] = [a:dir, 0]
   let s:compl_methods = get(b:, 'mucomplete_chain',
