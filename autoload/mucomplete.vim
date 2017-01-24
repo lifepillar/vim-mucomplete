@@ -6,7 +6,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 fun! mucomplete#ctrlx_out()
-  call feedkeys("\<c-g>\<c-g>", 'n')
+  call feedkeys("\<c-g>\<c-g>", 'in')
   return ''
 endf
 
