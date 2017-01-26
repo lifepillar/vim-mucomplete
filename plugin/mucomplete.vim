@@ -29,8 +29,8 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
     imap <c-j> <plug>(MUcompleteCycFwd)
   endif
   if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
-    inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
-    imap <c-h> <plug>(MUcompleteCycBwd)
+    inoremap <silent> <plug>(MUcompleteBwdKey) <c-k>
+    imap <c-k> <plug>(MUcompleteCycBwd)
   endif
 endif
 
