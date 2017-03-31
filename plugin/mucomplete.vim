@@ -19,18 +19,18 @@ imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#tab_complete(-1)
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   if !hasmapto('<plug>(MUcompleteFwd)', 'i')
-    imap <tab> <plug>(MUcompleteFwd)
+    imap <unique> <tab> <plug>(MUcompleteFwd)
   endif
   if !hasmapto('<plug>(MUcompleteBwd)', 'i')
-    imap <s-tab> <plug>(MUcompleteBwd)
+    imap <unique> <s-tab> <plug>(MUcompleteBwd)
   endif
   if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
     inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
-    imap <c-j> <plug>(MUcompleteCycFwd)
+    imap <unique> <c-j> <plug>(MUcompleteCycFwd)
   endif
   if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
     inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
-    imap <c-h> <plug>(MUcompleteCycBwd)
+    imap <unique> <c-h> <plug>(MUcompleteCycBwd)
   endif
 endif
 
