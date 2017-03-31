@@ -60,7 +60,9 @@ For automatic completion, you most likely want one of these:
   set completeopt+=noinsert
   set completeopt+=noinsert,noselect
 <
-Press <tab> in Insert mode to complete a word. This will
+Press <tab> in Insert mode to complete a word (if that inserts
+a tabulation character, make sure that |expandtab| is on and that
+the cursor is not immediately preceded by a space). This will
 sequentially trigger the methods specified in |g:mucomplete#chains|,
 until some results are found. You may use <s-tab> to try the same
 list of methods in reverse order. For example, if the current
