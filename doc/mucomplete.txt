@@ -60,9 +60,7 @@ For automatic completion, you most likely want one of these:
   set completeopt+=noinsert
   set completeopt+=noinsert,noselect
 <
-Press <tab> in Insert mode to complete a word (if that inserts
-a tabulation character, make sure that |expandtab| is on and that
-the cursor is not immediately preceded by a space). This will
+Press <tab> in Insert mode to complete a word. This will
 sequentially trigger the methods specified in |g:mucomplete#chains|,
 until some results are found. You may use <s-tab> to try the same
 list of methods in reverse order. For example, if the current
@@ -413,6 +411,10 @@ for an example. Note: do not set the value of this variable!
 
 ====================================================================
 Section 10: Tips & tricks                          *mucomplete-tips*
+
+How to insert a tab character when <tab> is used by µcomplete? ~
+Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped).
+See also |i_<Tab>|.
 
 Use different values of completeopt ~
 If you want to use different values of |'completeopt'| for manual

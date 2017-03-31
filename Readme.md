@@ -52,8 +52,8 @@ Other recommended settings:
   set completeopt+=noinsert,noselect
 ```
 
-No other configuration is needed. Just start pressing `<tab>` or `<s-tab>` to
-complete a word (make sure `expandtab` is on). If you want to enable automatic
+No other configuration is needed. Just start pressing `<tab>` or
+`<s-tab>` to complete a word. If you want to enable automatic
 completion, put
 
 ```vim
