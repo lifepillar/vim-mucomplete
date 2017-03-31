@@ -202,6 +202,8 @@ endf
 fun! mucomplete#tab_complete(dir)
   if pumvisible()
     return mucomplete#cycle_or_select(a:dir)
+  elseif !getbufvar("%", "&et") && maparg("<tab>", "i") ==# "<Plug>(MUcompleteFwd)"
+    return "\<plug>(MUcompleteTab)"
   else
     let g:mucomplete_with_key = 1
     return mucomplete#complete(a:dir)
