@@ -118,7 +118,7 @@ set noshowmode shortmess+=c
 set noinfercase
 set completeopt-=preview
 set completeopt+=menuone,noinsert,noselect
-# The following line assumes `brew install llvm` in macOS
+" The following line assumes `brew install llvm` in macOS
 let g:clang_library_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:clang_user_options = '-std=c++14'
 let g:clang_complete_auto = 1
