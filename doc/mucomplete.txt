@@ -141,45 +141,31 @@ Additional completion methods may be defined with
 ====================================================================
 Section 5: Path completion                *mucomplete-path-complete*
 
-MUcomplete's default completion chain includes the `'file'`
-completion method, which is based on Vim's built-in file completion
-(see |i_CTRL-X_CTRL-F|). The `'file'` method works exactly as
-|i_CTRL-X_CTRL_F|, with one exception: if you have enabled automatic
-completion, pressing CTRL-Y to accept a path automatically triggers
-the completion menu for the next portion of the path. Some people
-like ZSH behaviour, whereby typing a slash enters the current
-directory. This can be easily achieved by defining the following
-mapping in your |vimrc|:
->
-  function! IsBehindDir()
-    return strpart(getline('.'), 0, col('.') - 1)  =~# '\f\+/$'
-  endfunction
-  inoremap <expr> / pumvisible() && IsBehindDir() ? "\<c-y>" : '/'
-<
-A limitation of the `'file'` method is that it does not expand paths
-containing spaces (in principle, one could add a space to
-|'isfname'|, but that is not recommended: see |'isfname'| for the
+MUcomplete provides two different methods to complete file paths:
+`'file'` and `'path'`. The `'file'` completion method is based on
+Vim's built-in file completion (see |i_CTRL-X_CTRL-F|) and works
+exactly as |i_CTRL-X_CTRL_F|, with one exception: if you have
+enabled automatic completion, pressing CTRL-Y to accept a path
+automatically triggers the completion menu for the next portion of
+the path. A limitation of the `'file'` method is that it does not
+expand paths containing spaces (in principle, one could add a space
+to |'isfname'|, but that is not recommended: see |'isfname'| for the
 details).
 
 MUcomplete also implements its own path completion method, called
-`'path'`. This differs from `'file'` because no slash is appended
-when completing a path, and paths with spaces are expanded
-correctly. Apart from the fact the spaces are dealt with, the
-`'path'` method still uses |'isfname'| to decide which characters
-define path names. Both methods complete relative paths, too
-(relative to the current working directory).
+`'path'`, which is enabled by default. It differs from `'file'`
+because no slash (backslash in Windows) is appended when completing
+a path, and paths with spaces are expanded correctly. Apart from the
+fact the spaces are dealt with, the `'path'` method uses
+|'isfname'|, as Vim's built-in file completion does, to decide which
+characters define path names.
+
+Both methods complete relative paths, too (relative to the current
+working directory).
+
+See also |mucomplete-tips|.
 
 Note: `'path'` completion requires Vim 7.3.465 or later.
-
-If you use one of the methods above, you may want to adjust the
-value of |g:mucomplete#trigger_auto_pattern| to trigger
-autocompletion after typing a slash. For example:
->
-  let g:mucomplete#trigger_auto_pattern = \
-    \ { 'default': '\k\k$\|/$'' }
-<
-All of the above holds for Windows users by replacing slashes with
-backslashes.
 
 ====================================================================
 Section 6: Spelling suggestions           *mucomplete-spel-complete*
@@ -309,8 +295,8 @@ ignored.
 A Dictionary defining the Lists of completion chains.
 >
   let g:mucomplete#chains = {
-      \ 'default' : ['file', 'omni', 'keyn', 'dict'],
-      \ 'vim'     : ['file', 'cmd', 'keyn']
+      \ 'default' : ['path', 'omni', 'keyn', 'dict'],
+      \ 'vim'     : ['path', 'cmd', 'keyn']
       \ }
 <
 In your |vimrc|, you may override the defaults or add
@@ -367,16 +353,16 @@ Such default behaviour may be overriden for each completion type by
 setting |g:mucomplete#popup_direction| in your `vimrc`. The value of
 this variable is a Dictionary mapping completion methods to values
 in {1,-1}, where 1 means "select from top to bottom" and -1 means
-"select from bottom to top". For instance, if you want `'file'`
+"select from bottom to top". For instance, if you want `'path'`
 completion to be bottom-to-top, you need to put this in your
 `vimrc`:
 >
-  let g:mucomplete#popup_direction = { 'file' : -1 }
+  let g:mucomplete#popup_direction = { 'path' : -1 }
 <
 If you also wanted to invert the direction of `'c-p'` completion,
 you would write:
 >
-  let g:mucomplete#popup_direction = { 'file' : -1, 'c-p': 1 }
+  let g:mucomplete#popup_direction = { 'path' : -1, 'c-p': 1 }
 <
 For the completion methods not explicitly appearing in the value of
 |g:mucomplete#popup_direction|, the "natural" value is assumed,
@@ -448,6 +434,24 @@ Section 10: Tips & tricks                          *mucomplete-tips*
 How to insert a tab character when <tab> is used by µcomplete? ~
 Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped).
 See also |i_<Tab>|.
+
+How to trigger file/path completion after typing a (back)slash? ~
+Put `'file'` or `'path'` in your completion chain, and adjust the
+value of |g:mucomplete#trigger_auto_pattern| to trigger
+autocompletion after typing a (back)slash. For example:
+>
+  let g:mucomplete#trigger_auto_pattern = \
+    \ { 'default': '\k\k$\|/$'' }
+<
+How to simulate ZSH behaviour for file/path completion? ~
+Some people like ZSH behaviour, whereby typing a slash enters the
+current directory. This can be easily achieved by defining the
+following mapping in your |vimrc|:
+>
+  function! IsBehindDir()
+    return strpart(getline('.'), 0, col('.') - 1)  =~# '\f\+/$'
+  endfunction
+  inoremap <expr> / pumvisible() && IsBehindDir() ? "\<c-y>" : '/'
 
 Use different values of completeopt ~
 If you want to use different values of |'completeopt'| for manual
