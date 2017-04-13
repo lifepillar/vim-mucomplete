@@ -24,7 +24,7 @@ let s:compl_mappings = extend({
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': "\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
-let s:select_entry = { 'c-p' : "\<c-p>", 'keyp': "\<c-p>" }
+let s:select_dir = { 'c-p' : -1, 'keyp': -1 }
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 " Internal state
 let s:compl_methods = [] " Current completion chain
@@ -116,14 +116,17 @@ else
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
 endif
 
+fun! s:insert_entry()
+  return (stridx(&l:completeopt, 'noselect') == -1
+        \ ? (stridx(&l:completeopt, 'noinsert') == - 1 ? '' : "\<up>\<c-n>")
+        \ : get(s:select_dir, s:compl_methods[s:i], 1) > 0 ? "\<c-n>" : "\<c-p>")
+endf
+
 fun! s:act_on_pumvisible()
   let s:pumvisible = 0
   return s:auto || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? ''
-        \ : (stridx(&l:completeopt, 'noselect') == -1
-        \     ? (stridx(&l:completeopt, 'noinsert') == - 1 ? '' : "\<up>\<c-n>")
-        \     : get(s:select_entry, s:compl_methods[s:i], "\<c-n>")
-        \   )
+        \ : s:insert_entry()
 endf
 
 fun! s:can_complete(i) " Is the i-th completion method applicable?
@@ -176,7 +179,7 @@ endf
 fun! mucomplete#cycle_or_select(dir)
   return get(g:, 'mucomplete#cycle_with_trigger', 0)
         \ ? mucomplete#cycle(a:dir)
-        \ : (a:dir > 0 ? "\<c-n>" : "\<c-p>")
+        \ : (get(s:select_dir, s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
 endf
 
 " Precondition: pumvisible() is false.
