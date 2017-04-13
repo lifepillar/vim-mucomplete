@@ -12,7 +12,6 @@ set cpo&vim
 
 imap <expr> <silent> <plug>(MUcompleteCycFwd) mucomplete#cycle( 1)
 imap <expr> <silent> <plug>(MUcompleteCycBwd) mucomplete#cycle(-1)
-imap <expr> <silent> <plug>(MUcompleteAuto) mucomplete#complete(1)
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#tab_complete( 1)
 imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#tab_complete(-1)
 
