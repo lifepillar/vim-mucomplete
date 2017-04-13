@@ -91,8 +91,8 @@ let g:mucomplete#trigger_auto_pattern = extend({
 
 " Completion chains
 let g:mucomplete#chains = extend({
-      \ 'default' : ['file', 'omni', 'keyn', 'dict'],
-      \ 'vim' : ['file', 'cmd', 'keyn']
+      \ 'default' : [has('patch-7.3.465') ? 'path' : 'file', 'omni', 'keyn', 'dict'],
+      \ 'vim'     : [has('patch-7.3.465') ? 'path' : 'file', 'cmd',  'keyn']
       \ }, get(g:, 'mucomplete#chains', {}))
 
 " Conditions to be verified for a given method to be applied.
