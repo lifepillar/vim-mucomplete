@@ -30,11 +30,10 @@ let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 let s:compl_methods = [] " Current completion chain
 let s:N = 0              " Length of the current completion chain
 let s:i = 0              " Index of the current completion method in the completion chain
+let s:countdown = 0      " Keeps track of how many other completion attempts to try
 let s:compl_text = ''    " Text to be completed
 let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
-let s:cycle = 0          " Should µcomplete treat the completion chain as cyclic?
-let s:i_history = []     " To detect loops when using <c-h>/<c-j>
 let s:pumvisible = 0     " Has the pop-up menu become visible?
 
 if exists('##TextChangedI') && exists('##CompleteDone')
@@ -127,10 +126,10 @@ fun! s:act_on_pumvisible()
         \   )
 endf
 
-fun! s:can_complete()
+fun! s:can_complete(i) " Is the i-th completion method applicable?
   return get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
-        \          s:compl_methods[s:i],
-        \          get(g:mucomplete#can_complete['default'], s:compl_methods[s:i], s:yes_you_can)
+        \          s:compl_methods[a:i],
+        \          get(g:mucomplete#can_complete['default'], s:compl_methods[a:i], s:yes_you_can)
         \ )(s:compl_text)
 endf
 
@@ -145,40 +144,29 @@ endf
 
 " Precondition: pumvisible() is false.
 fun! s:next_method()
-  let s:i += s:dir
-  while (s:i+1) % (s:N+1) != 0 && !s:can_complete()
-    let s:i += s:dir
-  endwhile
-  return (s:i+1) % (s:N+1) != 0 ? s:next_completion() : ''
-endf
-
-" Precondition: pumvisible() is false.
-fun! s:next_method_cyclic()
-  while 1
-    let s:i = (s:i + s:dir + s:N) % s:N
-    if index(s:i_history, s:i) > -1
-      return ''
-    endif
-    call add(s:i_history, s:i)
-    if s:can_complete()
-      break
+  while s:countdown > 0                 " As long as there are methods to try...
+    let s:i = (s:i + s:dir + s:N) % s:N " ...select the next method...
+    let s:countdown -= 1                " ... and update count of remaining methods.
+    if s:can_complete(s:i)              " If the current method is applicable...
+      return s:next_completion()        " ...try to complete with that method.
     endif
   endwhile
-  return s:next_completion()
+  return ''
 endf
 
 fun! mucomplete#verify_completion()
   return s:pumvisible
             \ ? s:act_on_pumvisible()
             \ : (s:compl_methods[s:i] ==# 'cmd' ? s:ctrlx_out : '')
-            \ . (s:cycle ? s:next_method_cyclic() : s:next_method())
+            \ . s:next_method()
 endf
 
 " Precondition: pumvisible() is true.
 fun! mucomplete#cycle(dir)
   if pumvisible()
-    let [s:dir, s:cycle, s:i_history] = [a:dir, 1, []]
-    return "\<c-e>" . s:next_method_cyclic()
+    let s:dir = a:dir
+    let s:countdown = s:N " Reset counter
+    return "\<c-e>" . s:next_method()
   else
     return a:dir > 0 ? "\<plug>(MUcompleteFwdKey)" : "\<plug>(MUcompleteBwdKey)"
   endif
@@ -197,10 +185,11 @@ fun! mucomplete#complete(dir)
   if strlen(s:compl_text) == 0
     return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
   endif
-  let [s:dir, s:cycle] = [a:dir, 0]
+  let s:dir = a:dir
   let s:compl_methods = get(b:, 'mucomplete_chain',
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
   let s:N = len(s:compl_methods)
+  let s:countdown = s:N
   let s:i = s:dir > 0 ? -1 : s:N
   return s:next_method()
 endf
