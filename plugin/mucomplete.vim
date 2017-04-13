@@ -10,8 +10,8 @@ let g:loaded_mucomplete = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-imap <expr> <silent> <plug>(MUcompleteCycFwd) pumvisible()?mucomplete#cycle( 1):"\<plug>(MUcompleteFwdKey)"
-imap <expr> <silent> <plug>(MUcompleteCycBwd) pumvisible()?mucomplete#cycle(-1):"\<plug>(MUcompleteBwdKey)"
+imap <expr> <silent> <plug>(MUcompleteCycFwd) mucomplete#cycle( 1)
+imap <expr> <silent> <plug>(MUcompleteCycBwd) mucomplete#cycle(-1)
 imap <expr> <silent> <plug>(MUcompleteAuto) mucomplete#complete(1)
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#tab_complete( 1)
 imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#tab_complete(-1)

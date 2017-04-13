@@ -175,8 +175,12 @@ endf
 
 " Precondition: pumvisible() is true.
 fun! mucomplete#cycle(dir)
-  let [s:dir, s:cycle, s:i_history] = [a:dir, 1, []]
-  return "\<c-e>" . s:next_method_cyclic()
+  if pumvisible()
+    let [s:dir, s:cycle, s:i_history] = [a:dir, 1, []]
+    return "\<c-e>" . s:next_method_cyclic()
+  else
+    return a:dir > 0 ? "\<plug>(MUcompleteFwdKey)" : "\<plug>(MUcompleteBwdKey)"
+  endif
 endf
 
 " Precondition: pumvisible() is true.
