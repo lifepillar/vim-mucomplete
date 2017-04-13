@@ -128,3 +128,8 @@ let g:mucomplete#enable_auto_at_startup = 1
 # Compatibility
 
 See `:help mucomplete-compatibility`.
+
+
+# Troubleshooting
+
+See `:help mucomplete-troubleshooting`.
