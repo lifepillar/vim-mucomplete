@@ -5,6 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+imap <expr> <silent> <plug>(MUcompleteNxt) mucomplete#verify_completion()
 inoremap <silent> <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent> <plug>(MUcompleteTab) <tab>
 inoremap <silent> <plug>(MUcompleteCtd) <c-d>
