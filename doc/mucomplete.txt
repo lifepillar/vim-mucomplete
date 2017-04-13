@@ -150,7 +150,8 @@ automatically triggers the completion menu for the next portion of
 the path. A limitation of the `'file'` method is that it does not
 expand paths containing spaces (in principle, one could add a space
 to |'isfname'|, but that is not recommended: see |'isfname'| for the
-details).
+details). Another limitation is that relative paths are always
+completed with respect to the current working directory.
 
 MUcomplete also implements its own path completion method, called
 `'path'`, which is enabled by default. It differs from `'file'`
@@ -158,10 +159,9 @@ because no slash (backslash in Windows) is appended when completing
 a path, and paths with spaces are expanded correctly. Apart from the
 fact the spaces are dealt with, the `'path'` method uses
 |'isfname'|, as Vim's built-in file completion does, to decide which
-characters define path names.
-
-Both methods complete relative paths, too (relative to the current
-working directory).
+characters define path names. Besides, using the `'path'` method it
+is possible to complete paths relative to the directory of the
+current buffer (see |g:mucomplete#buffer_relative_paths|).
 
 See also |mucomplete-tips|.
 
@@ -245,6 +245,17 @@ keyword (see |i_CTRL-X_CTRL-K|).
 
 ====================================================================
 Section 8: Customization                  *mucomplete-customization*
+
+                              *'g:mucomplete#buffer_relative_paths'*
+Set to 1 if you want µcomplete to interpret relative paths as being
+relative to the directory of the current buffer. By default, paths
+are interpreted as relative to the current working directory (see
+|:pwd|).
+>
+  let g:mucomplete#buffer_relative_paths = 0
+<
+Note: this setting affects only the `'path'` method, not the
+`'file'` method.
 
                                        *'g:mucomplete#can_complete'*
 A Dictionary defining the conditions to be verified for a given

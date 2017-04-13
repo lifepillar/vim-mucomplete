@@ -16,8 +16,8 @@ if v:version > 703 || v:version == 703 && has("patch465")
           call complete(col('.') - 1, map(l:prefix, '{ "word": v:val, "menu": "[dir]" }'))
         endif
         return ''
-      else
-        let l:files = glob(l:prefix.'*', 0, 1, 1)
+      else " FIXME: only Unix-like relative paths
+        let l:files = glob((get(g:, 'mucomplete#buffer_relative_paths', 0) && l:prefix !~# '^[/~]' ? expand('%:p:h').'/' : '') . l:prefix . '*', 0, 1, 1)
         if !empty(l:files)
           call complete(col('.') - len(fnamemodify(l:prefix, ":t")), map(l:files,
                 \  '{
