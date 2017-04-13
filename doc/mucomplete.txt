@@ -354,21 +354,22 @@ Note: this setting does not affect the `'spel'` method.
   let g:mucomplete#popup_direction = { 'c-p': -1, 'keyp': -1 }
 <
 MUcomplete by default follows the "natural" direction of each
-completion method. Except for <c-p> and <c-x><c-p>, Vim always
-selects the first (topmost) entry in the pop-up menu (provided that
-|'completeopt'| does not contain 'noselect', of course). For <c-p>
-and <c-x><c-p>, Vim highlights the last (bottomost) entry instead.
-Consequently, when you press <tab> to select the "next" entry in the
-pop-up menu, MUcomplete moves downwards in all cases, except for
-ctrl-p completion, where <tab> moves from bottom to top (and vice
-versa for <s-tab>).
+completion method. Except for |i_CTRL-P| and |i_CTRL-X_CTRL-P|, Vim
+always selects the first (topmost) entry in the pop-up menu
+(provided that |'completeopt'| does not contain 'noselect', of
+course). For |i_CTRL-P| and |i_CTRL-X_CTRL-P|, Vim highlights the
+last (bottomost) entry instead. Consequently, when you press <tab>
+to select the "next" entry in the pop-up menu, MUcomplete moves
+downwards in all cases, except for ctrl-p completion, where <tab>
+moves from bottom to top (and vice versa for <s-tab>).
 
 Such default behaviour may be overriden for each completion type by
 setting |g:mucomplete#popup_direction| in your `vimrc`. The value of
 this variable is a Dictionary mapping completion methods to values
 in {1,-1}, where 1 means "select from top to bottom" and -1 means
-"select from bottom to top". So, if you wanted `'file'` completion
-to be bottom-to-top, you would need to put this in your `vimrc`:
+"select from bottom to top". For instance, if you want `'file'`
+completion to be bottom-to-top, you need to put this in your
+`vimrc`:
 >
   let g:mucomplete#popup_direction = { 'file' : -1 }
 <
