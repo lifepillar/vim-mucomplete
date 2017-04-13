@@ -34,8 +34,7 @@ MUcomplete requires Vim 7.2 compiled with `+insert_expand` and
 Vim 8. NeoVim is supported, too.
 
 Installation does not require anything special. If you need help,
-please read [How to Install]
-(https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
+please read [How to Install](https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
 
 Mandatory Vim settings:
 
