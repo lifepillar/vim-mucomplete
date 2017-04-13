@@ -132,7 +132,7 @@ endf
 
 fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
   let l:m = s:compl_methods[s:i]
-  return get(s:default_dir, l:m, 1) == get(s:select_dir, l:m, 1)
+  return get(s:default_dir, l:m, 1) == get(s:select_dir, l:m, 1) || stridx(&l:completeopt, 'noselect') != -1
         \ ? ''
         \ : (get(s:default_dir, l:m, 1) > get(s:select_dir, l:m, 1) ? "\<up>\<up>" : "\<down>\<down>")
 endf
