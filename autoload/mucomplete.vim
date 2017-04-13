@@ -24,7 +24,8 @@ let s:compl_mappings = extend({
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': "\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
-let s:select_dir = { 'c-p' : -1, 'keyp': -1 }
+let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
+let s:select_dir = extend(s:default_dir, get(g:, 'mucomplete#popup_direction', {}))
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 " Internal state
 let s:compl_methods = [] " Current completion chain
@@ -116,16 +117,30 @@ else
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
 endif
 
-fun! s:insert_entry()
-  return (stridx(&l:completeopt, 'noselect') == -1
-        \ ? (stridx(&l:completeopt, 'noinsert') == - 1 ? '' : "\<up>\<c-n>")
-        \ : get(s:select_dir, s:compl_methods[s:i], 1) > 0 ? "\<c-n>" : "\<c-p>")
+fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect and noinsert
+  let l:m = s:compl_methods[s:i]
+  return get(s:default_dir, l:m, 1) == get(s:select_dir, l:m, 1)
+        \ ? (stridx(&l:completeopt, 'noselect') == -1
+        \    ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<up>\<c-n>")
+        \    : (get(s:default_dir, l:m, 1) > 0 ? "\<c-n>" : "\<c-p>")
+        \   )
+        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir, l:m, 1)
+        \    ? (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-p>\<c-p>" : "\<c-p>")
+        \    : (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-n>\<c-n>" : "")
+        \   )
+endf
+
+fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
+  let l:m = s:compl_methods[s:i]
+  return get(s:default_dir, l:m, 1) == get(s:select_dir, l:m, 1)
+        \ ? ''
+        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir, l:m, 1) ? "\<up>\<up>" : "\<down>\<down>")
 endf
 
 fun! s:act_on_pumvisible()
   let s:pumvisible = 0
   return s:auto || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
-        \ ? ''
+        \ ? s:fix_auto_select()
         \ : s:insert_entry()
 endf
 
