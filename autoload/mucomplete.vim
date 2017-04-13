@@ -126,7 +126,7 @@ fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect an
         \   )
         \ : (get(s:default_dir, l:m, 1) > get(s:select_dir, l:m, 1)
         \    ? (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-p>\<c-p>" : "\<c-p>")
-        \    : (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-n>\<c-n>" : "")
+        \    : (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-n>\<c-n>" : "\<c-n>")
         \   )
 endf
 
