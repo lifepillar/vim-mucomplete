@@ -1,4 +1,5 @@
 'b:mucomplete_chain'	mucomplete.txt	/*'b:mucomplete_chain'*
+'g:mucomplete#buffer_relative_paths'	mucomplete.txt	/*'g:mucomplete#buffer_relative_paths'*
 'g:mucomplete#can_complete'	mucomplete.txt	/*'g:mucomplete#can_complete'*
 'g:mucomplete#chains'	mucomplete.txt	/*'g:mucomplete#chains'*
 'g:mucomplete#cycle_with_trigger'	mucomplete.txt	/*'g:mucomplete#cycle_with_trigger'*
