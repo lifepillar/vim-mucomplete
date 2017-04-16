@@ -36,22 +36,28 @@ let s:compl_text = ''    " Text to be completed
 let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:pumvisible = 0     " Has the pop-up menu become visible?
+let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
 
 if exists('##TextChangedI') && exists('##CompleteDone')
   fun! s:act_on_textchanged()
     if s:completedone
       let s:completedone = 0
       let g:mucomplete_with_key = 0
-      if get(s:compl_methods, s:i, '') ==# 'path' && getline('.')[col('.')-2] =~# '\m\f'
-        silent call mucomplete#path#complete()
-      elseif get(s:compl_methods, s:i, '') ==# 'file' && getline('.')[col('.')-2] =~# '\m\f'
-        silent call feedkeys("\<c-x>\<c-f>", 'i')
+      if s:cancel_auto
+        let s:cancel_auto = 0
+        return
       endif
-    elseif !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
+    endif
+    if !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
           \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
           \      g:mucomplete#trigger_auto_pattern['default'])) > -1
       silent call feedkeys("\<plug>(MUcompleteAuto)", 'i')
     endif
+  endf
+
+  fun! mucomplete#popup_exit(ctrl)
+    let s:cancel_auto = pumvisible()
+    return a:ctrl
   endf
 
   fun! mucomplete#enable_auto()
@@ -86,7 +92,7 @@ endif
 
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
-      \ 'default' : '\k\k$'
+      \ 'default' : '\k\k$\|\f\f$'
       \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
 
 " Completion chains
