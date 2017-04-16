@@ -42,28 +42,35 @@ Mandatory Vim settings:
   set completeopt+=menuone
 ```
 
-Other recommended settings:
+For automatic completion, you also need to put these in your `vimrc`:
 
 ```vim
-  set shortmess+=c
-  " For automatic completion, you most likely want one of:
-  set completeopt+=noinsert " or
-  set completeopt+=noinsert,noselect
+  set completeopt+=noinsert
+  inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+  inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+  inoremap <expr> <cr> mucomplete#popup_exit("\<cr>")
 ```
+
+Other recommended settings:
+>
+  set shortmess+=c
+  set completeopt+=noselect
+<
 
 No other configuration is needed. Just start pressing `<tab>` or
 `<s-tab>` to complete a word. If you want to enable automatic
-completion, put
+completion at startup, put
 
 ```vim
 let g:mucomplete#enable_auto_at_startup = 1
 ```
 
-in your `.vimrc`.
+in your `.vimrc`. Automatic completion may be enabled and disabled at
+any time with `:MUcompleteAutoToggle`.
 
 When the pop-up menu is visible, you may cycle back and forth through
 the completion methods in the current completion chain by pressing
-`<c-h>` and `<c-j>`, respectively.
+`<c-h>` and `<c-j>`, respectively. See below for an example.
 
 MUcomplete is fully customizable. See `:help mucomplete.txt` for
 detailed documentation.
@@ -71,7 +78,7 @@ detailed documentation.
 **Important:** by itself, µcomplete does not provide any
 “intellisense”/semantic completion. If you want that, you also need to
 install suitable omni completion plugins for the languages you are
-using (see the example below).
+using (see the examples below).
 
 
 # MUcomplete in action
