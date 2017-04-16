@@ -52,10 +52,11 @@ For automatic completion, you also need to put these in your `vimrc`:
 ```
 
 Other recommended settings:
->
+
+```vim
   set shortmess+=c
   set completeopt+=noselect
-<
+```
 
 No other configuration is needed. Just start pressing `<tab>` or
 `<s-tab>` to complete a word. If you want to enable automatic
