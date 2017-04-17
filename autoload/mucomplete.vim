@@ -5,28 +5,37 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-imap <expr> <silent> <plug>(MUcompleteAuto) mucomplete#complete(1)
-imap <expr> <silent> <plug>(MUcompleteNxt) mucomplete#verify_completion()
-inoremap <silent> <plug>(MUcompleteOut) <c-g><c-g>
-inoremap <silent> <plug>(MUcompleteTab) <tab>
-inoremap <silent> <plug>(MUcompleteCtd) <c-d>
+imap     <silent> <expr> <plug>(MUcompleteAuto) mucomplete#complete(1)
+imap     <silent> <expr> <plug>(MUcompleteNext) mucomplete#verify_completion()
+inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
+inoremap <silent>        <plug>(MUcompleteTab) <tab>
+inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
 
 let s:ctrlx_out = "\<plug>(MUcompleteOut)"
 let s:compl_mappings = extend({
-      \ 'c-n' : s:ctrlx_out."\<c-n>", 'c-p' : s:ctrlx_out."\<c-p>",
-      \ 'cmd' : "\<c-x>\<c-v>", 'defs': "\<c-x>\<c-d>",
-      \ 'dict': "\<c-x>\<c-k>", 'file': "\<c-x>\<c-f>",
-      \ 'incl': "\<c-x>\<c-i>", 'keyn': "\<c-x>\<c-n>",
-      \ 'keyp': "\<c-x>\<c-p>", 'line': s:ctrlx_out."\<c-x>\<c-l>",
-      \ 'omni': "\<c-x>\<c-o>", 'spel': "\<c-x>s"     ,
-      \ 'tags': "\<c-x>\<c-]>", 'thes': "\<c-x>\<c-t>",
-      \ 'user': "\<c-x>\<c-u>", 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
+      \ 'c-n' : s:ctrlx_out."\<c-n>",
+      \ 'c-p' : s:ctrlx_out."\<c-p>",
+      \ 'cmd' : "\<c-x>\<c-v>",
+      \ 'defs': "\<c-x>\<c-d>",
+      \ 'dict': "\<c-x>\<c-k>",
+      \ 'file': "\<c-x>\<c-f>",
+      \ 'incl': "\<c-x>\<c-i>",
+      \ 'keyn': "\<c-x>\<c-n>",
+      \ 'keyp': "\<c-x>\<c-p>",
+      \ 'line': s:ctrlx_out."\<c-x>\<c-l>",
+      \ 'omni': "\<c-x>\<c-o>",
+      \ 'spel': "\<c-x>s"     ,
+      \ 'tags': "\<c-x>\<c-]>",
+      \ 'thes': "\<c-x>\<c-t>",
+      \ 'user': "\<c-x>\<c-u>",
+      \ 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': "\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
 let s:select_dir = extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
+
 " Internal state
 let s:compl_methods = [] " Current completion chain
 let s:N = 0              " Length of the current completion chain
@@ -168,8 +177,8 @@ fun! mucomplete#yup()
   return ''
 endf
 
-fun! s:next_completion()
-  return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNxt)"
+fun! s:try_completion()
+  return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNext)"
 endf
 
 " Precondition: pumvisible() is false.
@@ -178,7 +187,7 @@ fun! s:next_method()
     let s:i = (s:i + s:dir + s:N) % s:N " ...select the next method...
     let s:countdown -= 1                " ... and update count of remaining methods.
     if s:can_complete(s:i)              " If the current method is applicable...
-      return s:next_completion()        " ...try to complete with that method.
+      return s:try_completion()        " ...try to complete with that method.
     endif
   endwhile
   return ''
