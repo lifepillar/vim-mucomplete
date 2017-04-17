@@ -97,7 +97,7 @@ let g:mucomplete#trigger_auto_pattern = extend({
 
 " Completion chains
 let g:mucomplete#chains = extend({
-      \ 'default' : [has('patch-7.3.465') ? 'path' : 'file', 'omni', 'keyn', 'dict'],
+      \ 'default' : [has('patch-7.3.465') ? 'path' : 'file', 'omni', 'keyn', 'dict', 'uspl'],
       \ 'vim'     : [has('patch-7.3.465') ? 'path' : 'file', 'cmd',  'keyn']
       \ }, get(g:, 'mucomplete#chains', {}))
 
