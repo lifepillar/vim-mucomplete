@@ -87,9 +87,9 @@ using (see the examples below).
 ![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif)
 ![µcomplete with SQL](https://raw.github.com/lifepillar/Resources/master/mucomplete/sql.gif)
 
-The example on the left shows µcomplete automatically offering
-suggestions from [jedi-vim](https://github.com/davidhalter/jedi-vim),
-which provides semantic completion for Python. Used settings:
+The first example shows µcomplete automatically offering suggestions from
+[jedi-vim](https://github.com/davidhalter/jedi-vim), which provides semantic
+completion for Python. Used settings:
 
 ```vim
 set noshowmode shortmess+=c
@@ -99,9 +99,9 @@ let g:jedi#popup_on_dot = 0  " It may be 1 as well
 let g:mucomplete#enable_auto_at_startup = 1
 ```
 
-The example on the right shows how different completion methods (omni
-completion, keyword completion, file completion) are automatically
-selected in different contexts. Used settings:
+The second example shows how different completion methods (omni completion,
+keyword completion, file completion) are automatically selected in different
+contexts. Used settings:
 
 ```vim
 set showmode shortmess-=c
