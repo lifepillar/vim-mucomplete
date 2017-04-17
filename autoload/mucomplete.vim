@@ -46,6 +46,12 @@ if exists('##TextChangedI') && exists('##CompleteDone')
       if s:cancel_auto
         let s:cancel_auto = 0
         return
+      elseif get(s:compl_methods, s:i, '') ==# 'path' && getline('.')[col('.')-2] =~# '\m\f'
+        silent call mucomplete#path#complete()
+        return
+      elseif get(s:compl_methods, s:i, '') ==# 'file' && getline('.')[col('.')-2] =~# '\m\f'
+        silent call feedkeys("\<c-x>\<c-f>", 'i')
+        return
       endif
     endif
     if !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
@@ -92,7 +98,7 @@ endif
 
 " Patterns to decide when automatic completion should be triggered.
 let g:mucomplete#trigger_auto_pattern = extend({
-      \ 'default' : '\k\k$\|\f\f$'
+      \ 'default' : '\k\k$'
       \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
 
 " Completion chains
