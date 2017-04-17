@@ -23,6 +23,7 @@ CONTENTS                                       *mucomplete-contents*
    11. Compatibility ........ |mucomplete-compatibility|
    12. Troubleshooting ...... |mucomplete-troubleshooting|
    13. Providing feedback ... |mucomplete-feedback|
+   14. Internal details ..... |mucomplete-internals|
 
 ====================================================================
 Section 1: Introduction                    *mucomplete-introduction*
@@ -647,5 +648,74 @@ For bug reports and feature requests please use:
     https://github.com/lifepillar/vim-mucomplete/issues
 
 Pull requests are welcome, too!
+
+====================================================================
+Section 14: Internal details                  *mucomplete-internals*
+
+This section describes a few technicalities of µcomplete's
+implementation, and is not intended for the regular user: it is
+mostly a memo for myself and a reading for those interested in a few
+subtleties of the source code.
+
+Why doesn't µcomplete use InsertCharPre instead of TextChangedI? ~
+
+While |InsertCharPre| would be in some respects a better choice for
+auto-completion (for example, it is not triggered when |paste| is
+on), it is not suitable for the way µcomplete is intended to work.
+The main drawback is that |InsertCharPre| is triggered before
+|CompleteDone|, and it is triggered only for printable characters
+(while a |TextChangedI| event is always triggered after the pop-up
+menu is dismissed). For example, if the user abandons the pop-up
+menu with CTRL-E, no |InsertCharPre| event is fired, and if the
+pop-up menu is dismissed because the user presses a printable
+character, |InsertCharPre| is fired before |CompleteDone|, i.e.,
+when |pumvisible()| is still true. Such features make
+|InsertCharPre| unsuitable for detecting whether auto-completion
+should be fired again after a |CompleteDone| event. Also,
+|InsertCharPre| is triggered even when the pop-up menu is visible
+(while |TextChangedI| does not). MUcomplete does not need to do
+anything special while the pop-up menu is visible.
+
+What the hell is <plug>(MUcompleteOut) for? Why is it defined to ~
+be <c-g><c-g>? ~
+
+To be able to sequentially try different completion methods,
+µcomplete needs to make sure that Vim is not in |i_CTRL-X| sub-mode
+before trying a completion mapping. Since recently, there was no way
+in Vim to check that. So, the idea was to use a key sequence that
+(1) exits ctrl-x sub-mode when Vim is in ctrl-x submode, and (2)
+does nothing when typed out of ctrl-x mode. There are a few such key
+sequences, and eventually µcomplete settled to use `<c-g><c-g>`, as
+it is one of the simplest.
+
+What's the purpose of computing an empty expression in the value ~
+returned by s:next_method? ~
+
+Well, if you remove that expression (`<c-r><c-r>=<cr>`), the
+completion mechanism messes up. Honestly, I do not know why :)
+
+Why is there a double <c-r> in the expression returned by ~
+s:next_method()? Wouldn't a single <c-r> be enough? ~
+
+In principle, yes, one `<c-r>` should be enough. But using two makes
+µcomplete more robust against interruptions.
+
+A completion mapping may start a long computation (e.g., thesaurus
+completion), which the user may want to interrupt by pressing
+CTRL-C. For some reason, pressing CTRL-C causes the next character
+fed to Vim to be eaten (<c-r>, in this case). I don't know exactly
+why that happens, but a workaround is to use <c-r><c-r> instead of
+just <c-r>. The first <c-r> is then eaten, but the second one allows
+the following expression to be evaluated correctly.
+
+Fortunately, although |i_CTRL-R_CTRL-R| and |i_CTRL-R| are not
+functionally equivalent, their differences do not matter in the
+context in which they are used by µcomplete.
+
+See also https://github.com/vim/vim/issues/1260.
+
+Why is 'cmd' treated specially by mucomplete#verify_completion()? ~
+
+Because of a Vim bug. See https://github.com/vim/vim/issues/1319.
 
 " vim: sw=2 tw=68
