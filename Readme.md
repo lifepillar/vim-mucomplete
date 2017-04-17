@@ -48,7 +48,7 @@ For automatic completion, you also need to put these in your `vimrc`:
   set completeopt+=noinsert
   inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
   inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-  inoremap <expr> <cr> mucomplete#popup_exit("\<cr>")
+  inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
 ```
 
 Other recommended settings:
