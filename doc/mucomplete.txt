@@ -395,8 +395,7 @@ be fired. Only relevant when automatic completion is on (see
 By default, automatic completion is triggered when there are two
 keyword or filename characters in front of the cursor:
 >
-  let g:mucomplete#trigger_auto_pattern =
-      \ { 'default' : '\k\k$\|\f\f$' }
+  let g:mucomplete#trigger_auto_pattern = { 'default' : '\k\k$' }
 <
 In your |vimrc|, you may override the default pattern or add
 filetype-specific patterns. For example:
