@@ -18,6 +18,7 @@ mucomplete-contents	mucomplete.txt	/*mucomplete-contents*
 mucomplete-customization	mucomplete.txt	/*mucomplete-customization*
 mucomplete-feedback	mucomplete.txt	/*mucomplete-feedback*
 mucomplete-howto	mucomplete.txt	/*mucomplete-howto*
+mucomplete-internals	mucomplete.txt	/*mucomplete-internals*
 mucomplete-introduction	mucomplete.txt	/*mucomplete-introduction*
 mucomplete-mappings	mucomplete.txt	/*mucomplete-mappings*
 mucomplete-methods	mucomplete.txt	/*mucomplete-methods*
