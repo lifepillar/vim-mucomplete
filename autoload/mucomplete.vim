@@ -176,7 +176,7 @@ fun! s:next_method()
     let s:i = (s:i + s:dir + s:N) % s:N " ...select the next method...
     let s:countdown -= 1                " ... and update count of remaining methods.
     if s:can_complete(s:i)              " If the current method is applicable, try to complete with that method.
-      return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=\<cr>\<plug>(MUcompleteNext)"
+      return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=''\<cr>\<plug>(MUcompleteNext)"
     endif
   endwhile
   return ''
