@@ -44,7 +44,6 @@ let s:countdown = 0      " Keeps track of how many other completion attempts to 
 let s:compl_text = ''    " Text to be completed
 let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
-let s:pumvisible = 0     " Has the pop-up menu become visible?
 let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
 
 if exists('##TextChangedI') && exists('##CompleteDone')
@@ -159,7 +158,6 @@ fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomp
 endf
 
 fun! s:act_on_pumvisible()
-  let s:pumvisible = 0
   return s:auto || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
@@ -172,29 +170,20 @@ fun! s:can_complete(i) " Is the i-th completion method applicable?
         \ )(s:compl_text)
 endf
 
-fun! mucomplete#yup()
-  let s:pumvisible = 1
-  return ''
-endf
-
-fun! s:try_completion()
-  return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=pumvisible()?mucomplete#yup():''\<cr>\<plug>(MUcompleteNext)"
-endf
-
 " Precondition: pumvisible() is false.
 fun! s:next_method()
   while s:countdown > 0                 " As long as there are methods to try...
     let s:i = (s:i + s:dir + s:N) % s:N " ...select the next method...
     let s:countdown -= 1                " ... and update count of remaining methods.
-    if s:can_complete(s:i)              " If the current method is applicable...
-      return s:try_completion()        " ...try to complete with that method.
+    if s:can_complete(s:i)              " If the current method is applicable, try to complete with that method.
+      return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=\<cr>\<plug>(MUcompleteNext)"
     endif
   endwhile
   return ''
 endf
 
 fun! mucomplete#verify_completion()
-  return s:pumvisible
+  return pumvisible()
             \ ? s:act_on_pumvisible()
             \ : (s:compl_methods[s:i] ==# 'cmd' ? s:ctrlx_out : '')
             \ . s:next_method()
