@@ -46,27 +46,25 @@ let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
 
-if exists('##TextChangedI') && exists('##CompleteDone')
+if exists('##TextChangedI')
   fun! s:act_on_textchanged()
-    if s:completedone
-      let s:completedone = 0
-      let g:mucomplete_with_key = 0
-      if s:cancel_auto
-        let s:cancel_auto = 0
-        return
-      elseif get(s:compl_methods, s:i, '') ==# 'path' && getline('.')[col('.')-2] =~# '\m\f'
-        silent call mucomplete#path#complete()
-        return
-      elseif get(s:compl_methods, s:i, '') ==# 'file' && getline('.')[col('.')-2] =~# '\m\f'
-        silent call feedkeys("\<c-x>\<c-f>", 'i')
-        return
-      endif
+    let g:mucomplete_with_key = 0
+    if s:cancel_auto
+      let s:cancel_auto = 0
+      return
+    elseif get(s:compl_methods, s:i, '') ==# 'path' && getline('.')[col('.')-2] =~# '\m\f'
+      silent call mucomplete#path#complete()
+      return
+    elseif get(s:compl_methods, s:i, '') ==# 'file' && getline('.')[col('.')-2] =~# '\m\f'
+      silent call feedkeys("\<c-x>\<c-f>", 'i')
+      return
     endif
     if !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
           \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
           \      g:mucomplete#trigger_auto_pattern['default'])) > -1
       silent call feedkeys("\<plug>(MUcompleteAuto)", 'i')
     endif
+    return
   endf
 
   fun! mucomplete#popup_exit(ctrl)
@@ -75,12 +73,10 @@ if exists('##TextChangedI') && exists('##CompleteDone')
   endf
 
   fun! mucomplete#enable_auto()
-    let s:completedone = 0
     let g:mucomplete_with_key = 0
     augroup MUcompleteAuto
       autocmd!
       autocmd TextChangedI * noautocmd call s:act_on_textchanged()
-      autocmd CompleteDone * noautocmd let s:completedone = 1
     augroup END
     let s:auto = 1
   endf
