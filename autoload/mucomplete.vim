@@ -5,7 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-imap     <silent> <expr> <plug>(MUcompleteAuto) mucomplete#complete(1)
+imap     <silent> <expr> <plug>(MUcompleteAuto) mucomplete#auto_complete(1)
 imap     <silent> <expr> <plug>(MUcompleteNext) mucomplete#verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
@@ -209,10 +209,6 @@ endf
 
 " Precondition: pumvisible() is false.
 fun! mucomplete#complete(dir)
-  let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
-  if strlen(s:compl_text) == 0
-    return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
-  endif
   let s:dir = a:dir
   let s:compl_methods = get(b:, 'mucomplete_chain',
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
@@ -222,10 +218,20 @@ fun! mucomplete#complete(dir)
   return s:next_method()
 endf
 
+" Precondition: pumvisible() is false.
+fun! mucomplete#auto_complete(dir)
+  let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+  return strlen(s:compl_text) == 0 ? '' : mucomplete#complete(a:dir)
+endf
+
 fun! mucomplete#tab_complete(dir)
   if pumvisible()
     return mucomplete#cycle_or_select(a:dir)
   else
+    let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+    if strlen(s:compl_text) == 0
+      return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
+    endif
     let g:mucomplete_with_key = 1
     return mucomplete#complete(a:dir)
   endif
