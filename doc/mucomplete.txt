@@ -42,7 +42,9 @@ Section 2: Requirements                    *mucomplete-requirements*
 
 MUcomplete requires Vim 7.2 compiled with |+insert_expand| and
 |+menu|. Automatic completion is available in Vim 7.4.775 or later
-(Vim 7.4.784 or later recommended).
+(Vim 7.4.784 or later recommended). MUcomplete is compatible with
+NeoVim.
+
 MUcomplete is developed and tested on Vim 8.
 
 ====================================================================
@@ -53,12 +55,12 @@ Mandatory Vim settings:
   set completeopt+=menuone
 <
 For automatic completion, you also need to put these in your
-`vimrc`:
+|vimrc|:
 >
   set completeopt+=noinsert
   inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
   inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-  inoremap <expr> <cr> mucomplete#popup_exit("\<cr>")
+  inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
 <
 Other recommended settings:
 >
@@ -149,7 +151,7 @@ Section 5: Path completion                *mucomplete-path-complete*
 MUcomplete provides two different methods to complete file paths:
 `'file'` and `'path'`. The `'file'` completion method is based on
 Vim's built-in file completion (see |i_CTRL-X_CTRL-F|) and works
-exactly as |i_CTRL-X_CTRL_F|. A limitation of the `'file'` method is
+exactly as |i_CTRL-X_CTRL-F|. A limitation of the `'file'` method is
 that it does not expand paths containing spaces (in principle, one
 could add a space to |'isfname'|, but that is not recommended: see
 |'isfname'| for the details). Another limitation is that relative
@@ -160,9 +162,9 @@ MUcomplete also implements its own path completion method, called
 `'path'`, which is enabled by default. It differs from `'file'`
 because no slash (backslash in Windows) is appended when completing
 a path, and paths with spaces are expanded correctly. Apart from the
-fact the spaces are dealt with, the `'path'` method uses
+fact the spaces are dealt with, the `'path'` method still uses
 |'isfname'|, as Vim's built-in file completion does, to decide which
-characters define path names. Besides, using the `'path'` method it
+characters define path names. Besides, with the `'path'` method it
 is possible to complete paths relative to the directory of the
 current buffer (see |g:mucomplete#buffer_relative_paths|).
 
@@ -192,12 +194,15 @@ is on.
 ====================================================================
 Section 7: Commands                            *mucomplete-commands*
 
+                                                 *:MUcompleteAutoOn*
 `:MUcompleteAutoOn`
   Enable automatic completion.
 
+                                                *:MUcompleteAutoOff*
 `:MUcompleteAutoOff`
   Disable automatic completion.
 
+                                             *:MUcompleteAutoToggle*
 `:MUcompleteAutoToggle`
   Toggle automatic completion.
 
@@ -360,21 +365,21 @@ Note: this setting does not affect the `'spel'` method.
 MUcomplete by default follows the "natural" direction of each
 completion method. Except for |i_CTRL-P| and |i_CTRL-X_CTRL-P|, Vim
 always selects the first (topmost) entry in the pop-up menu
-(provided that |'completeopt'| does not contain 'noselect', of
+(provided that |'completeopt'| does not contain `noselect`, of
 course). For |i_CTRL-P| and |i_CTRL-X_CTRL-P|, Vim highlights the
 last (bottomost) entry instead. Consequently, when you press <tab>
 to select the "next" entry in the pop-up menu, MUcomplete moves
-downwards in all cases, except for CTRL-P completion, where <tab>
+downwards in all cases, except for CTRL-P completions, where <tab>
 moves from bottom to top. The same applies to <s-tab>, just the
 directions are inverted.
 
-Such default behaviour may be overriden for each completion type by
-setting |g:mucomplete#popup_direction| in your `vimrc`. The value of
+Such default behaviour may be overridden for each completion type by
+setting |g:mucomplete#popup_direction| in your |vimrc|. The value of
 this variable is a Dictionary mapping completion methods to values
 in {1,-1}, where 1 means "select from top to bottom" and -1 means
 "select from bottom to top". For instance, if you want `'path'`
 completion to be bottom-to-top, you need to put this in your
-`vimrc`:
+|vimrc|:
 >
   let g:mucomplete#popup_direction = { 'path' : -1 }
 <
@@ -383,7 +388,7 @@ you would write:
 >
   let g:mucomplete#popup_direction = { 'path' : -1, 'c-p': 1 }
 <
-For the completion methods not explicitly appearing in the value of
+For the completion methods not explicitly mentioned in the value of
 |g:mucomplete#popup_direction|, the "natural" value is assumed,
 i.e., -1 for `'c-p'` and `'keyp'`, and 1 for all the other methods.
 
@@ -526,14 +531,15 @@ penalty, especially if you have big tag files or dictionaries or
 many included files. This may slows you down noticeably, in
 particular when automatic completion is on.
 
-You may optimize your workflow by using longer completion chains and
-reducing the options in |'complete'| accordingly. For example,
+You may optimize your work flow by using longer completion chains
+and reducing the options in |'complete'| accordingly. For example,
 instead of:
 >
+  set completeopt+=i
+  set completeopt+=t
   let g:mucomplete#chains = { 'default' : ['c-p'] }
 <
-which would scan tags and included files (assuming the default value
-of |'complete'|), you might use:
+which would scan tags and included files, you might use:
 >
   set complete-=i
   set complete-=t
@@ -633,7 +639,12 @@ Before reporting a bug, please do the following:
    the corresponding condition is satisfied (see
    |g:mucomplete#can_complete|).
 
-4. Turn off automatic completion: >
+4. Make sure `<c-r>` is not mapped. The following command should
+   return 'No mapping found': >
+
+     :imap <c-r>
+<
+5. Turn off automatic completion: >
 
      :MUcompleteAutoOff
 <
@@ -659,13 +670,12 @@ Pull requests are welcome, too!
 ====================================================================
 Section 14: Internal details                  *mucomplete-internals*
 
-This section describes a few technicalities of µcomplete's
+This section describes some technicalities of µcomplete's
 implementation, and is not intended for the regular user: it is
 mostly a memo for myself and a reading for those interested in a few
 subtleties of the source code.
 
 Why doesn't µcomplete use InsertCharPre instead of TextChangedI? ~
-
 While |InsertCharPre| would be in some respects a better choice for
 auto-completion (for example, it is not triggered when |paste| is
 on), it is not suitable for the way µcomplete is intended to work.
@@ -685,25 +695,24 @@ anything special while the pop-up menu is visible.
 
 What the hell is <plug>(MUcompleteOut) for? Why is it defined to ~
 be <c-g><c-g>? ~
-
 To be able to sequentially try different completion methods,
 µcomplete needs to make sure that Vim is not in |i_CTRL-X| sub-mode
 before trying a completion mapping. Since recently, there was no way
 in Vim to check that. So, the idea was to use a key sequence that
-(1) exits ctrl-x sub-mode when Vim is in ctrl-x submode, and (2)
-does nothing when typed out of ctrl-x mode. There are a few such key
+(1) exits CTRL-X sub-mode when Vim is in CTRL-X submode, and (2)
+does nothing when typed out of CTRL-X mode. There are a few such key
 sequences, and eventually µcomplete settled to use `<c-g><c-g>`, as
 it is one of the simplest.
 
 What's the purpose of computing an empty string in the value ~
-returned by s:next_method? ~
-
+returned by s:next_method()? ~
 Well, if you remove that expression (`<c-r><c-r>=''<cr>`), the
 completion mechanism messes up. Honestly, I do not know why :)
+I suspect it has to do with type ahead or buffering, but if you can
+enlighten me, I'd appreciate that :)
 
 Why is there a double <c-r> in the expression returned by ~
 s:next_method()? Wouldn't a single <c-r> be enough? ~
-
 In principle, yes, one `<c-r>` should be enough. But using two makes
 µcomplete more robust against interruptions.
 
@@ -722,7 +731,6 @@ context in which they are used by µcomplete.
 See also https://github.com/vim/vim/issues/1260.
 
 Why is 'cmd' treated specially by mucomplete#verify_completion()? ~
-
 Because of a Vim bug. See https://github.com/vim/vim/issues/1319.
 
 " vim: sw=2 tw=68
