@@ -46,6 +46,11 @@ let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
 
+fun! mucomplete#popup_exit(ctrl)
+  let s:cancel_auto = pumvisible()
+  return a:ctrl
+endf
+
 if has('patch-7.4.775') " noinsert was added there
   fun! s:act_on_textchanged() " Note: this may be called on pumvisible()
     if s:cancel_auto
@@ -53,11 +58,6 @@ if has('patch-7.4.775') " noinsert was added there
       return
     endif
     silent call feedkeys(s:ctrlx_out."\<plug>(MUcompleteAuto)", 'i') " Do NOT use 't' here, it messes up dot-repeat among the rest
-  endf
-
-  fun! mucomplete#popup_exit(ctrl)
-    let s:cancel_auto = pumvisible()
-    return a:ctrl
   endf
 
   fun! mucomplete#enable_auto()
