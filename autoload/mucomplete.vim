@@ -30,7 +30,7 @@ let s:compl_mappings = extend({
       \ 'user': "\<c-x>\<c-u>",
       \ 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
-      \ 'uspl': "\<c-r>=mucomplete#spel#complete()\<cr>"
+      \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
 let s:select_dir = extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
