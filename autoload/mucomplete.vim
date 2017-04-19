@@ -46,25 +46,13 @@ let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
 
-if exists('##TextChangedI')
-  fun! s:act_on_textchanged()
-    let g:mucomplete_with_key = 0
+if has('patch-7.4.775') " noinsert was added there
+  fun! s:act_on_textchanged() " Note: this may be called on pumvisible()
     if s:cancel_auto
       let s:cancel_auto = 0
       return
-    elseif get(s:compl_methods, s:i, '') ==# 'path' && getline('.')[col('.')-2] =~# '\m\f'
-      silent call mucomplete#path#complete()
-      return
-    elseif get(s:compl_methods, s:i, '') ==# 'file' && getline('.')[col('.')-2] =~# '\m\f'
-      silent call feedkeys("\<c-x>\<c-f>", 'i')
-      return
     endif
-    if !&g:paste && match(strpart(getline('.'), 0, col('.') - 1),
-          \  get(g:mucomplete#trigger_auto_pattern, getbufvar("%", "&ft"),
-          \      g:mucomplete#trigger_auto_pattern['default'])) > -1
-      silent call feedkeys("\<plug>(MUcompleteAuto)", 'i')
-    endif
-    return
+    silent call feedkeys(s:ctrlx_out."\<plug>(MUcompleteAuto)", 'i')
   endf
 
   fun! mucomplete#popup_exit(ctrl)
@@ -76,7 +64,7 @@ if exists('##TextChangedI')
     let g:mucomplete_with_key = 0
     augroup MUcompleteAuto
       autocmd!
-      autocmd TextChangedI * noautocmd call s:act_on_textchanged()
+      autocmd InsertCharPre * noautocmd call s:act_on_textchanged()
     augroup END
     let s:auto = 1
   endf
@@ -216,7 +204,7 @@ endf
 
 " Precondition: pumvisible() is false.
 fun! mucomplete#auto_complete(dir)
-  let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+  let s:compl_text = matchstr(getline('.') . v:char, '\S\+\%'.col('.').'c')
   return strlen(s:compl_text) == 0 ? '' : mucomplete#complete(a:dir)
 endf
 
