@@ -6,7 +6,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 imap     <silent> <expr> <plug>(MUcompleteTry) <sid>try_completion()
-imap     <silent> <expr> <plug>(MUcompleteVerify) mucomplete#verify_completion()
+imap     <silent> <expr> <plug>(MUcompleteVerify) <sid>verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
@@ -192,7 +192,7 @@ fun! s:next_method()
   return ''
 endf
 
-fun! mucomplete#verify_completion()
+fun! s:verify_completion()
   return pumvisible()
             \ ? s:act_on_pumvisible()
             \ : (s:compl_methods[s:i] ==# 'cmd' ? s:ctrlx_out : '')
