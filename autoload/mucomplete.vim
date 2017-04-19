@@ -52,7 +52,7 @@ if has('patch-7.4.775') " noinsert was added there
       let s:cancel_auto = 0
       return
     endif
-    silent call feedkeys(s:ctrlx_out."\<plug>(MUcompleteAuto)", 'i')
+    silent call feedkeys(s:ctrlx_out."\<plug>(MUcompleteAuto)", 'i') " Do NOT use 't' here, it messes up dot-repeat among the rest
   endf
 
   fun! mucomplete#popup_exit(ctrl)
