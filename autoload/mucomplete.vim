@@ -204,6 +204,7 @@ endf
 
 " Precondition: pumvisible() is false.
 fun! mucomplete#auto_complete(dir)
+  let g:mucomplete_with_key = 0
   let s:compl_text = matchstr(getline('.') . v:char, '\S\+\%'.col('.').'c')
   return strlen(s:compl_text) == 0 ? '' : mucomplete#complete(a:dir)
 endf
