@@ -1,3 +1,5 @@
+**NOTE: v1.0.0 introduces some backward incompatible changes. Please review the docs.**
+
 >We're coming down to the ground
 >
 >There's no better place to go
