@@ -5,8 +5,8 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-imap     <silent> <expr> <plug>(MUcompleteAuto) mucomplete#auto_complete(1)
-imap     <silent> <expr> <plug>(MUcompleteNext) mucomplete#verify_completion()
+imap     <silent> <expr> <plug>(MUcompleteTry) <sid>try_completion()
+imap     <silent> <expr> <plug>(MUcompleteVerify) mucomplete#verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
@@ -45,6 +45,7 @@ let s:compl_text = ''    " Text to be completed
 let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
+let s:insertcharpre = 0  " Was a printable character pressed?
 
 fun! mucomplete#popup_exit(ctrl)
   let s:cancel_auto = pumvisible()
@@ -52,19 +53,33 @@ fun! mucomplete#popup_exit(ctrl)
 endf
 
 if has('patch-7.4.775') " noinsert was added there
-  fun! s:act_on_textchanged() " Note: this may be called on pumvisible()
+  fun! s:act_on_textchanged() " Assumes pumvisible() is false
     if s:cancel_auto
-      let s:cancel_auto = 0
+      let [s:cancel_auto, s:insertcharpre] = [0,0]
       return
     endif
-    silent call feedkeys(s:ctrlx_out."\<plug>(MUcompleteAuto)", 'i') " Do NOT use 't' here, it messes up dot-repeat among the rest
+    if s:insertcharpre
+      let s:insertcharpre = 0
+      let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+      if !empty(s:compl_text)
+        call mucomplete#init(1, 0)
+        while s:countdown > 0
+          let s:countdown -= 1
+          let s:i += 1
+          if s:can_complete(s:i)
+            return feedkeys("\<plug>(MUcompleteTry)", 'i')
+          endif
+        endwhile
+      endif
+    endif
   endf
 
   fun! mucomplete#enable_auto()
     let g:mucomplete_with_key = 0
     augroup MUcompleteAuto
       autocmd!
-      autocmd InsertCharPre * noautocmd call s:act_on_textchanged()
+      autocmd InsertCharPre * noautocmd let s:insertcharpre = 1
+      autocmd TextChangedI  * noautocmd call s:act_on_textchanged()
     augroup END
     let s:auto = 1
   endf
@@ -161,13 +176,17 @@ fun! s:can_complete(i) " Is the i-th completion method applicable?
         \ )(s:compl_text)
 endf
 
+fun! s:try_completion() " Assumes s:i in [0, s:N - 1]
+  return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=''\<cr>\<plug>(MUcompleteVerify)"
+endf
+
 " Precondition: pumvisible() is false.
 fun! s:next_method()
-  while s:countdown > 0                 " As long as there are methods to try...
-    let s:i = (s:i + s:dir + s:N) % s:N " ...select the next method...
-    let s:countdown -= 1                " ... and update count of remaining methods.
-    if s:can_complete(s:i)              " If the current method is applicable, try to complete with that method.
-      return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=''\<cr>\<plug>(MUcompleteNext)"
+  while s:countdown > 0
+    let s:countdown -= 1
+    let s:i = (s:i + s:dir + s:N) % s:N
+    if s:can_complete(s:i)
+      return s:try_completion()
     endif
   endwhile
   return ''
@@ -199,21 +218,14 @@ fun! mucomplete#cycle_or_select(dir)
 endf
 
 " Precondition: pumvisible() is false.
-fun! mucomplete#complete(dir)
+fun! mucomplete#init(dir, tab_completion) " Initialize/reset internal state
+  let g:mucomplete_with_key = a:tab_completion
   let s:dir = a:dir
   let s:compl_methods = get(b:, 'mucomplete_chain',
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
   let s:N = len(s:compl_methods)
   let s:countdown = s:N
   let s:i = s:dir > 0 ? -1 : s:N
-  return s:next_method()
-endf
-
-" Precondition: pumvisible() is false.
-fun! mucomplete#auto_complete(dir)
-  let g:mucomplete_with_key = 0
-  let s:compl_text = matchstr(getline('.') . v:char, '\S\+\%'.col('.').'c')
-  return strlen(s:compl_text) == 0 ? '' : mucomplete#complete(a:dir)
 endf
 
 fun! mucomplete#tab_complete(dir)
@@ -221,11 +233,11 @@ fun! mucomplete#tab_complete(dir)
     return mucomplete#cycle_or_select(a:dir)
   else
     let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
-    if strlen(s:compl_text) == 0
+    if empty(s:compl_text)
       return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
     endif
-    let g:mucomplete_with_key = 1
-    return mucomplete#complete(a:dir)
+    call mucomplete#init(a:dir, 1)
+    return s:next_method()
   endif
 endf
 
