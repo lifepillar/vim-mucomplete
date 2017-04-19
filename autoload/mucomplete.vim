@@ -88,11 +88,6 @@ if has('patch-7.4.775') " noinsert was added there
   endf
 endif
 
-" Patterns to decide when automatic completion should be triggered.
-let g:mucomplete#trigger_auto_pattern = extend({
-      \ 'default' : '\k\k$'
-      \ }, get(g:, 'mucomplete#trigger_auto_pattern', {}))
-
 " Completion chains
 let g:mucomplete#chains = extend({
       \ 'default' : [has('patch-7.3.465') ? 'path' : 'file', 'omni', 'keyn', 'dict', 'uspl'],
@@ -104,16 +99,24 @@ if has('lambda')
   let s:yes_you_can = { _ -> 1 } " Try always
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
-        \     'dict':  { t -> strlen(&l:dictionary) > 0 },
-        \     'file':  { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
-        \     'omni':  { t -> strlen(&l:omnifunc) > 0 },
-        \     'spel':  { t -> &l:spell && !empty(&l:spelllang) },
-        \     'tags':  { t -> !empty(tagfiles()) },
-        \     'thes':  { t -> strlen(&l:thesaurus) > 0 },
-        \     'user':  { t -> strlen(&l:completefunc) > 0 },
-        \     'path':  { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
-        \     'uspl':  { t -> &l:spell && !empty(&l:spelllang) },
-        \     'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) }
+        \     'c-n' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'c-p' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'cmd' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'defs': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'dict': { t -> strlen(&l:dictionary) > 0 && (g:mucomplete_with_key || t =~# '\m\a\a$') },
+        \     'file': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+        \     'incl': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'keyn': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'keyp': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'line': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'omni': { t -> strlen(&l:omnifunc) > 0 && (g:mucomplete_with_key || t =~# '\m\k\k$') },
+        \     'spel': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
+        \     'tags': { t -> !empty(tagfiles()) && (g:mucomplete_with_key || t =~# '\m\k\k$') },
+        \     'thes': { t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' },
+        \     'user': { t -> strlen(&l:completefunc) > 0 && (g:mucomplete_with_key || t =~# '\m\k\k$') },
+        \     'path': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+        \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
+        \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && (g:mucomplete_with_key || t =~# '\m\k\k$') }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
