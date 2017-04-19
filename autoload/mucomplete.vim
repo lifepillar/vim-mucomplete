@@ -88,6 +88,10 @@ if has('patch-7.4.775') " noinsert was added there
   endf
 endif
 
+if exists('g:mucomplete#trigger_auto_pattern')
+  echomsg "[MUcomplete] g:mucomplete#trigger_auto_pattern has been removed. Use g:mucomplete#can_complete instead."
+endif
+
 " Completion chains
 let g:mucomplete#chains = extend({
       \ 'default' : [has('patch-7.3.465') ? 'path' : 'file', 'omni', 'keyn', 'dict', 'uspl'],
