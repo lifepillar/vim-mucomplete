@@ -275,37 +275,55 @@ returns either 1 or 0, according to whether the corresponding method
 can be applied or not.
 >
   let g:mucomplete#can_complete = {
-      \   'default' : {
-      \       'dict':  { t -> strlen(&l:dictionary) > 0 },
-      \       'file':  { t -> t =~# '\m\%(/\|\~\)\f*$' },
-      \       'omni':  { t -> strlen(&l:omnifunc) > 0 },
-      \       'spel':  { t -> &l:spell && !empty(&l:spelllang) },
-      \       'tags':  { t -> !empty(tagfiles()) },
-      \       'thes':  { t -> strlen(&l:thesaurus) > 0 },
-      \       'user':  { t -> strlen(&l:completefunc) > 0 },
-      \       'path':  { t -> t =~# '\m\%(/\|\~\)\f*$' },
-      \       'ulti':  { t -> get(g:, 'did_plugin_ultisnips', 0) },
-      \       'uspl':  { t -> &l:spell && !empty(&l:spelllang) }
-      \   }
-      \ }
+    \   'default' : {
+    \   'c-n' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'c-p' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'cmd' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'defs': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'dict': { t -> strlen(&l:dictionary) > 0
+    \             &&  (g:mucomplete_with_key || t =~# '\m\a\a$')},
+    \   'file': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+    \   'incl': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'keyn': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'keyp': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'line': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+    \   'omni': { t -> strlen(&l:omnifunc) > 0
+    \             &&  (g:mucomplete_with_key || t =~# '\m\k\k$')},
+    \   'spel': { t -> &l:spell
+    \             &&  !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
+    \   'tags': { t -> !empty(tagfiles())
+    \             &&  (g:mucomplete_with_key || t =~# '\m\k\k$')},
+    \   'thes': { t -> strlen(&l:thesaurus) > 0
+    \             && t =~# '\m\a\a\a$' },
+    \   'user': { t -> strlen(&l:completefunc) > 0
+    \             &&  (g:mucomplete_with_key || t =~# '\m\k\k$')},
+    \   'path': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+    \   'uspl': { t -> &l:spell
+    \             &&  !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
+    \   'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0)
+    \             &&  (g:mucomplete_with_key || t =~# '\m\k\k$')}
+    \   }
+    \ }
 <
 If no key is found in |g:mucomplete#can_complete| for the current
 method, such method is tried unconditionally.
 
 In your |vimrc|, you may override some or all the default
-conditions or add filetype-specific conditions. For example:
+conditions or add filetype-specific conditions. For example, if you
+put this in your |vimrc|:
 >
   let g:mucomplete#can_complete = {}
   let g:mucomplete#can_complete.default = {
-      \ 'uspl' : { t -> &l:spell && &l:spelllang == 'en' }
+      \ 'uspl' : { t -> &l:spelllang == 'en' && t =~# '\a\{4}$' }
       \ }
   let g:mucomplete#can_complete.cpp = {
       \ 'omni': { t -> t =~# '::$' }
       \ }
 <
-This will perform a custom check for `'uspl'` completion, and
-a custom check for `'omni'` completion in cpp buffers. In all other
-cases, the default conditions will be checked.
+then µcomplete will perform a custom check for `'uspl'` completion
+in all buffers, and a custom check for `'omni'` completion in cpp
+buffers. In all the other cases, the default conditions will be
+checked.
 
                                              *'b:mucomplete_chain'*
 A List specifying a completion chain for the current buffer only.
@@ -399,26 +417,6 @@ method.
   let g:mucomplete#spel#max = 25
 <
 Note: this setting does not affect the `'spel'` method.
-
-                               *'g:mucomplete#trigger_auto_pattern'*
-A Dictionary of patterns to decide when automatic completion should
-be fired. Only relevant when automatic completion is on (see
-|:MUcompleteAutoOn| and |g:mucomplete#enable_auto_at_startup|).
-By default, automatic completion is triggered when there are two
-keyword characters in front of the cursor:
->
-  let g:mucomplete#trigger_auto_pattern = { 'default' : '\k\k$' }
-<
-In your |vimrc|, you may override the default pattern or add
-filetype-specific patterns. For example:
->
-  let g:mucomplete#trigger_auto_pattern = {}
-  let g:mucomplete#trigger_auto_pattern.default = '\a\a\a$'
-  let g:mucomplete#trigger_auto_pattern.cpp     = '\k\k$'
-<
-This will trigger automatic completion after three alphabetic
-characters by default, except for cpp filetypes, where automatic
-completion will be triggered after two keyword characters.
 
                            *'g:mucomplete#ultisnips#match_at_start'*
 By default, the `'ulti'` method returns the snippets whose name
@@ -674,24 +672,6 @@ This section describes some technicalities of µcomplete's
 implementation, and is not intended for the regular user: it is
 mostly a memo for myself and a reading for those interested in a few
 subtleties of the source code.
-
-Why doesn't µcomplete use InsertCharPre instead of TextChangedI? ~
-While |InsertCharPre| would be in some respects a better choice for
-auto-completion (for example, it is not triggered when |paste| is
-on), it is not suitable for the way µcomplete is intended to work.
-The main drawback is that |InsertCharPre| is triggered before
-|CompleteDone|, and it is triggered only for printable characters
-(while a |TextChangedI| event is always triggered after the pop-up
-menu is dismissed). For example, if the user abandons the pop-up
-menu with CTRL-E, no |InsertCharPre| event is fired, and if the
-pop-up menu is dismissed because the user presses a printable
-character, |InsertCharPre| is fired before |CompleteDone|, i.e.,
-when |pumvisible()| is still true. Such features make
-|InsertCharPre| unsuitable for detecting whether auto-completion
-should be fired again after a |CompleteDone| event. Also,
-|InsertCharPre| is triggered even when the pop-up menu is visible
-(while |TextChangedI| does not). MUcomplete does not need to do
-anything special while the pop-up menu is visible.
 
 What the hell is <plug>(MUcompleteOut) for? Why is it defined to ~
 be <c-g><c-g>? ~

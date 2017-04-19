@@ -8,7 +8,6 @@
 'g:mucomplete#popup_direction'	mucomplete.txt	/*'g:mucomplete#popup_direction'*
 'g:mucomplete#spel#good_words'	mucomplete.txt	/*'g:mucomplete#spel#good_words'*
 'g:mucomplete#spel#max'	mucomplete.txt	/*'g:mucomplete#spel#max'*
-'g:mucomplete#trigger_auto_pattern'	mucomplete.txt	/*'g:mucomplete#trigger_auto_pattern'*
 'g:mucomplete#ultisnips#match_at_start'	mucomplete.txt	/*'g:mucomplete#ultisnips#match_at_start'*
 'g:mucomplete#user_mappings'	mucomplete.txt	/*'g:mucomplete#user_mappings'*
 'g:mucomplete_with_key'	mucomplete.txt	/*'g:mucomplete_with_key'*
