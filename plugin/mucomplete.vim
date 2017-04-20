@@ -32,7 +32,7 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   endif
 endif
 
-if exists('##TextChangedI') && exists('##CompleteDone')
+if exists('##TextChangedI')
   if !exists(":MUcompleteAutoOn")
     command -bar -nargs=0 MUcompleteAutoOn :call mucomplete#enable_auto()
   endif
