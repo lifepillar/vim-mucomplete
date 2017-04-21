@@ -58,6 +58,7 @@ Other recommended settings:
 ```vim
   set shortmess+=c
   set completeopt+=noselect
+  set belloff=ctrlg " If Vim beeps during completion
 ```
 
 No other configuration is needed. Just start pressing `<tab>` or

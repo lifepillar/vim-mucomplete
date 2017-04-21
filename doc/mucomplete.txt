@@ -66,6 +66,7 @@ Other recommended settings:
 >
   set shortmess+=c
   set completeopt+=noselect
+  set belloff=ctrlg " If Vim beeps during completion
 <
 Press <tab> in Insert mode to complete a word. This will
 sequentially trigger the methods specified in |g:mucomplete#chains|,
