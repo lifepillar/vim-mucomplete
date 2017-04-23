@@ -76,7 +76,7 @@ if has('patch-7.4.775') " noinsert was added there
     let g:mucomplete_with_key = 0
     augroup MUcompleteAuto
       autocmd!
-      autocmd InsertCharPre * noautocmd let s:insertcharpre =  (v:char =~# '\m\S')
+      autocmd InsertCharPre * noautocmd let s:insertcharpre = (v:char =~# '\m\S')
       autocmd TextChangedI  * noautocmd call s:act_on_textchanged()
     augroup END
     let s:auto = 1
