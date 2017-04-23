@@ -45,7 +45,7 @@ let s:compl_text = ''    " Text to be completed
 let s:auto = 0           " Is autocompletion enabled?
 let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
-let s:insertcharpre = 0  " Was a printable character pressed?
+let s:insertcharpre = 0  " Was a non-whitespace character inserted?
 
 fun! mucomplete#popup_exit(ctrl)
   let s:cancel_auto = pumvisible()
@@ -61,16 +61,14 @@ if has('patch-7.4.775') " noinsert was added there
     if s:insertcharpre
       let s:insertcharpre = 0
       let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
-      if !empty(s:compl_text)
-        call mucomplete#init(1, 0)
-        while s:countdown > 0
-          let s:countdown -= 1
-          let s:i += 1
-          if s:can_complete(s:i)
-            return feedkeys("\<plug>(MUcompleteTry)", 'i')
-          endif
-        endwhile
-      endif
+      call mucomplete#init(1, 0)
+      while s:countdown > 0
+        let s:countdown -= 1
+        let s:i += 1
+        if s:can_complete(s:i)
+          return feedkeys("\<plug>(MUcompleteTry)", 'i')
+        endif
+      endwhile
     endif
   endf
 
@@ -78,7 +76,7 @@ if has('patch-7.4.775') " noinsert was added there
     let g:mucomplete_with_key = 0
     augroup MUcompleteAuto
       autocmd!
-      autocmd InsertCharPre * noautocmd let s:insertcharpre = 1
+      autocmd InsertCharPre * noautocmd let s:insertcharpre =  (v:char =~# '\m\S')
       autocmd TextChangedI  * noautocmd call s:act_on_textchanged()
     augroup END
     let s:auto = 1
