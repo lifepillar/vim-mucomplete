@@ -47,17 +47,23 @@ Mandatory Vim settings:
 For automatic completion, you also need to put these in your `vimrc`:
 
 ```vim
-  set completeopt+=noinsert
   inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
   inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
   inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
 ```
 
+and *at least one* of the following (choose the combination that best fits your
+taste):
+
+```vim
+  set completeopt+=noselect
+  set completeopt+=noinsert
+```
+
 Other recommended settings:
 
 ```vim
-  set shortmess+=c
-  set completeopt+=noselect
+  set shortmess+=c   " Shut off completion messages
   set belloff+=ctrlg " If Vim beeps during completion
 ```
 
