@@ -230,11 +230,11 @@ fun! mucomplete#tab_complete(dir)
     return mucomplete#cycle_or_select(a:dir)
   else
     let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
-    if empty(s:compl_text)
-      return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
+    if get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || !empty(s:compl_text)
+      call mucomplete#init(a:dir, 1)
+      return s:next_method()
     endif
-    call mucomplete#init(a:dir, 1)
-    return s:next_method()
+    return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
   endif
 endf
 

@@ -360,6 +360,15 @@ visible.
 Note: if you set this to 1, you have to use the standard CTRL-N and
 CTRL-P to select the entries in the pop-up menu.
 
+                                         *'b:mucomplete_empty_text'*
+                                         *'g:mucomplete#empty_text'*
+By default, when you press <tab> to complete a word, µcomplete
+inserts a literal Tab character if there is no non-space character
+before the cursor. Set this to 1 if you want manual completion to be
+triggered no matter what the character in front of the cursor is.
+>
+  let g:mucomplete#empty_text = 0
+<
                              *'g:mucomplete#enable_auto_at_startup'*
 Set to 1 to enable automatic completion at startup.
 >
