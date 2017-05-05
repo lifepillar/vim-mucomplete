@@ -471,6 +471,22 @@ How to insert a tab character when <tab> is used by µcomplete? ~
 Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped).
 See also |i_<Tab>|.
 
+I want to do something special with <tab> in some circumstances, ~
+but I also want to keep using it with µcomplete. How may I achieve ~
+that? ~
+You may adapt the following snippet:
+>
+  fun! MyTabAction()
+    if some_condition_is_verified
+      " Do something
+      return ""
+    else
+      return mucomplete#tab_complete(1)
+    endif
+  endf
+  
+  imap <expr> <silent> <tab> MyTabAction()
+<
 How to simulate ZSH behaviour for 'file' completion? ~
 Some people like ZSH behaviour, whereby typing a slash enters the
 current directory. This can be easily achieved by defining the
