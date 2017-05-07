@@ -31,6 +31,6 @@ set runtimepath=
 " }}}
 
 set runtimepath+=~/.vim  " Remove this line unless you need it for finding spell files or other data
-set runtimepath+=/path/to/mucomplete/  " CHANGE THIS
+set runtimepath+=~/.vim/pack/my/start/mucomplete  " CHANGE THIS
 
 " Optionally add additional configuration below this line
