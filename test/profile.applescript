@@ -82,6 +82,16 @@ on type(theText, wpm)
 	end repeat
 end type
 
+on prepareBuffer(commands)
+	tell application "System Events"
+		keystroke "[" using control down -- Esc
+		keystroke ":enew!" & linefeed
+		repeat with cmd in commands
+			keystroke ":" & cmd & linefeed
+		end repeat
+		keystroke "i"
+	end tell
+end prepareBuffer
 
 -- Main
 
@@ -99,29 +109,19 @@ on run
 	set TestFolder to MUcompleteFolder & "test/"
 	
 	display dialog Â
-		"This test lasts several minutes and it's not interruptible." & space & Â
-		"A typist will take over your computer and you won't be able to use it." & linefeed & linefeed & Â
+		"This test lasts several minutes and the system will be unresponsive during that time." & linefeed & linefeed & Â
 		"Do you really want to continue?" buttons {"Cancel", "Continue"} default button "Cancel" cancel button Â
 		"Cancel" with title "MUcomplete Test" with icon caution
-	
-	display dialog Â
-		"Do NOT switch the focus away from Terminal until the test is over!" buttons {"Cancel", "Got it!"} Â
-		default button "Cancel" cancel button "Cancel" with icon caution
 	
 	-- Open a new terminal window and run Vim
 	tell application "Terminal"
 		do script "cd" & space & quoted form of TestFolder & space & Â
 			"&& vim -u ../troubleshooting_vimrc.vim" & space & Â
-			"--cmd 'profile start mucomplete" & my timestamp() & ".profile'" & space & Â
-			"--cmd 'profile! file */autoload/mucomplete.vim'"
+			"--cmd 'profile start mucomplete-" & my timestamp() & ".profile'" & space & Â
+			"--cmd 'profile! file */autoload/mucomplete.vim'" & space & Â
+			"-c 'MUcompleteAutoOn'" & space & Â
+			"-c 'set noshowmode shortmess+=c'"
 		activate
-	end tell
-	
-	delay 1
-	
-	tell application "System Events"
-		keystroke ":MUcompleteAutoOn" & linefeed
-		keystroke ":set noshowmode shortmess+=c" & linefeed
 	end tell
 	
 	Test0()
@@ -140,36 +140,17 @@ end run
 
 on Test0() -- Warm up :)
 	set s to "jump jump jump jump!"
-	
-	tell application "System Events"
-		keystroke "[" using control down -- Esc
-		keystroke ":enew" & linefeed
-		keystroke "i"
-	end tell
+	my prepareBuffer({})
 	my type(s, 60)
 end Test0
 
 on Test1()
-	tell application "System Events"
-		keystroke "[" using control down -- Esc
-		keystroke ":enew" & linefeed
-		keystroke ":set ft=vim" & linefeed
-		keystroke ":setl nospell formatoptions=" & linefeed
-		keystroke "i"
-	end tell
-	
+	my prepareBuffer({"set ft=vim", "setl nospell formatoptions="})
 	my type(readUTF8File(my MUcompleteFolder & "plugin/mucomplete.vim"), 212)
 end Test1
 
 
 on Test2()
-	tell application "System Events"
-		keystroke "[" using control down -- Esc
-		keystroke ":enew" & linefeed
-		keystroke ":set ft=text" & linefeed
-		keystroke ":setl spell spelllang=en" & linefeed
-		keystroke "i"
-	end tell
-	
+	my prepareBuffer({"set ft=text", "setl spell spelllang=en"})
 	my type(readUTF8File(my MUcompleteFolder & "Readme.md"), 500)
 end Test2
