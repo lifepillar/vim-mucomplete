@@ -624,6 +624,15 @@ follows:
     \               . "\<plug>snipMateNextOrTrigger"
 <
 so you can expand a snippet while the pop-up menu is still visible.
+By the way, if you use <c-j> in the mapping above, do not forget to
+map <plug>(MUcompleteCycFwd) (see |mucomplete-mappings|), too, e.g.:
+>
+  imap <expr> <right> <plug>(MUcompleteCycFwd)
+>
+otherwise you will get an error at startup:
+>
+  E227: mapping already exists for ^@
+<
 If you want to use <tab> to expand snippets, you have to either
 disable µcomplete's mappings (see |g:mucomplete#no_mappings|) or map
 µcomplete's manual completion trigger to something else (see
