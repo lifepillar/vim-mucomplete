@@ -484,7 +484,7 @@ You may adapt the following snippet:
       return mucomplete#tab_complete(1)
     endif
   endf
-  
+
   imap <expr> <silent> <tab> MyTabAction()
 <
 How to simulate ZSH behaviour for 'file' completion? ~
@@ -567,7 +567,7 @@ instead of:
   set completeopt+=t
   let g:mucomplete#chains = { 'default' : ['c-p'] }
 <
-which would scan tags and included files, you might use:
+which would always scan tags and included files, you might use:
 >
   set complete-=i
   set complete-=t
@@ -633,10 +633,13 @@ otherwise you will get an error at startup:
 >
   E227: mapping already exists for ^@
 <
-If you want to use <tab> to expand snippets, you have to either
-disable µcomplete's mappings (see |g:mucomplete#no_mappings|) or map
-µcomplete's manual completion trigger to something else (see
-|mucomplete-mappings|).
+because µcomplete maps <c-j> to <plug>(MUcompleteCycFwd) by default.
+Similarly, if you want to use <tab> to expand snippets, you have to
+map µcomplete's manual completion trigger to something else. If
+µcomplete's mappings get too much in the way, you may also disable
+them completely (see |g:mucomplete#no_mappings|). Finally, see also
+|mucomplete-tips| for a more sophisticated definition of a <tab>
+mapping.
 
 vim-peekabo ~
 By default, vim-peekabo remaps <c-r> in Insert mode. Since µcomplete
