@@ -365,10 +365,15 @@ CTRL-P to select the entries in the pop-up menu.
 By default, when you press <tab> to complete a word, µcomplete
 inserts a literal Tab character if there is no non-space character
 before the cursor. Set this to 1 if you want manual completion to be
-triggered no matter what the character in front of the cursor is.
+triggered no matter what the character in front of the cursor is
+(|g:mucomplete#can_complete| will still be applied):
 >
   let g:mucomplete#empty_text = 0
 <
+Setting this variable to 1 is useful in very limited circumstances,
+e.g., to trigger omni-completion at the start of a line in some
+buffer types.
+
                              *'g:mucomplete#enable_auto_at_startup'*
 Set to 1 to enable automatic completion at startup.
 >
