@@ -48,34 +48,24 @@ let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up men
 let s:insertcharpre = 0  " Was a non-whitespace character inserted?
 
 fun! mucomplete#popup_exit(ctrl)
-  let s:cancel_auto = pumvisible()
-  return a:ctrl
+  return get(extend(s:, { 'cancel_auto': pumvisible() }), 0, a:ctrl)
 endf
 
 if has('patch-7.4.775') " noinsert was added there
-  fun! s:act_on_textchanged() " Assumes pumvisible() is false
-    if s:cancel_auto
-      let [s:cancel_auto, s:insertcharpre] = [0,0]
-      return
-    endif
-    if s:insertcharpre
-      let s:insertcharpre = 0
-      let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
-      call mucomplete#init(1, 0)
-      while s:countdown > 0
-        let s:countdown -= 1
-        let s:i += 1
-        if s:can_complete(s:i)
-          return feedkeys("\<plug>(MUcompleteTry)", 'i')
-        endif
-      endwhile
-    endif
+  fun! s:act_on_textchanged() " Assumes pumvisible() is false. Return value not used.
+    return s:cancel_auto
+          \ ? extend(s:, { 'cancel_auto': 0, 'insertcharpre': 0})
+          \ : (s:insertcharpre
+          \   ? (get(mucomplete#init(1, 0), 0, 1) && s:next_method() ? feedkeys("\<plug>(MUcompleteTry)", 'i') : 0)
+          \   : 0
+          \   )
   endf
 
   fun! mucomplete#enable_auto()
+    let g:mucomplete_with_key = 0 " FIXME: move elsewhere or remove
     augroup MUcompleteAuto
       autocmd!
-      autocmd InsertCharPre * noautocmd let s:insertcharpre = (v:char =~# '\m\S')
+      autocmd InsertCharPre * noautocmd let s:insertcharpre =  (v:char =~# '\m\S')
       autocmd TextChangedI  * noautocmd call s:act_on_textchanged()
     augroup END
     let s:auto = 1
@@ -161,7 +151,7 @@ fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomp
 endf
 
 fun! s:act_on_pumvisible()
-  return !g:mucomplete_with_key || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
+  return s:auto || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
 endf
@@ -179,21 +169,23 @@ endf
 
 " Precondition: pumvisible() is false.
 fun! s:next_method()
-  while s:countdown > 0
-    let s:countdown -= 1
-    let s:i = (s:i + s:dir + s:N) % s:N
-    if s:can_complete(s:i)
-      return s:try_completion()
-    endif
-  endwhile
-  return ''
+  return s:countdown > 0
+        \ ? (get(extend(s:, { 'countdown': s:countdown - 1, 'i': (s:i + s:dir + s:N) % s:N }), 0, 1) && s:can_complete(s:i)
+        \   ? 1
+        \   : s:next_method()
+        \   )
+        \ : 0
+endf
+
+fun! s:next_completion()
+  return s:next_method() ? s:try_completion() : ''
 endf
 
 fun! s:verify_completion()
   return pumvisible()
             \ ? s:act_on_pumvisible()
             \ : (s:compl_methods[s:i] ==# 'cmd' ? s:ctrlx_out : '')
-            \ . s:next_method()
+            \ . s:next_completion()
 endf
 
 " Precondition: pumvisible() is true.
@@ -201,7 +193,7 @@ fun! mucomplete#cycle(dir)
   if pumvisible()
     let s:dir = a:dir
     let s:countdown = s:N " Reset counter
-    return "\<c-e>" . s:next_method()
+    return "\<c-e>" . s:next_completion()
   else
     return a:dir > 0 ? "\<plug>(MUcompleteFwdKey)" : "\<plug>(MUcompleteBwdKey)"
   endif
@@ -214,28 +206,24 @@ fun! mucomplete#cycle_or_select(dir)
         \ : (get(s:select_dir, s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
 endf
 
-" Precondition: pumvisible() is false.
 fun! mucomplete#init(dir, tab_completion) " Initialize/reset internal state
   let g:mucomplete_with_key = a:tab_completion
-  let s:dir = a:dir
-  let s:compl_methods = get(b:, 'mucomplete_chain',
-        \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
-  let s:N = len(s:compl_methods)
-  let s:countdown = s:N
-  let s:i = s:dir > 0 ? -1 : s:N
+  return extend(extend(s:, {
+        \  'compl_methods': get(b:, 'mucomplete_chain', get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default'])),
+        \  'compl_text': matchstr(getline('.'), '\S\+\%'.col('.').'c'),
+        \  'dir': a:dir,
+        \  'insertcharpre' : 0
+        \ }), { 'N': len(s:compl_methods), 'countdown': len(s:compl_methods), 'i': s:dir > 0 ? -1 : len(s:compl_methods)}
+        \ )
 endf
 
 fun! mucomplete#tab_complete(dir)
-  if pumvisible()
-    return mucomplete#cycle_or_select(a:dir)
-  else
-    let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
-    if get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || !empty(s:compl_text)
-      call mucomplete#init(a:dir, 1)
-      return s:next_method()
-    endif
-    return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
-  endif
+  return pumvisible()
+        \ ? mucomplete#cycle_or_select(a:dir)
+        \ : (empty(get(mucomplete#init(a:dir, 1), 'compl_text', ''))
+        \   ? (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
+        \   : s:next_completion()
+        \   )
 endf
 
 let &cpo = s:save_cpo
