@@ -659,8 +659,8 @@ Section 12: Troubleshooting             *mucomplete-troubleshooting*
 Before reporting a bug, please do the following:
 
 1. In order to rule out conflicts with other settings, please copy
-   `troubleshooting_vimrc.vim` from µcomplete's directory, edit it,
-   and run Vim with:
+   `troubleshooting_vimrc.vim` from µcomplete's directory into
+   your `.vim` directory, edit it, and run Vim with:
 >
      vim -u troubleshooting_vimrc.vim
 <
