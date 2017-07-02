@@ -28,6 +28,10 @@ if has('patch-7.4.314')
   set shortmess-=c
 endif
 set runtimepath=
+
+inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
+inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
+inoremap <expr> <cr> mucomplete#popup_exit("\<cr>")
 " }}}
 
 set runtimepath+=~/.vim  " Remove this line unless you need it for finding spell files or other data
