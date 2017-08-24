@@ -106,8 +106,8 @@ endif
 
 " Completion chains
 let g:mucomplete#chains = extend({
-      \ 'default' : [has('patch-7.4.654') ? 'path' : 'file', 'omni', 'keyn', 'dict', 'uspl'],
-      \ 'vim'     : [has('patch-7.4.654') ? 'path' : 'file', 'cmd',  'keyn']
+      \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
+      \ 'vim'     : ['path', 'cmd',  'keyn']
       \ }, get(g:, 'mucomplete#chains', {}))
 
 " Conditions to be verified for a given method to be applied.

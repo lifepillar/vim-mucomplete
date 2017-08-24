@@ -174,9 +174,6 @@ current buffer (see |g:mucomplete#buffer_relative_paths|).
 
 See also |mucomplete-tips|.
 
-Note: `'path'` completion requires Vim 7.4.654 or later. Older Vim
-uses `'file'` completion by default.
-
 ====================================================================
 Section 6: Spelling suggestions           *mucomplete-spel-complete*
 
