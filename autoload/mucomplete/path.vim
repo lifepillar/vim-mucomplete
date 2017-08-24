@@ -5,7 +5,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-if (v:version > 704 && has('patch-7.4.654')) || (v:version == 704 && has("patch654"))
+if has('patch-7.4.654') || (v:version == 704 && has("patch654"))
 
   fun! s:glob(expr, nosuf, list, alllinks)
     return glob(a:expr, a:nosuf, a:list, a:alllinks)
