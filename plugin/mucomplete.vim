@@ -10,8 +10,6 @@ let g:loaded_mucomplete = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-imap <expr> <silent> <plug>(MUcompleteCycFwd) mucomplete#cycle( 1)
-imap <expr> <silent> <plug>(MUcompleteCycBwd) mucomplete#cycle(-1)
 imap <expr> <silent> <plug>(MUcompleteFwd) mucomplete#tab_complete( 1)
 imap <expr> <silent> <plug>(MUcompleteBwd) mucomplete#tab_complete(-1)
 
@@ -21,14 +19,6 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   endif
   if !hasmapto('<plug>(MUcompleteBwd)', 'i')
     imap <unique> <s-tab> <plug>(MUcompleteBwd)
-  endif
-  if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
-    inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
-    imap <unique> <c-j> <plug>(MUcompleteCycFwd)
-  endif
-  if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
-    inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
-    imap <unique> <c-h> <plug>(MUcompleteCycBwd)
   endif
 endif
 

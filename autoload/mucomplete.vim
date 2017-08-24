@@ -5,11 +5,24 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+imap     <silent> <expr> <plug>(MUcompleteCycFwd) mucomplete#cycle( 1)
+imap     <silent> <expr> <plug>(MUcompleteCycBwd) mucomplete#cycle(-1)
 imap     <silent> <expr> <plug>(MUcompleteTry) <sid>try_completion()
 imap     <silent> <expr> <plug>(MUcompleteVerify) <sid>verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
+
+if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
+  if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
+    inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
+    imap <unique> <c-j> <plug>(MUcompleteCycFwd)
+  endif
+  if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
+    inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
+    imap <unique> <c-h> <plug>(MUcompleteCycBwd)
+  endif
+endif
 
 let s:ctrlx_out = "\<plug>(MUcompleteOut)"
 let s:compl_mappings = extend({
