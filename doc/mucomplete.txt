@@ -500,22 +500,22 @@ following mapping in your |vimrc|:
         \ : '/'
 <
 Use different values of completeopt ~
-If you want to use different values of |'completeopt'| for manual
-and automatic completion, you may adapt the following snippet:
+If you want to use different values of |'completeopt'| (or other
+settings) for manual and automatic completion, you may adapt the
+following snippet:
 >
-  fun! s:toggle_completeopt()
+  fun! ToggleCompleteopt()
+    MUcompleteAutoToggle
     if exists('#MUcompleteAuto')
-      set completeopt+=noinsert,noselect
-    else
+      " Settings for automatic completion
       set completeopt-=noinsert,noselect
+    else
+      " Settings for manual completion
+      set completeopt+=noinsert,noselect
     endif
   endf
-  command! MUcompleteAutoToggle call mucomplete#toggle_auto()
-        \  | call <sid>toggle_completeopt()
-  command! MUcompleteAutoOn     call mucomplete#enable_auto()
-        \  | call <sid>toggle_completeopt()
-  command! MUcompleteAutoOff    call mucomplete#disable_auto()
-        \  | call <sid>toggle_completeopt()
+
+  command! MyMUcompleteToggle call ToggleCompleteopt()
 <
 Put the code above in your |vimrc|. Please keep in mind that
 `noinsert` and `noselect` are ignored in manual completion in all
