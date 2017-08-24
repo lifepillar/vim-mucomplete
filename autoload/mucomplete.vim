@@ -87,10 +87,6 @@ fun! mucomplete#act_on_textchanged() " Assumes pumvisible() is false
   endif
 endf
 
-if exists('g:mucomplete#trigger_auto_pattern')
-  echomsg "[MUcomplete] g:mucomplete#trigger_auto_pattern has been removed. Use g:mucomplete#can_complete instead."
-endif
-
 " Completion chains
 let g:mucomplete#chains = extend({
       \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
