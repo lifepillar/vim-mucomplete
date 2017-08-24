@@ -752,7 +752,7 @@ context in which they are used by µcomplete.
 
 See also https://github.com/vim/vim/issues/1260.
 
-Why is 'cmd' treated specially by mucomplete#verify_completion()? ~
+Why is 'cmd' treated specially by s:verify_completion()? ~
 Because of a Vim bug. See https://github.com/vim/vim/issues/1319.
 
 Does µcomplete's implementation have any limitations? ~
