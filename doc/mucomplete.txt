@@ -773,10 +773,7 @@ pop-up menu has not appeared yet (but it is going to appear, because
 completion was successful).
 
 I cannot figure out any workaround for that without further built-in
-support from Vim (a PumVisible event?), but if you do, please let me
+support from Vim (a PumVisible event?); but if you do, please let me
 know!
-
-On the positive side, AFAIK few functions use |complete_check()|:
-inside Vim distribution, only the Ada plugin does.
 
 " vim: sw=2 tw=68
