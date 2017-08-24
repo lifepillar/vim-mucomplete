@@ -755,4 +755,28 @@ See also https://github.com/vim/vim/issues/1260.
 Why is 'cmd' treated specially by mucomplete#verify_completion()? ~
 Because of a Vim bug. See https://github.com/vim/vim/issues/1319.
 
+Does µcomplete's implementation have any limitations? ~
+Of course! But very few :)
+Fuzzy completion is not supported and will likely never be. This
+doesn't bother me much, but it might be a showstopper for you.
+
+One thing that does bother me is that µcomplete cannot exploit the
+optimization provided by |complete_add()| and |complete_check()| in
+user completion functions (see |E840| for an example). The reason is
+that µcomplete sends a `<c-r>` immediately after each completion
+mapping, effectively preventing further keys to be passed along. So,
+the completion function cannot be interrupted by further key
+presses. Unfortunately, as discussed above, sending `<c-r>` is
+required for synchronization purposes: without `<c-r>`,
+`s:verify_completion()` may be called too early, i.e., when the
+pop-up menu has not appeared yet (but it is going to appear, because
+completion was successful).
+
+I cannot figure out any workaround for that without further built-in
+support from Vim (a PumVisible event?), but if you do, please let me
+know!
+
+On the positive side, AFAIK few functions use |complete_check()|:
+inside Vim distribution, only the Ada plugin does.
+
 " vim: sw=2 tw=68
