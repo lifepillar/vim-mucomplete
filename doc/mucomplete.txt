@@ -760,17 +760,29 @@ Of course! But very few :)
 Fuzzy completion is not supported and will likely never be. This
 doesn't bother me much, but it might be a showstopper for you.
 
-One thing that does bother me is that µcomplete cannot exploit the
-optimization provided by |complete_add()| and |complete_check()| in
-user completion functions (see |E840| for an example). The reason is
-that µcomplete sends a `<c-r>` immediately after each completion
-mapping, effectively preventing further keys to be passed along. So,
-the completion function cannot be interrupted by further key
-presses. Unfortunately, as discussed above, sending `<c-r>` is
-required for synchronization purposes: without `<c-r>`,
-`s:verify_completion()` may be called too early, i.e., when the
-pop-up menu has not appeared yet (but it is going to appear, because
-completion was successful).
+There is no room for asynchronous computation, given the way
+µcomplete is implemented (how could the fallback mechanism work
+then?). If you think that auto-completion should be asynchronous,
+fortunately there is no lack of plugins. Do not take it for granted,
+though, that "asynchronous" means "faster": in general, the time Vim
+spends in µcomplete's code is negligible compared to the time it
+takes to populate the popup menu. Asynchronous plugins typically
+minimize the impact of the latter task (by delegating it to an async
+job), but unless they are carefully implemented, Vim may spend
+a significant amount of time running their code. Profile your
+plugins!
+
+Finally, one thing that does bother me is that µcomplete cannot
+exploit the optimization provided by |complete_add()| and
+|complete_check()| in user completion functions (see |E840| for an
+example). The reason is that µcomplete sends a `<c-r>` immediately
+after each completion mapping, effectively preventing further keys
+to be passed along to the buffer. So, a user completion function
+cannot be interrupted by further key presses. Unfortunately, as
+discussed above, sending `<c-r>` is required for synchronization
+purposes: without `<c-r>`, `s:verify_completion()` may be called too
+early, i.e., when the pop-up menu has not appeared yet (but it is
+going to appear, because completion was successful).
 
 I cannot figure out any workaround for that without further built-in
 support from Vim (a PumVisible event?); but if you do, please let me
