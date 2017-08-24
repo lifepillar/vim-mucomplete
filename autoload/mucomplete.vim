@@ -87,6 +87,31 @@ fun! mucomplete#act_on_textchanged() " Assumes pumvisible() is false
   endif
 endf
 
+fun! mucomplete#enable_auto()
+  augroup MUcompleteAuto
+    autocmd!
+    autocmd InsertCharPre * noautocmd call mucomplete#insert_char_pre()
+    autocmd TextChangedI  * noautocmd call mucomplete#act_on_textchanged()
+  augroup END
+endf
+
+fun! mucomplete#disable_auto()
+  if exists('#MUcompleteAuto')
+    autocmd! MUcompleteAuto
+    augroup! MUcompleteAuto
+  endif
+endf
+
+fun! mucomplete#toggle_auto()
+  if exists('#MUcompleteAuto')
+    call mucomplete#auto#disable()
+    echomsg '[MUcomplete] Auto off'
+  else
+    call mucomplete#auto#enable()
+    echomsg '[MUcomplete] Auto on'
+  endif
+endf
+
 " Completion chains
 let g:mucomplete#chains = extend({
       \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
