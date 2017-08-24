@@ -104,10 +104,10 @@ endf
 
 fun! mucomplete#toggle_auto()
   if exists('#MUcompleteAuto')
-    call mucomplete#auto#disable()
+    call mucomplete#disable_auto()
     echomsg '[MUcomplete] Auto off'
   else
-    call mucomplete#auto#enable()
+    call mucomplete#enable_auto()
     echomsg '[MUcomplete] Auto on'
   endif
 endf
