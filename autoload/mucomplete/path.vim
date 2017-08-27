@@ -29,9 +29,9 @@ fun! mucomplete#path#complete() abort
   let l:prefix = matchstr(getline('.'), '\f\%(\f\|\s\)*\%'.col('.').'c')
   while strlen(l:prefix) > 0 " Try to find an existing path (consider paths with spaces, too)
     if l:prefix ==# '~'
-      let l:prefix = s:glob('~', 0, 1, 1)
-      if !empty(l:prefix)
-        call complete(col('.') - 1, map(l:prefix, '{ "word": v:val, "menu": "[dir]" }'))
+      let l:files = s:glob('~', 0, 1, 1)
+      if !empty(l:files)
+        call complete(col('.') - 1, map(l:files, '{ "word": v:val, "menu": "[dir]" }'))
       endif
       return ''
     else " FIXME: only Unix-like relative paths
