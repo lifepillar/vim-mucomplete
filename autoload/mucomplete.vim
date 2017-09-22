@@ -239,7 +239,7 @@ fun! mucomplete#tab_complete(dir)
   else
     let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
     if get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || !empty(s:compl_text)
-      call mucomplete#init(a:dir, 1)
+      call mucomplete#init(a:dir, match(&completeopt, '\<noselect\>') > -1 ? 0 : 1)
       return s:next_method()
     endif
     return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
