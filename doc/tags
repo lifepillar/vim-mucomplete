@@ -1,5 +1,6 @@
 'b:mucomplete_chain'	mucomplete.txt	/*'b:mucomplete_chain'*
 'b:mucomplete_empty_text'	mucomplete.txt	/*'b:mucomplete_empty_text'*
+'g:mucomplete#always_use_completeopt'	mucomplete.txt	/*'g:mucomplete#always_use_completeopt'*
 'g:mucomplete#buffer_relative_paths'	mucomplete.txt	/*'g:mucomplete#buffer_relative_paths'*
 'g:mucomplete#can_complete'	mucomplete.txt	/*'g:mucomplete#can_complete'*
 'g:mucomplete#chains'	mucomplete.txt	/*'g:mucomplete#chains'*

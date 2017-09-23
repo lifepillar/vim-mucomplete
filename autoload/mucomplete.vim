@@ -169,7 +169,7 @@ fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomp
 endf
 
 fun! s:act_on_pumvisible()
-  return !g:mucomplete_with_key || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
+  return !g:mucomplete_with_key || get(g:, 'mucomplete#always_use_completeopt', 0) || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
 endf
