@@ -666,6 +666,26 @@ Note: now you need to press <c-x><c-r> to view the registers.
 ====================================================================
 Section 12: Troubleshooting             *mucomplete-troubleshooting*
 
+Why am I getting the error: "E227: mapping already exists for..."? ~
+MUcomplete takes great care not to override an existing mapping
+defined in your |vimrc| or by another plugin. If you get this error,
+it means that MUcomplete cannot define one of its own mappings,
+because it is already defined elsewhere. For example, UltiSnips and
+Matchem map CTRL-J in Insert mode, which causes this error as soon
+as µcomplete kicks in:
+>
+  E227: mapping already exists for ^@
+<
+(^@ is CTRL-J). To discover where the mapping was last defined,
+use `:verbose imap`, e.g.:
+>
+  :verbose imap <c-j>
+<
+To fix the conflict, redefine one of the conflicting mappings. See
+|mucomplete-mappings| if you decide to override one of µcomplete's
+mappings.
+
+I think I have found a bug. What should I do? ~
 Before reporting a bug, please do the following:
 
 1. In order to rule out conflicts with other settings, please copy
