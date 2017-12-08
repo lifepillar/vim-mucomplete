@@ -205,7 +205,6 @@ fun! s:verify_completion()
             \ . s:next_method()
 endf
 
-" Precondition: pumvisible() is true.
 fun! mucomplete#cycle(dir)
   if pumvisible()
     let s:dir = a:dir
