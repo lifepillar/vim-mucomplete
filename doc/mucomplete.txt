@@ -554,7 +554,7 @@ this problem, in your |vimrc| you may define:
     \         t -> g:mucomplete_with_key && strlen(&l:thesaurus) > 0
     \         }
     \ }
-  # Add 'thes' to your completion chains, e.g.:
+  " Add 'thes' to your completion chains, e.g.:
   let g:mucomplete#chains = { 'default': ['keyn', 'thes'] }
 <
 Then, searching for synonyms will happen only when you press <tab>
