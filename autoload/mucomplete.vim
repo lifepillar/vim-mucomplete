@@ -50,14 +50,15 @@ let s:select_dir = extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_
 let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
 
 " Internal state
-let s:compl_methods = [] " Current completion chain
-let s:N = 0              " Length of the current completion chain
-let s:i = 0              " Index of the current completion method in the completion chain
-let s:countdown = 0      " Keeps track of how many other completion attempts to try
-let s:compl_text = ''    " Text to be completed
-let s:dir = 1            " Direction to search for the next completion method (1=fwd, -1=bwd)
-let s:cancel_auto = 0    " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
-let s:insertcharpre = 0  " Was a non-whitespace character inserted?
+let s:compl_methods = []      " Current completion chain
+let s:N = 0                   " Length of the current completion chain
+let s:i = 0                   " Index of the current completion method in the completion chain
+let s:countdown = 0           " Keeps track of how many other completion attempts to try
+let s:compl_text = ''         " Text to be completed
+let s:dir = 1                 " Direction to search for the next completion method (1=fwd, -1=bwd)
+let s:cancel_auto = 0         " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
+let s:insertcharpre = 0       " Was a non-whitespace character inserted?
+let g:mucomplete_with_key = 1 " Was completion triggered by a key?
 
 fun! mucomplete#popup_exit(ctrl)
   let s:cancel_auto = pumvisible()
