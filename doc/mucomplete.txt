@@ -508,10 +508,11 @@ You may adapt the following snippet:
       " Do something
       return ""
     else
-      return mucomplete#tab_complete(1)
+      return "\<plug>(MyFwd)"
     endif
   endf
 
+  imap <plug>(MyFwd) <plug>(MUcompleteFwd)
   imap <expr> <silent> <tab> MyTabAction()
 <
 How to simulate ZSH behaviour for 'file' completion? ~
