@@ -356,6 +356,21 @@ filetype-specific completion chains. For example:
   let g:mucomplete#chains = { 'default': ['omni', 'c-p'] }
   let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
+                                          *'g:mucomplete#cycle_all'*
+MUcomplete allows you to use specific completion methods only when
+the trigger keys are pressed (`<tab>`/`<s-tab>` by default), even
+when auto-completion is on. This is achieved by testing
+|g:mucomplete_with_key| in the enabling conditions of such methods
+(see |mucomplete-tips| for an example).
+
+When the pop-up menu appears automatically, cycling through the
+completion methods with <c-h> and <c-j> ignores manually activated
+methods by default. Set this option to 1 to cycle through all the
+methods in the current completion chain regardless of whether they
+are defined to be activated only manually or not.
+>
+  let g:mucomplete#cycle_all = 0
+<
                                  *'g:mucomplete#cycle_with_trigger'*
 Set to 1 to use <s-tab> and <tab> (or whatever your manual
 completion triggers are) to move back and forth, respectively,

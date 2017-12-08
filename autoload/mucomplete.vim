@@ -208,6 +208,7 @@ endf
 fun! mucomplete#cycle(dir)
   if pumvisible()
     let s:dir = a:dir
+    let g:mucomplete_with_key = g:mucomplete_with_key || get(g:, 'mucomplete#cycle_all', 0)
     let s:countdown = s:N " Reset counter
     return "\<c-e>" . s:next_method()
   else
