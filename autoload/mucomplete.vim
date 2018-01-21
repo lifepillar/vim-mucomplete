@@ -12,16 +12,46 @@ imap     <silent> <expr> <plug>(MUcompleteVerify) <sid>verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
+inoremap <silent> <expr> <plug>(MUcompleteCte) mucomplete#popup_exit("\<c-e>")
+inoremap <silent> <expr> <plug>(MUcompleteCty) mucomplete#popup_exit("\<c-y>")
+inoremap <silent> <expr> <plug>(MUcompleteCR) mucomplete#popup_exit("\<cr>")
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
-  if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
-    inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
-    imap <unique> <c-j> <plug>(MUcompleteCycFwd)
-  endif
-  if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
-    inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
-    imap <unique> <c-h> <plug>(MUcompleteCycBwd)
-  endif
+  try
+    let s:map = '<c-j>'
+    if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
+      inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
+      imap <unique> <c-j> <plug>(MUcompleteCycFwd)
+    endif
+    let s:map = '<c-h>'
+    if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
+      inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
+      imap <unique> <c-h> <plug>(MUcompleteCycBwd)
+    endif
+    if !get(g:, 'mucomplete#no_popup_mappings', 0)
+      let s:map = '<c-e>'
+      if !hasmapto('<plug>(MUcompleteCte)', 'i')
+        imap <unique> <c-e> <plug>(MUcompleteCte)
+      endif
+      let s:map = '<c-y>'
+      if !hasmapto('<plug>(MUcompleteCty)', 'i')
+        imap <unique> <c-y> <plug>(MUcompleteCty)
+      endif
+      let s:map = '<cr>'
+      if !hasmapto('<plug>(MUcompleteCR)', 'i')
+        imap <unique> <cr> <plug>(MUcompleteCR)
+      endif
+    endif
+  catch /^Vim\%((\a\+)\)\=:E227/
+    echohl ErrorMsg
+    echomsg "[MUcomplete]" s:map "is already mapped. Use :verbose imap ".s:map." to see where it is mapped."
+    if s:map != '<c-j>' && s:map != '<c-h>'
+      echomsg  "[MUcomplete] NOTE: since v1.0.0, you do not need to map ".s:map." in your vimrc any longer."
+    endif
+    echohl NONE
+  finally
+    unlet s:map
+  endtry
 endif
 
 let s:ctrlx_out = "\<plug>(MUcompleteOut)"

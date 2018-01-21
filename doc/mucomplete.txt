@@ -54,15 +54,8 @@ Mandatory Vim settings:
 >
   set completeopt+=menuone
 <
-For automatic completion, you also need to put these in your
-|vimrc|:
->
-  inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-  inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-  inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-<
-and at least one of the following (choose the combination that best
-fits your taste):
+For automatic completion, you also need to put one of the following
+in your `vimrc`:
 >
   set completeopt+=noselect
   set completeopt+=noinsert
@@ -208,8 +201,9 @@ Toggle automatic completion.
 ====================================================================
 Section 8: Mappings                            *mucomplete-mappings*
 
-The following mappings are enabled by default. If you do not want
-that, see |g:mucomplete#no_mappings|.
+By default, µcomplete maps the keys below in Insert mode.
+Set |g:mucomplete#no_mappings| if you do not want µcomplete to
+define any mapping.
 
 <tab>
   Trigger forward chained completion. When the pop-up menu is
@@ -230,6 +224,14 @@ that, see |g:mucomplete#no_mappings|.
 <c-h>
   When the pop-up menu is visible, try the previous completion
   method that can be applied.
+
+<c-e>
+<c-y>
+<cr>
+  MUcomplete defines a thin wrapper around these mappings, but it
+  does not change their function. If you want to prevent µcomplete
+  from defining these three mappings, see
+  |g:mucomplete#no_popup_mappings|.
 
 In your |vimrc|, you may override such mappings. For example, to
 use <c-j> and <c-k> instead of <tab> and <s-tab>, use:
@@ -402,12 +404,28 @@ Set to 1 to enable automatic completion at startup.
   let g:mucomplete#enable_auto_at_startup = 0
 <
                                         *'g:mucomplete#no_mappings'*
-Set to 1 to prevent µcomplete to define any mapping.
+When set to 1, µcomplete does not define any mapping.
 >
   let g:mucomplete#no_mappings = 0
 <
 Note: µcomplete also supports |no_plugin_maps|.
 
+                                 *'g:mucomplete#no_popup_mappings'*
+Set to 1 to prevent µcomplete from mapping <c-e>, <c-y> and <cr>.
+>
+  let g:mucomplete#no_popup_mappings = 0
+<
+You may safely set this variable to 1 if you use manual completion
+exclusively. These mappings, however, are necessary for automatic
+completion, so if you disable them (likely because they conflict
+with some other plugin or with your own mappings), you will need to
+provide alternative definitions in your `vimrc`. This is how they
+are defined by µcomplete:
+>
+  imap <c-e> <plug>(MUcompleteCte)
+  imap <c-y> <plug>(MUcompleteCty)
+  imap <cr> <plug>(MUcompleteCR)
+<
                                     *'g:mucomplete#spel#good_words'*
 Set to 1 if you want spelling suggestions (similar words) even for
 words that are spelled correctly. By default, no suggestions are
@@ -611,6 +629,15 @@ MUcomplete tries to be a responsible citizen in Vimland. This
 section describes how to make it peacefully coexist with other
 plugins.
 
+endwise.vim ~
+This plugin maps <cr> in Insert mode in a way that conflicts with
+µcomplete's default mapping. The simplest way to resolve the
+conflict is to override µcomplete's definition of <cr> in your
+`vimrc`, as follows:
+>
+  imap <Plug>MyCR <Plug>(MUcompleteCR)
+  imap <cr> <Plug>MyCR
+<
 PHP + UltiSnips ~
 In some versions of Vim, there is a (now solved) compatibility issue
 between PHP's |'omnifunc'| function and UltiSnips. This bug is hit

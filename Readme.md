@@ -44,16 +44,8 @@ Mandatory Vim settings:
   set completeopt+=menuone
 ```
 
-For automatic completion, you also need to put these in your `vimrc`:
-
-```vim
-  inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-  inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-  inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
-```
-
-and *at least one* of the following (choose the combination that best fits your
-taste):
+For automatic completion, you also need to put *at least one* of the following
+in your `vimrc` (choose the combination that best fits your taste):
 
 ```vim
   set completeopt+=noselect
