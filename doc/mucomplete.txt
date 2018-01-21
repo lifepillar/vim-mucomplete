@@ -702,7 +702,7 @@ Before reporting a bug, please do the following:
   |g:mucomplete#can_complete|).
 
 - Make sure that <c-r> is not mapped in Insert mode. The following command
-  should return 'No mapping found': >
+  should return "No mapping found": >
 
 	 :imap <c-r>
 <
