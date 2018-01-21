@@ -67,11 +67,11 @@ Other recommended settings:
 Press <tab> in Insert mode to complete a word. This will sequentially trigger
 the methods specified in |g:mucomplete#chains|, until some results are found.
 You may use <s-tab> to try the same list of methods in reverse order. For
-example, if the current completion chain is `['omni', 'keyn']` (see
+example, if the current completion chain is ["omni", "keyn"] (see
 |mucomplete-methods|), then pressing <tab> will cause omni completion to be
 attempted first (provided that 'omnifunc' is defined). If 'omnifunc' is
 not defined or the omni completion function returns no results, then µcomplete
-will fallback to local keyword completion (`'keyn'`). Pressing <s-tab> will
+will fallback to local keyword completion ("keyn"). Pressing <s-tab> will
 trigger keyword completion first, and fallback to omni completion if
 necessary. You may define arbitrarily long completion chains, and even
 filetype-specific or buffer-specific completion chains.
@@ -108,32 +108,32 @@ MUcomplete supports all the completion methods described in |ins-completion|
 (but not all of them are enabled by default; see |g:mucomplete#chains|). Each
 method is defined by a string:
 
-`'c-n'` : keywords in 'complete' (search forwards);
-`'c-p'` : keywords in 'complete' (search backwards);
-`'cmd'` : Vim command line;
-`'defs'`: definitions or macros;
-`'dict'`: keywords in 'dictionary';
-`'file'`: file names;
-`'incl'`: keywords in the current and included files;
-`'keyn'`: keywords in the current file (search forwards);
-`'keyp'`: keywords in the current file (search backwards);
-`'line'`: whole lines;
-`'omni'`: omni completion ('omnifunc');
-`'spel'`: spelling suggestions;
-`'tags'`: tags;
-`'thes'`: keywords in 'thesaurus';
-`'user'`: user defined completion ('completefunc').
+"c-n" : keywords in 'complete' (search forwards);
+"c-p" : keywords in 'complete' (search backwards);
+"cmd" : Vim command line;
+"defs": definitions or macros;
+"dict": keywords in 'dictionary';
+"file": file names;
+"incl": keywords in the current and included files;
+"keyn": keywords in the current file (search forwards);
+"keyp": keywords in the current file (search backwards);
+"line": whole lines;
+"omni": omni completion ('omnifunc');
+"spel": spelling suggestions;
+"tags": tags;
+"thes": keywords in 'thesaurus';
+"user": user defined completion ('completefunc').
 
 Besides, µcomplete implements its own alternative file completion and spelling
 suggestions:
 
-`'path'`: file names (µcomplete's implementation).
-`'uspl'`: spelling suggestions (µcomplete's implementation).
+"path": file names (µcomplete's implementation).
+"uspl": spelling suggestions (µcomplete's implementation).
 
 If you have installed UltiSnips, there is also a method to get suggestions for
 snippets (if you use SnipMate, see |mucomplete-compatibility|):
 
-`'ulti'`: UltiSnips snippets.
+"ulti": UltiSnips snippets.
 
 Additional completion methods may be defined by the user with
 |g:mucomplete#user_mappings|.
@@ -141,20 +141,20 @@ Additional completion methods may be defined by the user with
 ==============================================================================
 5. Path completion				*mucomplete-path-complete*
 
-MUcomplete provides two different methods to complete file paths: `'file'` and
-`'path'`. The `'file'` completion method is based on Vim's built-in file
+MUcomplete provides two different methods to complete file paths: "file" and
+"path". The "file" completion method is based on Vim's built-in file
 completion and works exactly as |i_CTRL-X_CTRL-F|. A limitation of the
-`'file'` method is that it does not expand paths containing spaces (in
+"file" method is that it does not expand paths containing spaces (in
 principle, one could add a space to 'isfname', but that is not recommended:
 see 'isfname' for the details). Another limitation is that relative paths are
 always completed with respect to the current working directory.
 
-MUcomplete also implements its own path completion method, called `'path'`,
-which is enabled by default. It differs from `'file'` because no slash
+MUcomplete also implements its own path completion method, called "path",
+which is enabled by default. It differs from "file" because no slash
 (backslash in Windows) is appended when completing a path, and paths with
-spaces are expanded correctly. Apart from that, the `'path'` method still uses
+spaces are expanded correctly. Apart from that, the "path" method still uses
 'isfname' to decide which characters define path names. Besides, with the
-`'path'` method it is possible to complete paths relative to the directory of
+"path" method it is possible to complete paths relative to the directory of
 the current buffer (see |g:mucomplete#buffer_relative_paths|).
 
 See also |mucomplete-tips|.
@@ -162,14 +162,14 @@ See also |mucomplete-tips|.
 ==============================================================================
 6. Spelling suggestions				*mucomplete-spel-complete*
 
-The `'spel'` method invokes |i_CTRL-X_s| to perform the completion. Such
+The "spel" method invokes |i_CTRL-X_s| to perform the completion. Such
 mapping causes Vim to search for a badly spelled word in the current line
 anywhere before the cursor. This is especially puzzling when automatic
 completion is on, because Vim's behaviour may make the cursor jump to
 a previous, possibly distant, column.
 
 For this reason, µcomplete implements an alternative completion method, called
-`'uspl'`. This still uses Vim's built-in spelling features (see
+"uspl". This still uses Vim's built-in spelling features (see
 |spellbadword()| and |spellsuggest()|), but it looks only at the word
 immediately before the cursor. It also has a couple of options (see
 |mucomplete-customization|). This is the recommended spelling method to use,
@@ -262,7 +262,7 @@ relative to the current working directory (see `:pwd`).
 >
 	let g:mucomplete#buffer_relative_paths = 0
 <
-Note: this setting affects only the `'path'` method, not the `'file'` method.
+Note: this setting affects only the "path" method, not the "file" method.
 
 						*'g:mucomplete#can_complete'*
 A Dictionary defining the conditions to be verified for a given method to be
@@ -311,8 +311,8 @@ filetype-specific conditions. For example, if you put this in your |vimrc|:
 		\ }
 	let g:mucomplete#can_complete.cpp = { 'omni': { t -> t =~# '::$' } }
 <
-then µcomplete will perform a custom check for `'uspl'` completion in all
-buffers, and a custom check for `'omni'` completion in cpp buffers. In all the
+then µcomplete will perform a custom check for "uspl" completion in all
+buffers, and a custom check for "omni" completion in cpp buffers. In all the
 other cases, the default conditions will be checked.
 
 							*'b:mucomplete_chain'*
@@ -390,7 +390,7 @@ You may safely set this variable to 1 if you use manual completion
 exclusively. These mappings, however, are necessary for automatic completion,
 so if you disable them (likely because they conflict with some other plugin or
 with your own mappings), you will need to provide alternative definitions in
-your `vimrc`. This is how they are defined by µcomplete:
+your |vimrc|. This is how they are defined by µcomplete:
 >
 	imap <c-e> <plug>(MUcompleteCte)
 	imap <c-y> <plug>(MUcompleteCty)
@@ -399,11 +399,11 @@ your `vimrc`. This is how they are defined by µcomplete:
 					*'g:mucomplete#spel#good_words'*
 Set to 1 if you want spelling suggestions (similar words) even for words that
 are spelled correctly. By default, no suggestions are returned for good words
-by the `'uspl'` method.
+by the "uspl" method.
 >
 	let g:mucomplete#spel#good_words = 0
 <
-Note: this setting does not affect the `'spel'` method.
+Note: this setting does not affect the "spel" method.
 
 					*'g:mucomplete#popup_direction'*
 >
@@ -422,28 +422,28 @@ The default behaviour may be overridden for each completion type by setting
 |g:mucomplete#popup_direction| in your |vimrc|. The value of this variable is
 a Dictionary mapping completion methods to 1 or -1, where 1 means "select from
 top to bottom" and -1 means "select from bottom to top". For instance, if you
-want `'path'` completion to be bottom-to-top, you need to put this in your
+want "path" completion to be bottom-to-top, you need to put this in your
 |vimrc|:
 >
 	let g:mucomplete#popup_direction = { 'path' : -1 }
 <
-If you also want to invert the direction of `'c-p'` completion, you may write:
+If you also want to invert the direction of "c-p" completion, you may write:
 >
 	let g:mucomplete#popup_direction = { 'path' : -1, 'c-p': 1 }
 <
 For the completion methods not explicitly mentioned in the value of
 |g:mucomplete#popup_direction|, the natural value is assumed, i.e., -1 for
-`'c-p'` and `'keyp'`, and 1 for all the other methods.
+"c-p" and "keyp", and 1 for all the other methods.
 
 						*'g:mucomplete#spel#max'*
-The maximum number of spelling suggestions offered by the `'uspl'` method.
+The maximum number of spelling suggestions offered by the "uspl" method.
 >
 	let g:mucomplete#spel#max = 25
 <
-Note: this setting does not affect the `'spel'` method.
+Note: this setting does not affect the "spel" method.
 
 				*'g:mucomplete#ultisnips#match_at_start'*
-By default, the `'ulti'` method returns the snippets whose name starts with
+By default, the "ulti" method returns the snippets whose name starts with
 the word in front of the cursor. Set this to 0 to return all the snippets that
 contain the word in front of the cursor.
 >
@@ -555,7 +555,7 @@ completion returns no results, or when you press <s-tab>. During normal
 typing, only keyword completion will be active.
 
 Optimize your completion chains ~
-The `'c-n'`, `'c-p'` and `'line'` methods allow you to aggregate completion
+The "c-n", "c-p" and "line" methods allow you to aggregate completion
 suggestions from several sources (see 'complete'), including dictionaries and
 tags. While this is handy, it may have a couple of drawbacks: first, you may
 get too many suggestions, making completion less useful; second, you may incur
@@ -598,13 +598,13 @@ In some versions of Vim, there is a (now solved) compatibility issue between
 PHP's 'omnifunc' function and UltiSnips. This bug is hit by µcomplete when:
 
 - automatic completion is on;
-- the `'omni'` method is in your completion chain;
+- the "omni" method is in your completion chain;
 - you try to move between the different parts of a snippet while expanding
   a snippet (and you discover that you can't).
 
 There are two workarounds if you still want to use UltiSnips with PHP:
 
-- remove `'omni'` from PHP's completion chain;
+- remove "omni" from PHP's completion chain;
 - disable automatic completion (and do not trigger completion during snippet
   expansion).
 
@@ -701,8 +701,8 @@ Before reporting a bug, please do the following:
   please check whether the corresponding condition is satisfied (see
   |g:mucomplete#can_complete|).
 
-- Make sure that <c-r> is not mapped. The following command should return 'No
-  mapping found': >
+- Make sure that <c-r> is not mapped in Insert mode. The following command
+  should return 'No mapping found': >
 
 	 :imap <c-r>
 <
