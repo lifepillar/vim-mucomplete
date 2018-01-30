@@ -77,7 +77,7 @@ let s:compl_mappings = extend({
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
 let s:select_dir = extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
-let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
+let s:pathsep = exists('+shellslash') && !&shellslash ? '\\\|\/' : '/'
 
 " Internal state
 let s:compl_methods = ['keyn'] " Current completion chain
