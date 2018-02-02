@@ -277,7 +277,7 @@ whether the corresponding method can be applied or not.
 		\ 'defs': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
 		\ 'dict': { t -> strlen(&l:dictionary) > 0
 		\             && (g:mucomplete_with_key || t =~# '\m\a\a$')},
-		\ 'file': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+		\ 'file': { t -> t =~# '\m'.s:pathstart.'\f*$' },
 		\ 'incl': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
 		\ 'keyn': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
 		\ 'keyp': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
@@ -292,13 +292,16 @@ whether the corresponding method can be applied or not.
 		\             && t =~# '\m\a\a\a$' },
 		\ 'user': { t -> strlen(&l:completefunc) > 0
 		\             && (g:mucomplete_with_key || t =~# '\m\k\k$')},
-		\ 'path': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+		\ 'path': { t -> t =~# '\m'.s:pathstart.'\f*$' },
 		\ 'uspl': { t -> &l:spell
 		\             && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
 		\ 'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0)
 		\             && (g:mucomplete_with_key || t =~# '\m\k\k$')}
 		\ }}
 <
+In the default value above, s:pathstart is a character class containing the
+characters that are allowed to start a path (typically, tilde and slashes).
+
 If no key is found in |g:mucomplete#can_complete| for the current method, such
 method is tried unconditionally.
 
