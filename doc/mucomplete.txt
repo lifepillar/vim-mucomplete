@@ -459,7 +459,7 @@ By default, paths with forward slashes are completed as well.
 	let g:mucomplete#use_only_windows_paths = 0
 <
 Note: if 'shellslash' is set, only paths with forward slashes are used, no
-matter what the valye of this option is.
+matter what the value of this option is.
 
 Note: this option is relevant only for Windows users.
 
