@@ -77,7 +77,9 @@ let s:compl_mappings = extend({
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
 let s:select_dir = extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
-let s:pathsep = exists('+shellslash') && !&shellslash ? '\\\|\/' : '/'
+let s:pathstart = exists('+shellslash') && !&shellslash
+      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
+      \ : '[/~]'
 
 " Internal state
 let s:compl_methods = ['keyn'] " Current completion chain
@@ -159,7 +161,7 @@ if has('lambda')
         \     'cmd' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
         \     'defs': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
         \     'dict': { t -> strlen(&l:dictionary) > 0 && (g:mucomplete_with_key || t =~# '\m\a\a$') },
-        \     'file': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+        \     'file': { t -> t =~# '\m\%('.s:pathstart.'\|\~\)\f*$' },
         \     'incl': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
         \     'keyn': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
         \     'keyp': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
@@ -169,7 +171,7 @@ if has('lambda')
         \     'tags': { t -> !empty(tagfiles()) && (g:mucomplete_with_key || t =~# '\m\k\k$') },
         \     'thes': { t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' },
         \     'user': { t -> strlen(&l:completefunc) > 0 && (g:mucomplete_with_key || t =~# '\m\k\k$') },
-        \     'path': { t -> t =~# '\m\%('.s:pathsep.'\|\~\)\f*$' },
+        \     'path': { t -> t =~# '\m'.s:pathstart.'\%(\f\|\s\)*$' },
         \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
         \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && (g:mucomplete_with_key || t =~# '\m\k\k$') }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))

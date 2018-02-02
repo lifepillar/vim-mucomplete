@@ -449,6 +449,17 @@ contain the word in front of the cursor.
 >
 	let g:mucomplete#ultisnips#match_at_start = 1
 <
+					*'g:mucomplete#use_only_windows_paths'*
+When this option is set, path completion in Windows uses only backslashes.
+By default, paths with forward slashes are completed as well.
+>
+	let g:mucomplete#use_only_windows_paths = 0
+<
+Note: if 'shellslash' is set, only paths with forward slashes are used, no
+matter what the valye of this option is.
+
+Note: this option is relevant only for Windows users.
+
 						*'g:mucomplete#user_mappings'*
 A Dictionary of user-defined completion methods. For example:
 >
