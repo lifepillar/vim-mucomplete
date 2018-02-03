@@ -154,26 +154,27 @@ let g:mucomplete#chains = extend({
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
   let s:yes_you_can = { _ -> 1 } " Try always
+  let s:is_keyword = { t -> (g:mucomplete_with_key && t =~# '\m\k$') || t =~# '\m\k\k$' }
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
-        \     'c-n' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-        \     'c-p' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-        \     'cmd' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-        \     'defs': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-        \     'dict': { t -> strlen(&l:dictionary) > 0 && (g:mucomplete_with_key || t =~# '\m\a\a$') },
-        \     'incl': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-        \     'keyn': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-        \     'keyp': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-        \     'line': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
+        \     'c-n' : s:is_keyword,
+        \     'c-p' : s:is_keyword,
+        \     'cmd' : s:is_keyword,
+        \     'defs': s:is_keyword,
+        \     'dict': { t -> strlen(&l:dictionary) > 0 && ((g:mucomplete_with_key && t =~# '\m\a$') || t =~# '\m\a\a$') },
         \     'file': { t -> t =~# '\m'.s:pathstart.'\f*$' },
-        \     'omni': { t -> strlen(&l:omnifunc) > 0 && (g:mucomplete_with_key || t =~# '\m\k\k$') },
+        \     'incl': s:is_keyword,
+        \     'keyn': s:is_keyword,
+        \     'keyp': s:is_keyword,
+        \     'line': s:is_keyword,
+        \     'omni': { t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) },
         \     'spel': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
-        \     'tags': { t -> !empty(tagfiles()) && (g:mucomplete_with_key || t =~# '\m\k\k$') },
+        \     'tags': { t -> !empty(tagfiles()) && s:is_keyword(t) },
         \     'thes': { t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' },
-        \     'user': { t -> strlen(&l:completefunc) > 0 && (g:mucomplete_with_key || t =~# '\m\k\k$') },
+        \     'user': { t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) },
         \     'path': { t -> t =~# '\m'.s:pathstart.'\%(\f\|\s\)*$' },
         \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
-        \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && (g:mucomplete_with_key || t =~# '\m\k\k$') }
+        \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
