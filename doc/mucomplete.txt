@@ -268,7 +268,9 @@ Note: this setting affects only the "path" method, not the "file" method.
 A Dictionary defining the conditions that must be satisfied for a given method
 to be tried. Each condition is a |lambda|, |function()| or |funcref()| with
 one argument (the text to be completed), which returns either 1 or 0,
-according to whether the corresponding method should be tried or not.
+according to whether the corresponding method should be tried or not. The
+argument of such functions consists of |g:mucomplete#look_behind|
+characters before the cursor.
 
 When auto-completion is on, by default most completion methods are enabled
 when there are at least two keyword characters in front of the cursor (see
