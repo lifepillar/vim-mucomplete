@@ -44,7 +44,7 @@ Mandatory Vim settings:
   set completeopt+=menuone
 ```
 
-For automatic completion, you also need to put *at least one* of the following
+For automatic completion, you also need to put at least one of the following
 in your `vimrc` (choose the combination that best fits your taste):
 
 ```vim
@@ -70,9 +70,19 @@ let g:mucomplete#enable_auto_at_startup = 1
 in your `.vimrc`. Automatic completion may be enabled and disabled at
 any time with `:MUcompleteAutoToggle`.
 
-When the pop-up menu is visible, you may cycle back and forth through
-the completion methods in the current completion chain by pressing
-`<c-h>` and `<c-j>`, respectively. See below for an example.
+By default, µcomplete attempts:
+
+1. path completion, if the text in front of the cursor looks like a path;
+2. omni-completion, if enabled in the current buffer;
+3. buffer keyword completion;
+4. dictionary completion, if a dictionary is set for the current buffer;
+5. spelling completion, if `'spell'` is on and `'spelllang'` is set;
+
+in this order (this is called a *completion chain*). At the first successful
+attempt, the pop-up menu shows the results. When the pop-up menu is visible,
+you may cycle back and forth through the completion chain and try different
+completion methods by pressing `<c-h>` and `<c-j>`, respectively. See below
+for an example.
 
 MUcomplete is fully customizable. See `:help mucomplete.txt` for
 detailed documentation.
