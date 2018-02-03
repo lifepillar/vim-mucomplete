@@ -154,14 +154,14 @@ let g:mucomplete#chains = extend({
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
   let s:yes_you_can = { _ -> 1 } " Try always
-  let s:is_keyword = { t -> (g:mucomplete_with_key && t =~# '\m\k$') || t =~# '\m\k\k$' }
+  let s:is_keyword = { t -> g:mucomplete_with_key || t =~# '\m\k\k$' }
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'c-n' : s:is_keyword,
         \     'c-p' : s:is_keyword,
         \     'cmd' : s:is_keyword,
         \     'defs': s:is_keyword,
-        \     'dict': { t -> strlen(&l:dictionary) > 0 && ((g:mucomplete_with_key && t =~# '\m\a$') || t =~# '\m\a\a$') },
+        \     'dict': { t -> strlen(&l:dictionary) > 0 && (g:mucomplete_with_key || t =~# '\m\a\a$') },
         \     'file': { t -> t =~# '\m'.s:pathstart.'\f*$' },
         \     'incl': s:is_keyword,
         \     'keyn': s:is_keyword,
