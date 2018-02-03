@@ -48,7 +48,7 @@ later recommended). MUcomplete is compatible with NeoVim.
 MUcomplete is developed and tested on Vim 8.
 
 ==============================================================================
-3. Getting started					*mucomplete-howto*
+3. Getting started				*mucomplete-howto*
 
 Mandatory Vim settings:
 >
@@ -102,7 +102,7 @@ In detail, this is the algorithm used by µcomplete:
 	       stop; otherwise, try the next method.
 
 ==============================================================================
-4. Completion methods					*mucomplete-methods*
+4. Completion methods				*mucomplete-methods*
 
 MUcomplete supports all the completion methods described in |ins-completion|
 (but not all of them are enabled by default; see |g:mucomplete#chains|). Each
@@ -178,19 +178,19 @@ default completion chain, although it is actively used only when 'spell' is
 on.
 
 ==============================================================================
-7. Commands						*mucomplete-commands*
+7. Commands					*mucomplete-commands*
 
-							*:MUcompleteAutoOn*
+						*:MUcompleteAutoOn*
 Enable automatic completion.
 
-							*:MUcompleteAutoOff*
+						*:MUcompleteAutoOff*
 Disable automatic completion.
 
-							*:MUcompleteAutoToggle*
+						*:MUcompleteAutoToggle*
 Toggle automatic completion.
 
 ==============================================================================
-8. Mappings						*mucomplete-mappings*
+8. Mappings					*mucomplete-mappings*
 
 By default, µcomplete maps the keys below in Insert mode. If you do not want
 µcomplete to define any mapping, set |g:mucomplete#no_mappings|.
@@ -282,9 +282,10 @@ synonyms) alphabetic characters in front of the cursor.
 
 When completion is triggered manually, one non-whitespace character in front
 of the cursor is enough to enable all the methods in the current completion
-chain. When |g:mucomplete#empty_text| is set, completion can be triggered with
-<tab> even when the cursor is preceded by a space or is located at the start
-of the line (this is useful in very limited circumstances).
+chain, except for spelling and synonyms, which still require three characters.
+When |g:mucomplete#empty_text| is set, completion can be triggered with <tab>
+even when the cursor is preceded by a space or is located at the start of the
+line (this is useful in very limited circumstances).
 
 If no key is found in |g:mucomplete#can_complete| for the current completion
 method, such method is tried unconditionally.
@@ -300,7 +301,7 @@ your |vimrc|:
 	let g:mucomplete#can_complete.cpp     = { 'omni': s:cpp_cond }
 <
 then µcomplete will perform a custom check for "uspl" completion in all
-buffers (enabling spelling completion only when the lanuage in English and
+buffers (enabling spelling completion only when the language is English and
 there are at least four alphabetic characters in front of the cursor), and
 a custom check for "omni" completion in cpp buffers (enabling omni-completion
 only after -> and ::). In all the other cases, the default conditions will be
@@ -318,10 +319,11 @@ A Dictionary defining the Lists of completion chains.
 		\ 'vim'     : ['path', 'cmd', 'keyn']
 		\ }
 <
-In your |vimrc|, you may override the defaults or add filetype-specific
+In your |vimrc|, you may override the default or add filetype-specific
 completion chains. For example:
 >
-	let g:mucomplete#chains = { 'default': ['omni', 'c-p'] }
+	let g:mucomplete#chains = {}
+	let g:mucomplete#chains.default  = ['omni', 'c-p'] 
 	let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
 						*'g:mucomplete#cycle_all'*
@@ -502,12 +504,12 @@ that? ~
 You may adapt the following snippet:
 >
 	fun! MyTabAction()
-		if some_condition_is_verified
-			" Do something
-			return ""
-		else
-			return "\<plug>(MyFwd)"
-		endif
+	  if some_condition_is_verified
+	    " Do something
+	    return ""
+	  else
+	    return "\<plug>(MyFwd)"
+	  endif
 	endf
 
 	imap <plug>(MyFwd) <plug>(MUcompleteFwd)
@@ -519,26 +521,26 @@ directory. This can be easily achieved by defining the following mapping in
 your |vimrc|:
 >
 	function! IsBehindDir()
-		return strpart(getline('.'), 0, col('.') - 1)  =~# '\f\+/$'
+	  return strpart(getline('.'), 0, col('.') - 1)  =~# '\f\+/$'
 	endfunction
 
 	imap <expr> / pumvisible() && IsBehindDir()
-				\ ? "\<c-y>\<plug>(MUcompleteFwd)"
-				\ : '/'
+	     \ ? "\<c-y>\<plug>(MUcompleteFwd)"
+	     \ : '/'
 <
 Use different values of completeopt ~
 If you want to use different values of 'completeopt' (or other settings) for
 manual and automatic completion, you may adapt the following snippet:
 >
 	fun! ToggleCompleteopt()
-		MUcompleteAutoToggle
-		if exists('#MUcompleteAuto')
-			" Settings for automatic completion
-			set completeopt-=noinsert,noselect
-		else
-			" Settings for manual completion
-			set completeopt+=noinsert,noselect
-		endif
+	  MUcompleteAutoToggle
+	  if exists('#MUcompleteAuto')
+	    " Settings for automatic completion
+	    set completeopt-=noinsert,noselect
+	  else
+	    " Settings for manual completion
+	    set completeopt+=noinsert,noselect
+	  endif
 	endf
 
 	command! MyMUcompleteToggle call ToggleCompleteopt()
@@ -560,10 +562,10 @@ define:
 >
 	let g:mucomplete#can_complete = {}
 	let g:mucomplete#can_complete.default = {
-		\  'thes': {
-		\     t -> g:mucomplete_with_key && strlen(&l:thesaurus) > 0
-		\   }
-		\ }
+	    \  'thes': {
+	    \     t -> g:mucomplete_with_key && strlen(&l:thesaurus) > 0
+	    \   }
+	    \ }
 	" Add "thes" to your completion chains, e.g.:
 	let g:mucomplete#chains = { 'default': ['keyn', 'thes'] }
 <
@@ -635,8 +637,8 @@ In your |vimrc|, set:
 Then, define a custom completion method:
 >
 	let g:mucomplete#user_mappings = {
-		\ 'snip' : "\<plug>snipMateShow"
-		\ }
+	    \ 'snip' : "\<plug>snipMateShow"
+	    \ }
 <
 and add it to your completion chain(s). For example:
 >
@@ -645,7 +647,7 @@ and add it to your completion chain(s). For example:
 You may also find it convenient to define SnipMate's trigger as follows:
 >
 	imap <expr> <c-j> (pumvisible() ? "\<c-y>" : "")
-		\       . "\<plug>snipMateNextOrTrigger"
+	    \             . "\<plug>snipMateNextOrTrigger"
 <
 so you can expand a snippet while the pop-up menu is still visible. By the
 way, if you use <c-j> in the mapping above, do not forget to map
