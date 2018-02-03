@@ -90,6 +90,7 @@ let s:compl_text = ''          " Text to be completed
 let s:dir = 1                  " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:cancel_auto = 0          " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
 let s:insertcharpre = 0        " Was a non-whitespace character inserted?
+let s:complete_empty_text = 0  " When set to 1, completion is tried even at the start of the line or after a space
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
 fun! mucomplete#popup_exit(ctrl)
@@ -154,14 +155,14 @@ let g:mucomplete#chains = extend({
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
   let s:yes_you_can = { _ -> 1 } " Try always
-  let s:is_keyword = { t -> g:mucomplete_with_key || t =~# '\m\k\k$' }
+  let s:is_keyword = { t -> t =~# '\m\k\k$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\k$')) }
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'c-n' : s:is_keyword,
         \     'c-p' : s:is_keyword,
         \     'cmd' : s:is_keyword,
         \     'defs': s:is_keyword,
-        \     'dict': { t -> strlen(&l:dictionary) > 0 && (g:mucomplete_with_key || t =~# '\m\a\a$') },
+        \     'dict': { t -> strlen(&l:dictionary) > 0 && (t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$')) },
         \     'file': { t -> t =~# '\m'.s:pathstart.'\f*$' },
         \     'incl': s:is_keyword,
         \     'keyn': s:is_keyword,
@@ -281,7 +282,8 @@ fun! mucomplete#tab_complete(dir)
     return mucomplete#cycle_or_select(a:dir)
   else
     let s:compl_text = mucomplete#get_compl_text()
-    if (empty(s:compl_text) || s:compl_text =~# '\m\s$') && !get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0))
+    let s:complete_empty_text = get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0))
+    if (empty(s:compl_text) || s:compl_text =~# '\m\s$') && !s:complete_empty_text
       return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
     endif
     call mucomplete#init(a:dir, 1)
