@@ -284,7 +284,7 @@ When completion is triggered manually, one non-whitespace character in front
 of the cursor is enough to enable all the methods in the current completion
 chain. When |g:mucomplete#empty_text| is set, completion can be triggered with
 <tab> even when the cursor is preceded by a space or is located at the start
-of the line.
+of the line (this is useful in very limited circumstances).
 
 If no key is found in |g:mucomplete#can_complete| for the current completion
 method, such method is tried unconditionally.
@@ -293,15 +293,18 @@ The default behaviour described above may be changed for each completion
 method or overridden based on the filetype. For example, if you put this in
 your |vimrc|:
 >
-	let s:spl_cond = { t -> &l:spelllang == 'en' && t =~# '\a\{4} }
+	let s:spl_cond = { t -> &l:spelllang == 'en' && t =~# '\a\{4}$' }
 	let s:cpp_cond = { t -> t =~# '\%(->\|::\)$' }
 	let g:mucomplete#can_complete = {}
 	let g:mucomplete#can_complete.default = { 'uspl': s:spl_cond }
 	let g:mucomplete#can_complete.cpp     = { 'omni': s:cpp_cond }
 <
 then µcomplete will perform a custom check for "uspl" completion in all
-buffers, and a custom check for "omni" completion in cpp buffers. In all the
-other cases, the default conditions will be checked.
+buffers (enabling spelling completion only when the lanuage in English and
+there are at least four alphabetic characters in front of the cursor), and
+a custom check for "omni" completion in cpp buffers (enabling omni-completion
+only after -> and ::). In all the other cases, the default conditions will be
+checked.
 
 							*'b:mucomplete_chain'*
 A List specifying a completion chain for the current buffer only. When this
