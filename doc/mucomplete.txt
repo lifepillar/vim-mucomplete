@@ -265,54 +265,37 @@ relative to the current working directory (see `:pwd`).
 Note: this setting affects only the "path" method, not the "file" method.
 
 						*'g:mucomplete#can_complete'*
-A Dictionary defining the conditions to be verified for a given method to be
-applied. Each condition is a |lambda|, |function()| or |funcref()| with one
-argument (the text to be completed), which returns either 1 or 0, according to
-whether the corresponding method can be applied or not.
->
-	let g:mucomplete#can_complete = { 'default' : {
-		\ 'c-n' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'c-p' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'cmd' : { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'defs': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'dict': { t -> strlen(&l:dictionary) > 0
-		\             && (g:mucomplete_with_key || t =~# '\m\a\a$')},
-		\ 'file': { t -> t =~# '\m'.s:pathstart.'\f*$' },
-		\ 'incl': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'keyn': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'keyp': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'line': { t -> g:mucomplete_with_key || t =~# '\m\k\k$' },
-		\ 'omni': { t -> strlen(&l:omnifunc) > 0
-		\             && (g:mucomplete_with_key || t =~# '\m\k\k$')},
-		\ 'spel': { t -> &l:spell
-		\             && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
-		\ 'tags': { t -> !empty(tagfiles())
-		\             && (g:mucomplete_with_key || t =~# '\m\k\k$')},
-		\ 'thes': { t -> strlen(&l:thesaurus) > 0
-		\             && t =~# '\m\a\a\a$' },
-		\ 'user': { t -> strlen(&l:completefunc) > 0
-		\             && (g:mucomplete_with_key || t =~# '\m\k\k$')},
-		\ 'path': { t -> t =~# '\m'.s:pathstart.'\f*$' },
-		\ 'uspl': { t -> &l:spell
-		\             && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
-		\ 'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0)
-		\             && (g:mucomplete_with_key || t =~# '\m\k\k$')}
-		\ }}
-<
-In the default value above, s:pathstart is a character class containing the
-characters that are allowed to start a path (typically, tilde and slashes).
+A Dictionary defining the conditions that must be satisfied for a given method
+to be tried. Each condition is a |lambda|, |function()| or |funcref()| with
+one argument (the text to be completed), which returns either 1 or 0,
+according to whether the corresponding method should be tried or not.
 
-If no key is found in |g:mucomplete#can_complete| for the current method, such
-method is tried unconditionally.
+When auto-completion is on, by default most completion methods are enabled
+when there are at least two keyword characters in front of the cursor (see
+'iskeyword'). The exceptions are file and path completions, which look at
+a longer portion of the text (whose length is determined by
+|g:mucomplete#look_behind|) and "linguistic" methods (dictionary, spelling,
+synonyms), which require two (for dictionary) or three (for spelling and
+synonyms) alphabetic characters in front of the cursor.
 
-In your |vimrc|, you may override some or all the default conditions or add
-filetype-specific conditions. For example, if you put this in your |vimrc|:
+When completion is triggered manually, one non-whitespace character in front
+of the cursor is enough to enable all the methods in the current completion
+chain. When |g:mucomplete#empty_text| is set, completion can be triggered with
+<tab> even when the cursor is preceded by a space or is located at the start
+of the line.
+
+If no key is found in |g:mucomplete#can_complete| for the current completion
+method, such method is tried unconditionally.
+
+The default behaviour described above may be changed for each completion
+method or overridden based on the filetype. For example, if you put this in
+your |vimrc|:
 >
+	let s:spl_cond = { t -> &l:spelllang == 'en' && t =~# '\a\{4} }
+	let s:cpp_cond = { t -> t =~# '\%(->\|::\)$' }
 	let g:mucomplete#can_complete = {}
-	let g:mucomplete#can_complete.default = {
-		\ 'uspl' : { t -> &l:spelllang == 'en' && t =~# '\a\{4}$' }
-		\ }
-	let g:mucomplete#can_complete.cpp = { 'omni': { t -> t =~# '::$' } }
+	let g:mucomplete#can_complete.default = { 'uspl': s:spl_cond }
+	let g:mucomplete#can_complete.cpp     = { 'omni': s:cpp_cond }
 <
 then µcomplete will perform a custom check for "uspl" completion in all
 buffers, and a custom check for "omni" completion in cpp buffers. In all the
