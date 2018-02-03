@@ -281,11 +281,11 @@ fun! mucomplete#tab_complete(dir)
     return mucomplete#cycle_or_select(a:dir)
   else
     let s:compl_text = mucomplete#get_compl_text()
-    if get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || !empty(s:compl_text)
-      call mucomplete#init(a:dir, 1)
-      return s:next_method()
+    if (empty(s:compl_text) || s:compl_text =~# '\m\s$') && !get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0))
+      return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
     endif
-    return (a:dir > 0 ? "\<plug>(MUcompleteTab)" : "\<plug>(MUcompleteCtd)")
+    call mucomplete#init(a:dir, 1)
+    return s:next_method()
   endif
 endf
 
