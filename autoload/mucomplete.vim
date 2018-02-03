@@ -169,13 +169,13 @@ if has('lambda')
         \     'keyp': s:is_keyword,
         \     'line': s:is_keyword,
         \     'omni': { t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) },
+        \     'path': { t -> t =~# '\m'.s:pathstart.'\%(\f\|\s\)*$' },
         \     'spel': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
         \     'tags': { t -> !empty(tagfiles()) && s:is_keyword(t) },
         \     'thes': { t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' },
+        \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) },
         \     'user': { t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) },
-        \     'path': { t -> t =~# '\m'.s:pathstart.'\%(\f\|\s\)*$' },
-        \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
-        \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) }
+        \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
