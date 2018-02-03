@@ -14,15 +14,20 @@ fun! mucomplete#compat#yes_you_can(t)
 endf
 
 fun! mucomplete#compat#default(t)
-  return g:mucomplete_with_key || a:t =~# '\m\k\k$'
+  return a:t =~# '\m\k\k$' ||
+        \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || t =~# '\m\k$'))
 endf
 
 fun! mucomplete#compat#dict(t)
-  return strlen(&l:dictionary) > 0 && (g:mucomplete_with_key || a:t =~# '\m\a\a$')
+  return strlen(&l:dictionary) > 0 && (a:t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$'))
+endf
+
+fun! mucomplete#compat#file(t)
+  return a:t =~# '\m'.s:pathstart.'\f*$'
 endf
 
 fun! mucomplete#compat#omni(t)
-  return strlen(&l:omnifunc) > 0 && (g:mucomplete_with_key || a:t =~# '\m\k\k$')
+  return strlen(&l:omnifunc) > 0 && mucomplete#compat#default(a:t)
 endf
 
 fun! mucomplete#compat#spel(t)
@@ -30,7 +35,7 @@ fun! mucomplete#compat#spel(t)
 endf
 
 fun! mucomplete#compat#tags(t)
-  return !empty(tagfiles()) && (g:mucomplete_with_key || a:t =~# '\m\k\k$')
+  return !empty(tagfiles()) && mucomplete#compat#default(a:t)
 endf
 
 fun! mucomplete#compat#thes(t)
@@ -38,11 +43,7 @@ fun! mucomplete#compat#thes(t)
 endf
 
 fun! mucomplete#compat#user(t)
-  return strlen(&l:completefunc) > 0 && (g:mucomplete_with_key || a:t =~# '\m\k\k$')
-endf
-
-fun! mucomplete#compat#file(t)
-  return a:t =~# '\m'.s:pathstart.'\f*$'
+  return strlen(&l:completefunc) > 0 && mucomplete#compat#default(a:t)
 endf
 
 fun! mucomplete#compat#path(t)
@@ -50,7 +51,7 @@ fun! mucomplete#compat#path(t)
 endf
 
 fun! mucomplete#compat#ulti(t)
-  return get(g:, 'did_plugin_ultisnips', 0) && (g:mucomplete_with_key || a:t =~# '\m\k\k$')
+  return get(g:, 'did_plugin_ultisnips', 0) && mucomplete#compat#default(a:t)
 endf
 
 fun! mucomplete#compat#can_complete()
