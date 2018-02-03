@@ -5,7 +5,9 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:pathsep = exists('+shellslash') && !&shellslash ? '\\' : '/'
+let s:pathstart = exists('+shellslash') && !&shellslash
+      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
+      \ : '[/~]'
 
 fun! mucomplete#compat#yes_you_can(t)
   return 1
@@ -39,8 +41,12 @@ fun! mucomplete#compat#user(t)
   return strlen(&l:completefunc) > 0 && (g:mucomplete_with_key || a:t =~# '\m\k\k$')
 endf
 
+fun! mucomplete#compat#file(t)
+  return a:t =~# '\m'.s:pathstart.'\f*$'
+endf
+
 fun! mucomplete#compat#path(t)
-  return a:t =~# '\m\%('.s:pathsep.'\|\~\)\f*$'
+  return a:t =~# '\m'.s:pathstart.'\%(\f\|\s\)*$'
 endf
 
 fun! mucomplete#compat#ulti(t)
@@ -55,7 +61,7 @@ fun! mucomplete#compat#can_complete()
         \     'cmd' :  function('mucomplete#compat#default'),
         \     'defs':  function('mucomplete#compat#default'),
         \     'dict':  function('mucomplete#compat#dict'),
-        \     'file':  function('mucomplete#compat#path'),
+        \     'file':  function('mucomplete#compat#file'),
         \     'incl':  function('mucomplete#compat#default'),
         \     'keyn':  function('mucomplete#compat#default'),
         \     'keyp':  function('mucomplete#compat#default'),
