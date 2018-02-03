@@ -377,6 +377,21 @@ Set to 1 to enable automatic completion at startup.
 >
 	let g:mucomplete#enable_auto_at_startup = 0
 <
+						*'g:mucomplete#look_behind'*
+This is the maximum number of characters before the cursor that are considered
+when deciding which completion methods can be applied.
+>
+	let g:mucomplete#look_behind = 30
+<
+Most completion methods require a look-behind no greater than three. The
+exception is path completion: to determine whether the text before the cursor
+may be a path, µcomplete needs to find a path separator (or a tilde), which
+may occur anywhere before the cursor. This option sets a bound on the time
+required for the search, but it also means that, if a path component is very
+long, µcomplete may not trigger path completion. If you are dealing with paths
+having path components longer than 30 characters, you may need to increase the
+value of this option.
+
 						*'g:mucomplete#no_mappings'*
 When set to 1, µcomplete does not define any mapping.
 >

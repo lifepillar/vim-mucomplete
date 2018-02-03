@@ -108,7 +108,7 @@ fun! mucomplete#act_on_textchanged() " Assumes pumvisible() is false
   endif
   if s:insertcharpre
     let s:insertcharpre = 0
-    let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+    let s:compl_text = mucomplete#get_compl_text()
     call mucomplete#init(1, 0)
     while s:countdown > 0
       let s:countdown -= 1
@@ -266,11 +266,19 @@ fun! mucomplete#init(dir, tab_completion) " Initialize/reset internal state
   let s:i = s:dir > 0 ? -1 : s:N
 endf
 
+fun! mucomplete#get_compl_text()
+  return col('.') <= get(g:, 'mucomplete#look_behind', 30)
+        \ ? (col('.') == 1
+        \   ? ''
+        \   : getline('.')[0:col('.') - 2])
+        \ : getline('.')[col('.') - 1 - get(g:, 'mucomplete#look_behind', 30):col('.') - 2]
+endf
+
 fun! mucomplete#tab_complete(dir)
   if pumvisible()
     return mucomplete#cycle_or_select(a:dir)
   else
-    let s:compl_text = matchstr(getline('.'), '\S\+\%'.col('.').'c')
+    let s:compl_text = mucomplete#get_compl_text()
     if get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || !empty(s:compl_text)
       call mucomplete#init(a:dir, 1)
       return s:next_method()
