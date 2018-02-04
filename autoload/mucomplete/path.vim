@@ -55,7 +55,7 @@ fun! mucomplete#path#complete() abort
     if l:prefix ==# '~'
       let l:files = s:glob('~', 0, 1, 1)
       if !empty(l:files)
-        call complete(col('.') - 1, map(l:files, '{ "word": v:val, "menu": "[dir]" }'))
+        call complete(col('.') - 1, map(l:files, '{ "word": v:val, "menu": "[dir]", "icase": l:case_insensitive }'))
       endif
       return ''
     else
