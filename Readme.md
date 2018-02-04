@@ -6,37 +6,32 @@
 >
 >(Peter Gabriel)
 
-# MUcomplete
+# What is it?
 
-Can't stand the dozen of MB of YouCompleteMe? Can't figure out the
-correct settings to tame NeoComplete? D'you think AutoComplPop is an
-old fashioned fusion group and Supertab a movie hero for children?
+MUcomplete (or µcomplete) is a minimalist autocompletion plugin for Vim.
 
-With less code than documentation, µcomplete may be the minimalistic
-autocompletion plugin you were looking for!
+MUcomplete is an implementation of *chained (fallback) completion*, whereby
+several completion methods are attempted one after another until a result is
+returned.
 
-MUcomplete is an implementation of *chained (fallback) completion*,
-whereby several completion methods are attempted one after another
-until a result is returned. MUcomplete brings Vim completion down to
-earth again.
+Under the hood, µcomplete does nothing more than typing some completion
+mappings for you, either when you press `<tab>`/`<s-tab>` or automatically
+while you are typing. You choose which completion methods to use and in which
+order, and µcomplete does the rest. It does no caching, no asynchronous
+computation, no intelligent guessing. It just makes use of core Vim features.
 
-Under the hood, µcomplete does nothing more than typing some
-completion mappings for you, either when you press `<tab>`/`<s-tab>`
-or automatically while you are typing. You choose which completion
-methods to use and in which order, and µcomplete does the rest. It
-does no caching, no asynchronous computation, no intelligent guessing.
-It just makes use of core Vim features.
+MUcomplete brings Vim completion down to earth again.
 
 
 # Getting Started
 
-MUcomplete requires Vim 7.2 compiled with `+insert_expand` and
-`+menu`. Automatic completion works in Vim 7.4.775 or later (Vim
-7.4.784 or later recommended). MUcomplete is developed and tested on
-Vim 8. NeoVim is supported, too.
+MUcomplete requires Vim 7.2 compiled with `+insert_expand` and `+menu`.
+Automatic completion works in Vim 7.4.775 or later (Vim 7.4.784 or later
+recommended). MUcomplete is developed and tested on Vim 8. NeoVim is
+supported, too.
 
-Installation does not require anything special. If you need help,
-please read [How to Install](https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
+Installation does not require anything special. If you need help, please read
+[How to Install](https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
 
 Mandatory Vim settings:
 
@@ -59,16 +54,15 @@ Other recommended settings:
   set belloff+=ctrlg " If Vim beeps during completion
 ```
 
-No other configuration is needed. Just start pressing `<tab>` or
-`<s-tab>` to complete a word. If you want to enable automatic
-completion at startup, put
+No other configuration is needed. Just start pressing `<tab>` or `<s-tab>` to
+complete a word. If you want to enable automatic completion at startup, put
 
 ```vim
 let g:mucomplete#enable_auto_at_startup = 1
 ```
 
-in your `.vimrc`. Automatic completion may be enabled and disabled at
-any time with `:MUcompleteAutoToggle`.
+in your `.vimrc`. Automatic completion may be enabled and disabled at any time
+with `:MUcompleteAutoToggle`.
 
 By default, µcomplete attempts:
 
@@ -84,13 +78,13 @@ you may cycle back and forth through the completion chain and try different
 completion methods by pressing `<c-h>` and `<c-j>`, respectively. See below
 for an example.
 
-MUcomplete is fully customizable. See `:help mucomplete.txt` for
-detailed documentation.
+MUcomplete is fully customizable. See `:help mucomplete.txt` for detailed
+documentation.
 
 **Important:** by itself, µcomplete does not provide any
-“intellisense”/semantic completion. If you want that, you also need to
-install suitable omni completion plugins for the languages you are
-using (see the examples below).
+“intellisense”/semantic completion. If you want that, you also need to install
+suitable omni completion plugins for the languages you are using (see the
+examples below).
 
 
 # MUcomplete in action
