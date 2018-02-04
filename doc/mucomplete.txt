@@ -48,7 +48,7 @@ later recommended). MUcomplete is compatible with NeoVim.
 MUcomplete is developed and tested on Vim 8.
 
 ==============================================================================
-3. Getting started				*mucomplete-howto*
+3. Getting started					*mucomplete-howto*
 
 Mandatory Vim settings:
 >
@@ -150,12 +150,15 @@ see 'isfname' for the details). Another limitation is that relative paths are
 always completed with respect to the current working directory.
 
 MUcomplete also implements its own path completion method, called "path",
-which is enabled by default. It differs from "file" because no slash
-(backslash in Windows) is appended when completing a path, and paths with
+which is enabled by default. It differs from "file" because no slash (or
+backslash in Windows) is appended when completing a path, and paths with
 spaces are expanded correctly. Apart from that, the "path" method still uses
 'isfname' to decide which characters define path names. Besides, with the
 "path" method it is possible to complete paths relative to the directory of
-the current buffer (see |g:mucomplete#buffer_relative_paths|).
+the current buffer (see |g:mucomplete#buffer_relative_paths|). The "path"
+method also honours 'suffixes' and 'wildignore'.
+
+To adjust the case sensitivity, see 'fileignorecase' and 'wildignorecase'.
 
 See also |mucomplete-tips|.
 
