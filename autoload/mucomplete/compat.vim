@@ -15,11 +15,11 @@ endf
 
 fun! mucomplete#compat#default(t)
   return a:t =~# '\m\k\k$' ||
-        \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || t =~# '\m\k$'))
+        \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || a:t =~# '\m\k$'))
 endf
 
 fun! mucomplete#compat#dict(t)
-  return strlen(&l:dictionary) > 0 && (a:t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$'))
+  return strlen(&l:dictionary) > 0 && (a:t =~# '\m\a\a$' || (g:mucomplete_with_key && a:t =~# '\m\a$'))
 endf
 
 fun! mucomplete#compat#file(t)
