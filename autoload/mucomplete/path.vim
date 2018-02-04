@@ -28,9 +28,29 @@ endif
 let s:pathstart = exists('+shellslash') && !&shellslash
       \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '^[\\~]' : '^[/\\~]')
       \ : '^[/~]'
+if exists('&fileignorecase')
+
+  fun! s:case_insensitive()
+    return &fileignorecase || &wildignorecase
+  endf
+
+elseif exists('&wildignorecase')
+
+  fun! s:case_insensitive()
+    return &wildignorecase
+  endf
+
+else
+
+  fun! s:case_insensitive()
+    return 1
+  endf
+
+endif
 
 fun! mucomplete#path#complete() abort
   let l:prefix = matchstr(getline('.'), '\f\%(\f\|\s\)*\%'.col('.').'c')
+  let l:case_insensitive = s:case_insensitive()
   while strlen(l:prefix) > 0 " Try to find an existing path (consider paths with spaces, too)
     if l:prefix ==# '~'
       let l:files = s:glob('~', 0, 1, 1)
@@ -45,7 +65,8 @@ fun! mucomplete#path#complete() abort
         call complete(col('.') - len(fnamemodify(l:prefix, ":t")), map(l:files,
               \  '{
               \      "word": fnamemodify(v:val, ":t"),
-              \      "menu": (isdirectory(v:val) ? "[dir]" : "[file]")
+              \      "menu": (isdirectory(v:val) ? "[dir]" : "[file]"),
+              \      "icase": l:case_insensitive
               \   }'
               \ ))
         return ''
