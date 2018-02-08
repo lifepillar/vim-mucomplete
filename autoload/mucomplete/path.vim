@@ -65,7 +65,7 @@ fun! mucomplete#path#complete() abort
         call complete(col('.') - len(fnamemodify(l:prefix, ":t")), map(l:files,
               \  '{
               \      "word": fnamemodify(v:val, ":t"),
-              \      "menu": "[".getftype(v:val)."]",
+              \      "menu": (isdirectory(v:val) ? "[dir]" : "[file]"),
               \      "icase": l:case_insensitive
               \   }'
               \ ))
