@@ -49,6 +49,24 @@ else
 
 endif
 
+if has('win32')
+
+  " In Windows, fnamescape() escapes { only if it is not in isfname.
+  " fnamescape() does not escape }, but glob() needs it to be escaped.
+  fun! s:fnameescape(p)
+    return escape(fnameescape(a:p), stridx(&isfname, '{') > -1 ? '{}' : '}')
+  endf
+
+else
+
+  " fnamescape() always escapes { in *nix systems (tried macOS and Linux).
+  " fnamescape() does not escape }, but glob() needs it to be escaped.
+  fun! s:fnameescape(p)
+    return escape(fnameescape(a:p), '}')
+  endf
+
+endif
+
 fun! mucomplete#path#complete() abort
   let l:prefix = matchstr(getline('.'), '\f\%(\f\|\s\)*\%'.col('.').'c')
   let l:case_insensitive = s:case_insensitive()
@@ -62,9 +80,9 @@ fun! mucomplete#path#complete() abort
     else
       let l:files = s:glob(
             \ (get(g:, 'mucomplete#buffer_relative_paths', 0) && l:prefix !~# s:pathstart
-            \   ? fnameescape(expand('%:p:h')) . '/'
+            \   ? s:fnameescape(expand('%:p:h')) . '/'
             \   : '')
-            \ . fnameescape(l:prefix) . '*', 0, 1, 1)
+            \ . s:fnameescape(l:prefix) . '*', 0, 1, 1)
       if !empty(l:files)
         call complete(col('.') - len(fnamemodify(l:prefix, ":t")), map(l:files,
               \  '{
