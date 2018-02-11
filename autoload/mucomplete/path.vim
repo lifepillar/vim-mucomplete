@@ -59,8 +59,11 @@ fun! mucomplete#path#complete() abort
       endif
       return ''
     else
-      let l:files = s:glob((get(g:, 'mucomplete#buffer_relative_paths', 0)
-            \    && l:prefix !~# s:pathstart ? expand('%:p:h').'/' : '') . l:prefix . '*', 0, 1, 1)
+      let l:files = s:glob(
+            \ (get(g:, 'mucomplete#buffer_relative_paths', 0) && l:prefix !~# s:pathstart
+            \   ? fnameescape(expand('%:p:h')) . '/'
+            \   : '')
+            \ . fnameescape(l:prefix) . '*', 0, 1, 1)
       if !empty(l:files)
         call complete(col('.') - len(fnamemodify(l:prefix, ":t")), map(l:files,
               \  '{
