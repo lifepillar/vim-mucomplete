@@ -49,17 +49,18 @@ else
 
 endif
 
-" if has('win32')
-if 1
+if has('win32')
 
   " In Windows, fnamescape() escapes { only if it is not in isfname, but
   " glob() won't like even an escaped {, if { is in isfname. We replace { with [\{].
   " They won't match, but at least won't give an error either.
   " As below, fnamescape() does not escape }, but glob() needs it to be escaped.
   fun! s:fnameescape(p)
-    return stridx(&isfname, '{') == -1
-          \ ? escape(fnameescape(a:p), '}')
-          \ : substitute(escape(fnameescape(a:p), '}'), '{', '[\\{]', 'g')
+    return substitute(
+          \ (stridx(&isfname, '{') == -1
+          \ ? fnameescape(a:p)
+          \ : substitute(fnameescape(a:p), '{', '[\\{]', 'g')),
+          \ '}', '[\\}]', 'g')
   endf
 
 else
