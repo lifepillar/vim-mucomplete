@@ -51,10 +51,12 @@ endif
 
 if has('win32')
 
-  " In Windows, fnamescape() escapes { only if it is not in isfname, but
-  " glob() won't like even an escaped {, if { is in isfname. We replace { with [\{].
-  " They won't match, but at least won't give an error either.
-  " As below, fnamescape() does not escape }, but glob() needs it to be escaped.
+  " In Windows, fnamescape() escapes { only if { is not in isfname, but glob()
+  " won't like even an escaped { as long as { is in isfname. Using
+  " fnameescape() may not be a good idea anyway, but for now we keep it (see
+  " https://github.com/vim/vim/issues/541). The best we can do for now is
+  " replacing { and } with [\{] and [\}] respectively. They won't match (!) if
+  " braces are in isfname, but at least won't give errors either.
   fun! s:fnameescape(p)
     return substitute(
           \ (stridx(&isfname, '{') == -1
@@ -65,7 +67,7 @@ if has('win32')
 
 else
 
-  " fnamescape() always escapes { in *nix systems (tried macOS and Linux).
+  " fnamescape() always escapes { (tried macOS and Linux).
   " fnamescape() does not escape }, but glob() needs it to be escaped.
   fun! s:fnameescape(p)
     return escape(fnameescape(a:p), '}')
