@@ -28,6 +28,7 @@ endif
 let s:pathstart = exists('+shellslash') && !&shellslash
       \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '^[\\~]' : '^[/\\~]')
       \ : '^[/~]'
+
 if exists('&fileignorecase')
 
   fun! s:case_insensitive()
