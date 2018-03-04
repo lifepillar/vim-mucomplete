@@ -167,5 +167,20 @@ fun! Test_MU_issue_87()
   set completeopt&
 endf
 
+fun! Test_MU_issue_89()
+  " Make sure that cyclic plugs are defined before the autoload file is loaded.
+  let l:vimrc = [
+        \ 'inoremap <silent> <plug>(MUcompleteFwdKey) <right>',
+        \ 'imap <right> <plug>(MUcompleteCycFwd)',
+        \ 'let g:mucomplete#enable_auto_at_startup = 1'
+        \ ]
+  let l:cmd = ['edit Xout', 'call feedkeys("i\<right>ok", "tx")', 'norm! ZZ']
+  call s:vim(l:vimrc, l:cmd)
+  let l:output = join(readfile('Xout'))
+  call assert_equal('ok', l:output)
+  call delete('Xout')
+endf
+
+
 call RunBabyRun('MU')
 
