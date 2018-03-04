@@ -5,8 +5,6 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-imap     <silent> <expr> <plug>(MUcompleteCycFwd) mucomplete#cycle( 1)
-imap     <silent> <expr> <plug>(MUcompleteCycBwd) mucomplete#cycle(-1)
 imap     <silent> <expr> <plug>(MUcompleteTry) <sid>try_completion()
 imap     <silent> <expr> <plug>(MUcompleteVerify) <sid>verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
