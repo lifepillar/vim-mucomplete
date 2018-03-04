@@ -30,10 +30,6 @@ if has('patch-7.4.314')
 endif
 syntax enable
 filetype plugin indent on
-
-inoremap <expr> <c-e> mucomplete#popup_exit("\<c-e>")
-inoremap <expr> <c-y> mucomplete#popup_exit("\<c-y>")
-inoremap <expr>  <cr> mucomplete#popup_exit("\<cr>")
 " }}}
 
 set runtimepath+=~/.vim/pack/my/start/mucomplete " CHANGE THIS
