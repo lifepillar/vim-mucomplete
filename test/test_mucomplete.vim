@@ -181,6 +181,19 @@ fun! Test_MU_issue_89()
   call delete('Xout')
 endf
 
+fun! Test_MU_issue_92()
+  " Make sure that <cr> is defined before the autoload file is loaded.
+  let l:vimrc = [
+        \ 'imap <Plug>MyCR <Plug>(MUcompleteCR)',
+        \ 'imap <cr> <Plug>MyCR'
+        \ ]
+  let l:cmd = ['edit Xout', 'set ft=ruby', 'call feedkeys("def App\<cr>ok", "tx")', 'norm! ZZ']
+  call s:vim(l:vimrc, l:cmd)
+  let l:output = readfile('Xout')
+  call assert_equal('def App', get(l:output, 0, 'NA'))
+  call assert_equal('ok', get(l:output, 1, 'NA'))
+  call delete('Xout')
+endfun
 
 call RunBabyRun('MU')
 
