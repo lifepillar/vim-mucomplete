@@ -187,7 +187,7 @@ fun! Test_MU_issue_92()
         \ 'imap <Plug>MyCR <Plug>(MUcompleteCR)',
         \ 'imap <cr> <Plug>MyCR'
         \ ]
-  let l:cmd = ['edit Xout', 'set ft=ruby', 'call feedkeys("def App\<cr>ok", "tx")', 'norm! ZZ']
+  let l:cmd = ['edit Xout', 'set ft=ruby', 'call feedkeys("idef App\<cr>ok", "tx")', 'norm! ZZ']
   call s:vim(l:vimrc, l:cmd)
   let l:output = readfile('Xout')
   call assert_equal('def App', get(l:output, 0, 'NA'))
