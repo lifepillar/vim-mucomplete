@@ -10,9 +10,6 @@ imap     <silent> <expr> <plug>(MUcompleteVerify) <sid>verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
-inoremap <silent> <expr> <plug>(MUcompleteCte) mucomplete#popup_exit("\<c-e>")
-inoremap <silent> <expr> <plug>(MUcompleteCty) mucomplete#popup_exit("\<c-y>")
-inoremap <silent> <expr> <plug>(MUcompleteCR) mucomplete#popup_exit("\<cr>")
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   try
