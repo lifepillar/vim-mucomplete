@@ -439,9 +439,8 @@ For the completion methods not explicitly mentioned in the value of
 
 						*'g:mucomplete#smart_enter'*
 When set to 1, override Vim's default behaviour and always insert a new line
-when the user presses Enter to dismiss the pop-up menu (that is, make Enter
-behave as if the user had typed <c-y> followed by <enter>). When set to 0, in
-some cases typing Enter to dismiss the pop-up menu may not start a new line.
+when the user presses Enter to dismiss the pop-up menu. When set to 0, in some
+cases typing Enter to dismiss the pop-up menu may not start a new line.
 >
 	let g:mucomplete#smart_enter = 1
 <
