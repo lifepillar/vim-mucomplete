@@ -407,15 +407,6 @@ your |vimrc|. This is how they are defined by µcomplete:
 	imap <c-y> <plug>(MUcompleteCty)
 	imap <cr> <plug>(MUcompleteCR)
 <
-					*'g:mucomplete#spel#good_words'*
-Set to 1 if you want spelling suggestions (similar words) even for words that
-are spelled correctly. By default, no suggestions are returned for good words
-by the "uspl" method.
->
-	let g:mucomplete#spel#good_words = 0
-<
-Note: this setting does not affect the "spel" method.
-
 					*'g:mucomplete#popup_direction'*
 >
 	let g:mucomplete#popup_direction = { 'c-p': -1, 'keyp': -1 }
@@ -445,6 +436,15 @@ If you also want to invert the direction of "c-p" completion, you may write:
 For the completion methods not explicitly mentioned in the value of
 |g:mucomplete#popup_direction|, the natural value is assumed, i.e., -1 for
 "c-p" and "keyp", and 1 for all the other methods.
+
+					*'g:mucomplete#spel#good_words'*
+Set to 1 if you want spelling suggestions (similar words) even for words that
+are spelled correctly. By default, no suggestions are returned for good words
+by the "uspl" method.
+>
+	let g:mucomplete#spel#good_words = 0
+<
+Note: this setting does not affect the "spel" method.
 
 						*'g:mucomplete#spel#max'*
 The maximum number of spelling suggestions offered by the "uspl" method.
