@@ -326,7 +326,7 @@ In your |vimrc|, you may override the default or add filetype-specific
 completion chains. For example:
 >
 	let g:mucomplete#chains = {}
-	let g:mucomplete#chains.default  = ['omni', 'c-p'] 
+	let g:mucomplete#chains.default  = ['omni', 'c-p']
 	let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
 						*'g:mucomplete#cycle_all'*
