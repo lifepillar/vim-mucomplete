@@ -90,9 +90,9 @@ let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
 fun! mucomplete#popup_exit(ctrl)
   let s:cancel_auto = pumvisible()
-  return s:cancel_auto && a:ctrl == "\<cr>" 
-        \ && get(g:, "mucomplete#smart_enter", stridx(&l:completeopt, 'noselect') > -1)
-        \ ? "\<c-y>" . a:ctrl : a:ctrl
+  return s:cancel_auto && get(g:, "mucomplete#smart_enter", 0) && a:ctrl == "\<cr>"
+        \ ? "\<c-y>" . a:ctrl
+        \ : a:ctrl
 endf
 
 fun! mucomplete#insert_char_pre()
