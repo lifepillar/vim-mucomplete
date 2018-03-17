@@ -443,8 +443,12 @@ when the user presses Enter to dismiss the pop-up menu (that is, make Enter
 behave as if the user had typed <c-y> followed by <enter>). When set to 0, in
 some cases typing Enter to dismiss the pop-up menu may not start a new line.
 >
-	let g:mucomplete#smart_enter = 1
+	let g:mucomplete#smart_enter = stridx(&l:completeopt,'noselect') > -1
 <
+The default value of this option depends on the value of 'completeopt'. If
+'completeopt' contains noselect then the default is 1 (be smart), otherwise
+the default is 0 (Vim's behaviour).
+
 					*'g:mucomplete#spel#good_words'*
 Set to 1 if you want spelling suggestions (similar words) even for words that
 are spelled correctly. By default, no suggestions are returned for good words
