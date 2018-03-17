@@ -220,6 +220,51 @@ fun! Test_MU_issues_95_Ctrl_N_smart_enter()
   call assert_equal(4, line('$'))
   bwipe!
   set completeopt&
+  unlet g:mucomplete#smart_enter
+endf
+
+fun! Test_MU_smart_enter_with_autocomplete()
+  new
+  let b:mucomplete_chain = ['keyn']
+  set completeopt=menuone,noinsert
+  unlet! g:mucomplete#smart_enter
+  MUcompleteAutoOn
+  call feedkeys("ahawkfish\<cr>hawk", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<c-p>fish\<cr>-ok\<esc>", "tx")
+  call assert_equal("hawkfish", getline(1))
+  call assert_equal("hawkfish-ok", getline(2))
+  call assert_equal(2, line('$'))
+  set completeopt+=noselect
+  call feedkeys("ohawkfish\<cr>ok", "tx")
+  call assert_equal("hawkfish", getline(3))
+  call assert_equal("ok", getline(4))
+  call assert_equal(4, line('$'))
+  bwipe!
+  set completeopt&
+endf
+
+fun! Test_MU_smart_enter_override_default()
+  new
+  let b:mucomplete_chain = ['keyn']
+  set completeopt=menuone,noinsert
+  let g:mucomplete#smart_enter = 1
+  MUcompleteAutoOn
+  call feedkeys("ahawkfish\<cr>hawk", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<c-p>fish\<cr>ok\<esc>", "tx")
+  call assert_equal("hawkfish", getline(1))
+  call assert_equal("hawkfish", getline(2))
+  call assert_equal("ok", getline(3))
+  call assert_equal(3, line('$'))
+  set completeopt+=noselect
+  let g:mucomplete#smart_enter = 0
+  call feedkeys("ohawkfish\<cr>-ok", "tx")
+  call assert_equal("hawkfish-ok", getline(4))
+  call assert_equal(4, line('$'))
+  bwipe!
+  set completeopt&
+  unlet! g:mucomplete#smart_enter
 endf
 
 call RunBabyRun('MU')
