@@ -211,6 +211,12 @@ fun! Test_MU_issues_95_Ctrl_N_smart_enter()
   call assert_equal("hawkfish", getline(1))
   call assert_equal("hawkfish", getline(2))
   call assert_equal("ok", getline(3))
+  let g:mucomplete#smart_enter = 0
+  call feedkeys("ohawk", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<c-p>fish\<cr>ok\<esc>", "tx")
+  call assert_equal("hawkfishok", getline(4))
+  call assert_equal(4, line('$'))
   bwipe!
   set completeopt&
 endf
