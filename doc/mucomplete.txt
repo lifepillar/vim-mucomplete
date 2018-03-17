@@ -437,13 +437,6 @@ For the completion methods not explicitly mentioned in the value of
 |g:mucomplete#popup_direction|, the natural value is assumed, i.e., -1 for
 "c-p" and "keyp", and 1 for all the other methods.
 
-						*'g:mucomplete#smart_enter'*
-When set to 1, override Vim's default behaviour and always insert a new line
-when the user presses Enter to dismiss the pop-up menu. When set to 0, in some
-cases typing Enter to dismiss the pop-up menu may not start a new line.
->
-	let g:mucomplete#smart_enter = 1
-<
 					*'g:mucomplete#spel#good_words'*
 Set to 1 if you want spelling suggestions (similar words) even for words that
 are spelled correctly. By default, no suggestions are returned for good words
