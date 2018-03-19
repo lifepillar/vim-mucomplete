@@ -173,7 +173,10 @@ if has('lambda')
         \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) },
         \     'user': { t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) },
         \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }
-        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
+        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {})),
+        \ 'python'  : extend({
+        \     'omni': { t -> t =~# '\m\k\%(\k\|\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$')) }
+        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'python', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 else
   let s:yes_you_can = function('mucomplete#compat#yes_you_can')
