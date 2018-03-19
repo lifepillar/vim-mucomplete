@@ -223,6 +223,22 @@ fun! Test_MU_issues_95_Ctrl_N_smart_enter()
   unlet g:mucomplete#smart_enter
 endf
 
+fun! Test_MU_issue_85_python_dot()
+  " Allow omni-completion to be triggered after a dot.
+  new
+  set filetype=python
+  let b:mucomplete_chain = ['omni']
+  MUcompleteAutoOff
+  set completeopt=menuone,noinsert,noselect
+  call feedkeys("aimport sys.", "tx")
+  call feedkeys("a", "t!")
+  " Trigger omni-completion and select the first entry
+  call feedkeys("\<tab>\<tab>\<esc>", "tx")
+  call assert_match("import sys.\w\+", getline(1))
+  bwipe!
+  set completeopt&
+endf
+
 
 call RunBabyRun('MU')
 
