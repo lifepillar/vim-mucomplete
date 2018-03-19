@@ -29,8 +29,8 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
         imap <unique> <c-e> <plug>(MUcompletePopupCancel)
       endif
       let s:map = '<c-y>'
-      if !hasmapto('<plug>(MUcompleteCty)', 'i')
-        imap <unique> <c-y> <plug>(MUcompleteCty)
+      if !hasmapto('<plug>(MUcompletePopupAccept)', 'i')
+        imap <unique> <c-y> <plug>(MUcompletePopupAccept)
       endif
       let s:map = '<cr>'
       if !hasmapto('<plug>(MUcompleteCR)', 'i')

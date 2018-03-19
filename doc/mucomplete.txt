@@ -403,8 +403,8 @@ so if you disable them (likely because they conflict with some other plugin or
 with your own mappings), you will need to provide alternative definitions in
 your |vimrc|. This is how they are defined by µcomplete:
 >
-	imap <c-y> <plug>(MUcompleteCty)
 	imap <c-e> <plug>(MUcompletePopupCancel)
+	imap <c-y> <plug>(MUcompletePopupAccept)
 	imap <cr> <plug>(MUcompleteCR)
 <
 					*'g:mucomplete#popup_direction'*
