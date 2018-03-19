@@ -234,7 +234,7 @@ fun! Test_MU_issue_85_python_dot()
   call feedkeys("a", "t!")
   " Trigger omni-completion and select the first entry
   call feedkeys("\<tab>\<tab>\<esc>", "tx")
-  call assert_match("import sys.\w\+", getline(1))
+  call assert_match('import sys.\w\+', getline(1))
   bwipe!
   set completeopt&
 endf
