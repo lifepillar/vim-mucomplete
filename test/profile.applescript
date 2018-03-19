@@ -120,6 +120,7 @@ on run
 			"--cmd 'profile start mucomplete-" & my timestamp() & ".profile'" & space & Â
 			"--cmd 'profile! file */autoload/mucomplete.vim'" & space & Â
 			"-c 'MUcompleteAutoOn'" & space & Â
+			"-c 'let g:mucomplete#smart_enter=1'" & space & Â
 			"-c 'set noshowmode shortmess+=c'"
 		activate
 	end tell
