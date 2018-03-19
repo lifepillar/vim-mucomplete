@@ -25,8 +25,8 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
     endif
     if !get(g:, 'mucomplete#no_popup_mappings', 0)
       let s:map = '<c-e>'
-      if !hasmapto('<plug>(MUcompleteCte)', 'i')
-        imap <unique> <c-e> <plug>(MUcompleteCte)
+      if !hasmapto('<plug>(MUcompletePopupCancel)', 'i')
+        imap <unique> <c-e> <plug>(MUcompletePopupCancel)
       endif
       let s:map = '<c-y>'
       if !hasmapto('<plug>(MUcompleteCty)', 'i')
