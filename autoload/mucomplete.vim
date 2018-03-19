@@ -10,6 +10,7 @@ imap     <silent> <expr> <plug>(MUcompleteVerify) <sid>verify_completion()
 inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
+inoremap <silent>        <plug>(MUcompleteCte) <c-e>
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   try
@@ -245,7 +246,7 @@ fun! mucomplete#cycle(dir)
     let g:mucomplete_with_key = g:mucomplete_with_key || get(g:, 'mucomplete#cycle_all', 0)
     let s:compl_text = mucomplete#get_compl_text()
     let s:countdown = s:N " Reset counter
-    return "\<c-e>" . s:next_method()
+    return "\<plug>(MUcompleteCte)" . s:next_method()
   else
     return a:dir > 0 ? "\<plug>(MUcompleteFwdKey)" : "\<plug>(MUcompleteBwdKey)"
   endif
