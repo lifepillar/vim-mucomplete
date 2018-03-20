@@ -173,6 +173,36 @@ fun! Test_MU_uspl_completion()
   set completeopt&
 endf
 
+fun! Test_MU_ctrl_e_ends_completion()
+  new
+  setlocal spell
+  setlocal spelllang=en
+  let b:mucomplete_chain = ['keyn']
+  MUcompleteAutoOff
+  set completeopt=menuone,noselect
+  call feedkeys("aabsinthe ab", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<c-e>", "tx")
+  call assert_equal("absinthe ab", getline(1))
+  bwipe!
+  set completeopt&
+endf
+
+fun! Test_MU_ctrl_y_accepts_completion()
+  new
+  setlocal spell
+  setlocal spelllang=en
+  let b:mucomplete_chain = ['keyn']
+  MUcompleteAutoOff
+  set completeopt=menuone,noselect
+  call feedkeys("aabsinthe ab", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<c-y> ok", "tx")
+  call assert_equal("absinthe absinthe ok", getline(1))
+  bwipe!
+  set completeopt&
+endf
+
 fun! Test_MU_issue_87()
   new
   set ft=tex
