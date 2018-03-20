@@ -76,6 +76,9 @@ fun! mucomplete#compat#can_complete()
         \     'uspl':  function('mucomplete#compat#spel'),
         \     'ulti':  function('mucomplete#compat#ulti')
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
+        \ 'python'  : extend({
+        \     'omni':  function('mucomplete#compat#python#omni')
+        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'python', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
 endf
 
