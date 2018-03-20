@@ -57,6 +57,27 @@ fun! Test_MU_buffer_keyword_completion()
   set completeopt&
 endf
 
+fun! Test_MU_buffer_extend_keyword_completion()
+  new
+  let b:mucomplete_chain = ['keyn']
+  imap <buffer> <up> <plug>(MUcompleteExtendBwd)
+  imap <buffer> <down> <plug>(MUcompleteExtendFwd)
+  MUcompleteAutoOff
+  set completeopt=menuone,noselect
+  call feedkeys("aIn Xanadu did Kubla Khan\<cr>", "tx")
+  call feedkeys("aIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(1))
+  call assert_equal("In Xanadu did Kubla Khan", getline(2))
+  call feedkeys("oIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(3))
+  bwipe!
+  set completeopt&
+endf
+
 fun! Test_MU_cmd_completion()
   new
   set ft=vim

@@ -71,6 +71,24 @@ let s:compl_mappings = extend({
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
+let s:further_fwd = {
+      \ 'c-n' : "\<c-x>\<c-n>\<c-n>",
+      \ 'c-p' : "\<c-x>\<c-n>\<c-n>",
+      \ 'defs': "\<c-x>\<c-d>\<c-n>",
+      \ 'incl': "\<c-x>\<c-i>\<c-n>",
+      \ 'keyn': "\<c-x>\<c-n>\<c-n>",
+      \ 'keyp': "\<c-x>\<c-n>\<c-n>",
+      \ 'line': "\<c-x>\<c-l>\<c-n>",
+      \ }
+let s:further_bwd = {
+      \ 'c-n' : "\<c-x>\<c-p>\<c-p>",
+      \ 'c-p' : "\<c-x>\<c-p>\<c-p>",
+      \ 'defs': "\<c-x>\<c-d>\<c-p>",
+      \ 'incl': "\<c-x>\<c-i>\<c-p>",
+      \ 'keyn': "\<c-x>\<c-p>\<c-p>",
+      \ 'keyp': "\<c-x>\<c-p>\<c-p>",
+      \ 'line': "\<c-x>\<c-l>\<c-p>",
+      \ }
 let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
 let s:select_dir = extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
 let s:pathstart = exists('+shellslash') && !&shellslash
@@ -88,6 +106,14 @@ let s:cancel_auto = 0          " Used to detect whether the user leaves the pop-
 let s:insertcharpre = 0        " Was a non-whitespace character inserted?
 let s:complete_empty_text = 0  " When set to 1, completion is tried even at the start of the line or after a space
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
+
+fun! mucomplete#further_fwd()
+  return pumvisible() ? get(s:further_fwd, get(s:compl_methods, s:i, ''), '') : ''
+endf
+
+fun! mucomplete#further_bwd()
+  return pumvisible() ? get(s:further_bwd, get(s:compl_methods, s:i, ''), '') : ''
+endf
 
 fun! mucomplete#popup_exit(ctrl)
   let s:cancel_auto = pumvisible()
