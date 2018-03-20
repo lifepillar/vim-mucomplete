@@ -221,9 +221,9 @@ By default, µcomplete maps the keys below in Insert mode. If you do not want
 <c-y>
 <cr>
 	MUcomplete defines a thin wrapper around these keys, but it does not
-        change their function (but see |g:mucomplete#smart_enter|). If you
-        want to prevent µcomplete from defining these three mappings, set
-        |g:mucomplete#no_popup_mappings|.
+	change their function (but see |g:mucomplete#smart_enter|). If you
+	want to prevent µcomplete from defining these three mappings, set
+	|g:mucomplete#no_popup_mappings|.
 
 In your |vimrc|, you may override such mappings. For example, to use <c-j> and
 <c-k> instead of <tab> and <s-tab>, use:
@@ -255,22 +255,22 @@ mappings for them in your |vimrc| (see the example below).
 <plug>(MUcompleteExtendBwd)
 <plug>(MUcompleteExtendFwd)
 	When the popup menu is visible, repeated invocation of these plugs
-        will copy the words following the previous expansion in other
-        contexts using the current completion method.
-        
-        This works for "c-n", "c-p", "defs", "incl", "keyn", "keyp", and
-        "line". See |i_CTRL-X_CTRL-N|, |i_CTRL-X_CTRL-P|, |i_CTRL-X_CTRL-D|,
-        |i_CTRL-X_CTRL-I|, and |i_CTRL-X_CTRL-L|.
+	will copy the words following the previous expansion in other
+	contexts using the current completion method.
 
-        To try this, define:
+	This works for "c-n", "c-p", "defs", "incl", "keyn", "keyp", and
+	"line". See |i_CTRL-X_CTRL-N|, |i_CTRL-X_CTRL-P|, |i_CTRL-X_CTRL-D|,
+	|i_CTRL-X_CTRL-I|, and |i_CTRL-X_CTRL-L|.
+
+	To try this, define:
 >
 	:imap <right> <plug>(MUcompleteExtendFwd)
 <
-        Now type:
+	Now type:
 >
 	Shall I compare thee to a summer’s day?
-        Thou art more lovely and more temperate:
-        S<tab><right><right><right><right><right><right>
+	Thou art more lovely and more temperate:
+	S<tab><right><right><right><right><right><right>
 <
 ==============================================================================
 10. Customization				*mucomplete-customization*
