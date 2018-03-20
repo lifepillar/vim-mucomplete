@@ -427,10 +427,11 @@ Set to 1 to prevent µcomplete from mapping <c-e>, <c-y> and <cr>.
 	let g:mucomplete#no_popup_mappings = 0
 <
 You may safely set this variable to 1 if you use manual completion
-exclusively. These mappings, however, are necessary for automatic completion,
-so if you disable them (likely because they conflict with some other plugin or
-with your own mappings), you will need to provide alternative definitions in
-your |vimrc|. This is how they are defined by µcomplete:
+exclusively and |g:mucomplete#smart_enter| is not set. These mappings,
+however, are necessary for automatic completion, so if you disable them
+(likely because they conflict with some other plugin or with your own
+mappings), you will need to provide alternative definitions in your |vimrc|.
+This is how they are defined by µcomplete:
 >
 	imap <c-e> <plug>(MUcompletePopupCancel)
 	imap <c-y> <plug>(MUcompletePopupAccept)
