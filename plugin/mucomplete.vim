@@ -16,7 +16,7 @@ imap     <silent> <expr> <plug>(MUcompleteCycFwd) mucomplete#cycle( 1)
 imap     <silent> <expr> <plug>(MUcompleteCycBwd) mucomplete#cycle(-1)
 imap     <silent> <expr> <plug>(MUcompleteExtendFwd) mucomplete#further_fwd()
 imap     <silent> <expr> <plug>(MUcompleteExtendBwd) mucomplete#further_bwd()
-inoremap <silent> <expr> <Plug>(MUcompletePopupCancel)) mucomplete#popup_exit("\<c-e>")
+inoremap <silent> <expr> <Plug>(MUcompletePopupCancel) mucomplete#popup_exit("\<c-e>")
 inoremap <silent> <expr> <plug>(MUcompletePopupAccept) mucomplete#popup_exit("\<c-y>")
 inoremap <silent> <expr> <plug>(MUcompleteCR) mucomplete#popup_exit("\<cr>")
 
