@@ -48,7 +48,7 @@ fun! Test_MU_buffer_keyword_completion()
   new
   let b:mucomplete_chain = ['keyn']
   MUcompleteAutoOff
-  set completeopt=menuone,noinsert,noselect
+  set completeopt=menuone,noselect
   call feedkeys("ajump ju", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
@@ -83,7 +83,7 @@ fun! Test_MU_cmd_completion()
   set ft=vim
   let b:mucomplete_chain = ['cmd']
   MUcompleteAutoOff
-  set completeopt=menuone,noinsert,noselect
+  set completeopt=menuone,noselect
   call feedkeys("aech", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<tab>\<esc>", "tx")
@@ -96,7 +96,7 @@ fun! Test_MU_line_completion()
   new
   let b:mucomplete_chain = ['line']
   MUcompleteAutoOff
-  set completeopt=menuone,noinsert,noselect
+  set completeopt=menuone,noselect
   call feedkeys("aVim is awesome\<cr>", "tx")
   call feedkeys("aVi", "tx")
   call feedkeys("a", "t!")
@@ -160,7 +160,7 @@ fun! Test_MU_uspl_completion()
   setlocal spelllang=en
   let b:mucomplete_chain = ['uspl']
   MUcompleteAutoOff
-  set completeopt=menuone,noinsert,noselect
+  set completeopt=menuone,noselect
   call feedkeys("aspelin", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<tab>\<esc>", "tx")
@@ -175,8 +175,6 @@ endf
 
 fun! Test_MU_ctrl_e_ends_completion()
   new
-  setlocal spell
-  setlocal spelllang=en
   let b:mucomplete_chain = ['keyn']
   MUcompleteAutoOff
   set completeopt=menuone,noselect
@@ -190,8 +188,6 @@ endf
 
 fun! Test_MU_ctrl_y_accepts_completion()
   new
-  setlocal spell
-  setlocal spelllang=en
   let b:mucomplete_chain = ['keyn']
   MUcompleteAutoOff
   set completeopt=menuone,noselect
@@ -208,7 +204,7 @@ fun! Test_MU_issue_87()
   set ft=tex
   let b:mucomplete_chain = ['path', 'omni', 'keyn']
   MUcompleteAutoOff
-  set completeopt=menuone,noinsert,noselect
+  set completeopt=menuone,noselect
   call feedkeys('a\emph{', "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
@@ -280,11 +276,11 @@ fun! Test_MU_issue_85_python_dot()
   set filetype=python
   let b:mucomplete_chain = ['omni']
   MUcompleteAutoOff
-  set completeopt=menuone,noinsert,noselect
+  set completeopt=menuone,noselect
   call feedkeys("aimport sys.", "tx")
   call feedkeys("a", "t!")
   " Trigger omni-completion and select the first entry
-  call feedkeys("\<tab>\<tab>\<esc>", "tx")
+  call feedkeys("\<tab>\<esc>", "tx")
   call assert_match('import sys.\w\+', getline(1))
   bwipe!
   set completeopt&
