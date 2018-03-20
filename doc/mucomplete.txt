@@ -1,4 +1,4 @@
-*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Jan 21
+*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Mar 20
 
 			    _ _  _ _  _ | __|_ _                      ~
 			|_|(_(_)| | ||_)|(/_|_(/_                     ~
