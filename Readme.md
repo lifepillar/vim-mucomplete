@@ -117,10 +117,8 @@ let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 ![µcomplete with clang-complete](https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif)
+![Extending completion](https://raw.github.com/lifepillar/Resources/master/mucomplete/ctrlx-ctrln.gif)
 
-With clang_complete        |  Extending completion
-:-------------------------:|:-------------------------:
-![](https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif) | ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/ctrlx-ctrln.gif)
 The example above shows µcomplete used with
 [clang-complete](https://github.com/Rip-Rip/clang_complete). You may also see
 how it is possible to switch between different completion methods (omni
@@ -139,6 +137,19 @@ let g:clang_user_options = '-std=c++14'
 let g:clang_complete_auto = 1
 let g:mucomplete#enable_auto_at_startup = 1
 ```
+
+The last example shows how the current completion can be extended with words
+following the previous expansion in other contexts. Relevant settings:
+
+```vim
+imap <expr> <down> pumvisible() ? "\<plug>(MUcompleteExtendFwd)" : "\<down>"
+```
+
+In the example, `S<tab>` was typed to complete the first word, then `<down>` was
+pressed repeatedly to extend the completion. The next line has been edited in
+a similar way. To my knowledge, µcomplete is the only completion plugin that
+streamlines such Vim feature.
+
 
 
 # Compatibility
