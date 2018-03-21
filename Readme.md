@@ -118,6 +118,9 @@ let g:mucomplete#enable_auto_at_startup = 1
 
 ![µcomplete with clang-complete](https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif)
 
+With clang_complete        |  Extending completion
+:-------------------------:|:-------------------------:
+![](https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif) | ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/ctrlx-ctrln.gif)
 The example above shows µcomplete used with
 [clang-complete](https://github.com/Rip-Rip/clang_complete). You may also see
 how it is possible to switch between different completion methods (omni
