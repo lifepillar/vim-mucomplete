@@ -650,6 +650,17 @@ completion cannot be performed otherwise.
 MUcomplete tries to be a responsible citizen in Vimland. This section
 describes how to make it peacefully coexist with other plugins.
 
+auto-pairs ~
+This plugin maps <cr> in Insert mode in a way that conflicts with µcomplete's
+default mapping. To resolve the conflict, put this in your |vimrc|:
+>
+	let g:AutoPairsMapCR = 0
+	imap <Plug>MyCR <Plug>(MUcompleteCR)<Plug>AutoPairsReturn
+	imap <cr> <Plug>MyCR
+<
+Mapping things this way will also make µcomplete and auto-pairs work well
+together with endwise.vim (see below).
+
 endwise.vim ~
 This plugin maps <cr> in Insert mode in a way that conflicts with µcomplete's
 default mapping. The simplest way to resolve the conflict is to override
@@ -658,6 +669,9 @@ default mapping. The simplest way to resolve the conflict is to override
 	imap <Plug>MyCR <Plug>(MUcompleteCR)
 	imap <cr> <Plug>MyCR
 <
+If you use endwise.vim together with auto-pairs, see the section above
+instead.
+
 PHP + UltiSnips ~
 In some versions of Vim, there is a (now solved) compatibility issue between
 PHP's 'omnifunc' function and UltiSnips. This bug is hit by µcomplete when:
