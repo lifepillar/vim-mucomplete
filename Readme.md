@@ -117,7 +117,6 @@ let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 ![µcomplete with clang-complete](https://raw.github.com/lifepillar/Resources/master/mucomplete/cpp.gif)
-![Extending completion](https://raw.github.com/lifepillar/Resources/master/mucomplete/ctrlx-ctrln.gif)
 
 The example above shows µcomplete used with
 [clang-complete](https://github.com/Rip-Rip/clang_complete). You may also see
@@ -137,6 +136,8 @@ let g:clang_user_options = '-std=c++14'
 let g:clang_complete_auto = 1
 let g:mucomplete#enable_auto_at_startup = 1
 ```
+
+![Extending completion](https://raw.github.com/lifepillar/Resources/master/mucomplete/ctrlx-ctrln.gif)
 
 The last example shows how the current completion can be extended with words
 following the previous expansion in other contexts. Relevant settings:
