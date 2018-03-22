@@ -89,17 +89,17 @@ examples below).
 
 # MUcomplete in action
 
-![µcomplete with jedi-vim](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif)
-![µcomplete with SQL](https://raw.github.com/lifepillar/Resources/master/mucomplete/sql.gif)
+With jedi-vim (Python)     |  With SQL (Vim)
+:-------------------------:|:-------------------------:
+![](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif) | ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/sql.gif)
 
 The first example shows µcomplete automatically offering suggestions from
 [jedi-vim](https://github.com/davidhalter/jedi-vim), which provides semantic
 completion for Python. Used settings:
 
 ```vim
-set noshowmode shortmess+=c
 set completeopt-=preview
-set completeopt+=longest,menuone,noinsert,noselect
+set completeopt+=longest,menuone,noselect
 let g:jedi#popup_on_dot = 0  " It may be 1 as well
 let g:mucomplete#enable_auto_at_startup = 1
 ```
@@ -109,10 +109,10 @@ keyword completion, file completion) are automatically selected in different
 contexts. Used settings:
 
 ```vim
-set showmode shortmess-=c
-set completeopt+=menuone,noinsert,noselect
+set completeopt+=menuone,noselect
 let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
 let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
+let g:mucomplete#smart_enter = 1
 let g:mucomplete#enable_auto_at_startup = 1
 ```
 
@@ -128,10 +128,9 @@ using `<c-j>` and `<c-h>` (pay attention when `lo` is completed). Relevant
 settings:
 
 ```vim
-set noshowmode shortmess+=c
 set noinfercase
 set completeopt-=preview
-set completeopt+=menuone,noinsert,noselect
+set completeopt+=menuone,noselect
 " The following line assumes `brew install llvm` in macOS
 let g:clang_library_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:clang_user_options = '-std=c++14'
@@ -146,10 +145,9 @@ following the previous expansion in other contexts. Relevant settings:
 imap <expr> <down> pumvisible() ? "\<plug>(MUcompleteExtendFwd)" : "\<down>"
 ```
 
-In the example, `S<tab>` was typed to complete the first word, then `<down>` was
-pressed repeatedly to extend the completion. The next line has been edited in
-a similar way. To my knowledge, µcomplete is the only completion plugin that
-streamlines such Vim feature.
+In the example, `<tab>` was typed to trigger a completion, then `<down>` was
+pressed repeatedly to extend the completion. To my knowledge, µcomplete is the
+only completion plugin that streamlines such Vim feature.
 
 
 
