@@ -112,8 +112,6 @@ contexts. Used settings:
 set completeopt+=menuone,noselect
 let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
 let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
-let g:mucomplete#smart_enter = 1
-let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 With clang_complete        |  Extending completion
