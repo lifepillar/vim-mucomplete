@@ -270,6 +270,28 @@ fun! Test_MU_issues_95_Ctrl_N_smart_enter()
   unlet g:mucomplete#smart_enter
 endf
 
+fun! Test_MU_smart_enter_with_autocomplete()
+  new
+  call test_override("char_avail", 1)
+  let b:mucomplete_chain = ['keyn']
+  set completeopt=menuone,noinsert
+  unlet! g:mucomplete#smart_enter " Default is 0
+  MUcompleteAutoOn
+  call feedkeys("ahawkfish\<cr>hawkfish\<cr>", "tx")
+  call feedkeys("aok", "tx")
+  call assert_equal("hawkfish", getline(1))
+  call assert_equal("hawkfishok", getline(2))
+  call assert_equal(2, line('$'))
+  let g:mucomplete#smart_enter = 1
+  call feedkeys("ohawkfish\<cr>ok", "tx")
+  call assert_equal("hawkfish", getline(3))
+  call assert_equal("ok", getline(4))
+  call assert_equal(4, line('$'))
+  call test_override("char_avail", 0)
+  bwipe!
+  set completeopt&
+endf
+
 fun! Test_MU_issue_85_python_dot()
   " Allow omni-completion to be triggered after a dot.
   new
