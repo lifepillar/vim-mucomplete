@@ -246,24 +246,24 @@ fun! Test_MU_issues_95_Ctrl_N_smart_enter()
   " Vim does not always insert a new line after pressing Enter with the pop-up
   " menu visible. This function tests a situation is which Vim would not
   " normally insert a new line (so "ok" would end on the same line as
-  " "hawkfish"), but µcomplete does when g:mucomplete#smart_enter = 1 (which
-  " is the default).
+  " "hawkfish"), but µcomplete does when g:mucomplete#smart_enter = 1.
   new
   let b:mucomplete_chain = ['keyn']
-  MUcompleteAutoOff
-  let g:mucomplete#smart_enter = 1
   set completeopt=menuone
+  MUcompleteAutoOff
+  " g:mucomplete#smart_enter is 0 by default
   call feedkeys("ahawkfish\<cr>hawk", "tx")
   call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<c-p>fish\<cr>ok\<esc>", "tx")
+  call feedkeys("\<tab>\<c-p>fish\<cr>ok", "tx")
   call assert_equal("hawkfish", getline(1))
-  call assert_equal("hawkfish", getline(2))
-  call assert_equal("ok", getline(3))
-  let g:mucomplete#smart_enter = 0
+  call assert_equal("hawkfishok", getline(2))
+  call assert_equal(2, line('$'))
+  let g:mucomplete#smart_enter = 1
   call feedkeys("ohawk", "tx")
   call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<c-p>fish\<cr>ok\<esc>", "tx")
-  call assert_equal("hawkfishok", getline(4))
+  call feedkeys("\<tab>\<c-p>fish\<cr>ok", "tx")
+  call assert_equal("hawkfish", getline(3))
+  call assert_equal("ok", getline(4))
   call assert_equal(4, line('$'))
   bwipe!
   set completeopt&
