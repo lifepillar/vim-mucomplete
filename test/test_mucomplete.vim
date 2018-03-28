@@ -40,7 +40,7 @@ fun! s:vim(vimrc, cmd, ...)
         \ . ' '
         \ . join(map(a:cmd, { i,v -> "-c '" . v . "'"}))
         \ )
-  call delete( l:vimrc_name)
+  call delete(l:vimrc_name)
   return l:status
 endf
 
