@@ -916,9 +916,4 @@ synchronization purposes: without <c-r>, s:verify_completion() may be called
 too early, i.e., when the pop-up menu has not appeared yet (but it is going to
 appear, because completion was successful).
 
-I cannot figure out any workaround for that without further built-in support
-from Vim; but if you do, please let me know through:
-
-	https://github.com/lifepillar/vim-mucomplete/issues/70
-
 vim:tw=78:ts=8:norl:
