@@ -197,7 +197,8 @@ Toggle automatic completion.
 8. Mappings					*mucomplete-mappings*
 
 By default, µcomplete maps the keys below in Insert mode. If you do not want
-µcomplete to define any mapping, set |g:mucomplete#no_mappings|.
+µcomplete to define any mapping, set |g:mucomplete#no_mappings|. For the
+definitions of each mapping, see |mucomplete-plugs|.
 
 <tab>
 	Trigger forward chained completion. When the pop-up menu is visible,
@@ -248,8 +249,46 @@ next matching keyword (see |i_CTRL-X_CTRL-K|).
 ==============================================================================
 9. Plugs						*mucomplete-plugs*
 
+<plug>(MUcompleteFwd)
+<plug>(MUcompleteBwd)
+        These are the plugs that trigger manual forward and backward
+        completion, respectively. They are ultimately mapped to the (possibly
+        empty) text that completes the current word.
+>
+	imap <unique> <tab> <plug>(MUcompleteFwd)
+        imap <unique> <s-tab> <plug>(MUcompleteBwd)
+<
+<plug>(MUcompleteCycFwd)
+<plug>(MUcompleteCycBwd)
+        These are the plugs that trigger forward and backward cycling through
+        the completion chain. They are ultimately mapped to the (possibly
+        empty) text that completes the current word.
+>
+	imap <unique> <c-j> <plug>(MUcompleteCycFwd)
+        imap <unique> <c-h> <plug>(MUcompleteCycBwd)
+<
+<plug>(MUcompleteFwdKey) 
+<plug>(MUcompleteBwdKey)
+        There are used to preserve the functionality of the cycling keys in
+        contexts different from completion. They must be redefined when
+        <plug>(MUcompleteCycFwd) and <plug>(MUcompleteCycBwd) are remppaed by
+        the user. See |mucomplete-mappings| for an example.
+
+<plug>(MUcompletePopupCancel)
+<plug>(MUcompletePopupAccept)
+<plug>(MUcompleteCR)
+        These are used to detect when the popup menu is closed with <c-e>,
+        <c-y> or <cr>, respectively. They are ultimately mapped to the
+        corresponding key (<c-e>, <c-y> and <cr>, respectively). When
+        |g:mucomplete#smart_enter| is set, then <plug>(MUcompleteCR) is mapped
+        to the sequence <c-y><cr>.
+>
+	imap <unique> <c-e> <plug>(MUcompletePopupCancel)
+	imap <unique> <c-y> <plug>(MUcompletePopupAccept)
+	imap <unique> <cr> <plug>(MUcompleteCR)
+<	
 The following functionality is exposed by µcomplete, but no mappings are
-associated with it. If you want to use these plugs, you need to define
+associated with it. If you want to use the following plugs, you need to define
 mappings for them in your |vimrc| (see the example below).
 
 <plug>(MUcompleteExtendBwd)
