@@ -281,7 +281,8 @@ next matching keyword (see |i_CTRL-X_CTRL-K|).
         <c-y> or <cr>, respectively. They are ultimately mapped to the
         corresponding key (<c-e>, <c-y> and <cr>, respectively). When
         |g:mucomplete#smart_enter| is set, then <plug>(MUcompleteCR) is mapped
-        to the sequence <c-y><cr>.
+        to the sequence <c-y><cr> if the popup menu is open (otherwise it is
+        mapped to <cr>).
 >
 	imap <unique> <c-e> <plug>(MUcompletePopupCancel)
 	imap <unique> <c-y> <plug>(MUcompletePopupAccept)
