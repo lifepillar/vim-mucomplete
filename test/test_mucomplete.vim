@@ -293,21 +293,55 @@ fun! Test_MU_smart_enter_with_autocomplete()
   unlet g:mucomplete#smart_enter
 endf
 
-fun! Test_MU_issue_85_python_dot()
-  " Allow omni-completion to be triggered after a dot.
+if has('python') || has('python3')
+
+  fun! Test_MU_issue_85_python_dot()
+    " Allow omni-completion to be triggered after a dot.
+    new
+    set filetype=python
+    let b:mucomplete_chain = ['omni']
+    MUcompleteAutoOff
+    set completeopt=menuone,noselect
+    call feedkeys("aimport sys.", "tx")
+    call feedkeys("a", "t!")
+    " Trigger omni-completion and select the first entry
+    call feedkeys("\<tab>\<esc>", "tx")
+    call assert_match('import sys.\w\+', getline(1))
+    bwipe!
+    set completeopt&
+  endf
+
+endif
+
+fun! Test_MU_popup_complete_backwards_issues_61_and_95()
+  " See https://github.com/vim/vim/issues/1645
   new
-  set filetype=python
-  let b:mucomplete_chain = ['omni']
-  MUcompleteAutoOff
-  set completeopt=menuone,noselect
-  call feedkeys("aimport sys.", "tx")
-  call feedkeys("a", "t!")
-  " Trigger omni-completion and select the first entry
-  call feedkeys("\<tab>\<esc>", "tx")
-  call assert_match('import sys.\w\+', getline(1))
+  call setline(1, ['Post', 'Port', 'Po'])
+  let expected = ['Post', 'Port', 'Port']
+  call cursor(3,2)
+  " Check that Vim does not have bugs
+  call feedkeys("A\<c-x>". repeat("\<c-p>", 3). "rt\<cr>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  norm ddgG
+  call setline(1, ['Post', 'Port', 'Po'])
+  call cursor(3,2)
+  call feedkeys("A\<c-p>\<c-n>rt\<cr>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  " Check that µcomplete behaves the same
+  norm ggdG
+  call setline(1, ['Post', 'Port', 'Po'])
+  let b:mucomplete_chain = ['keyp']
+  call cursor(3,2)
+  call feedkeys("A\<tab>\<tab>\<tab>rt\<cr>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  norm ggdG
+  call setline(1, ['Post', 'Port', 'Po'])
+  let b:mucomplete_chain = ['c-p']
+  call cursor(3,2)
+  call feedkeys("A\<tab>\<s-tab>rt\<cr>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
   bwipe!
-  set completeopt&
-endf
+endfunc
 
 
 call RunBabyRun('MU')
