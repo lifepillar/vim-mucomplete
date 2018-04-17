@@ -290,6 +290,7 @@ fun! Test_MU_smart_enter_with_autocomplete()
   call test_override("char_avail", 0)
   bwipe!
   set completeopt&
+  unlet g:mucomplete#smart_enter
 endf
 
 fun! Test_MU_issue_85_python_dot()
