@@ -314,6 +314,7 @@ if has('python') || has('python3')
 endif
 
 fun! Test_MU_popup_complete_backwards_issues_61_and_95()
+  " This test fails before Vim 8.0.1731 because of a Vim bug.
   " See https://github.com/vim/vim/issues/1645
   new
   call setline(1, ['Post', 'Port', 'Po'])
