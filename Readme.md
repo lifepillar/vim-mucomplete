@@ -64,6 +64,12 @@ let g:mucomplete#enable_auto_at_startup = 1
 in your `.vimrc`. Automatic completion may be enabled and disabled at any time
 with `:MUcompleteAutoToggle`.
 
+**Note:** *MUcomplete maps `<tab>`, `<s-tab>`, `<c-j>`, `<c-h>`, `<cr>`,
+`<c-e>`, `<c-y>` in Insert mode by default.  If you prefer to provide your own
+mappings, you may set `g:mucomplete#no_mappings` to `1` in your `vimrc`. Read
+the documentation for more options and for hints about making MUcomplete work
+with plugins having conflicting mappings.*
+
 By default, µcomplete attempts:
 
 1. path completion, if the text in front of the cursor looks like a path;
