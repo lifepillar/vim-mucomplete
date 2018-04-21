@@ -74,6 +74,33 @@ fun! Test_MU_buffer_extend_keyword_completion()
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
   call assert_equal("In Xanadu did Kubla Khan", getline(3))
+  set completeopt=menuone,noinsert
+  call feedkeys("oIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(4))
+  call feedkeys("oIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(5))
+  set completeopt=menuone,noinsert,noselect
+  call feedkeys("oIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(6))
+  call feedkeys("oIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(7))
+  set completeopt=menuone
+  call feedkeys("oIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(8))
+  call feedkeys("oIn", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
+  call assert_equal("In Xanadu did Kubla Khan", getline(9))
   bwipe!
   set completeopt&
 endf
