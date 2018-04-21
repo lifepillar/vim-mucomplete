@@ -90,7 +90,6 @@ let s:further_bwd = {
       \ 'line': "\<c-x>\<c-l>\<c-p>",
       \ }
 let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
-let s:select_dir = extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
 let s:pathstart = exists('+shellslash') && !&shellslash
       \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
       \ : '[/~]'
@@ -210,14 +209,18 @@ else
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
 endif
 
+fun! s:select_dir()
+  return extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
+endf
+
 fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect and noinsert
   let l:m = s:compl_methods[s:i]
-  return get(s:default_dir, l:m, 1) == get(s:select_dir, l:m, 1)
+  return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1)
         \ ? (stridx(&l:completeopt, 'noselect') == -1
         \    ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<up>\<c-n>")
         \    : (get(s:default_dir, l:m, 1) > 0 ? "\<c-n>" : "\<c-p>")
         \   )
-        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir, l:m, 1)
+        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
         \    ? (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-p>\<c-p>" : "\<c-p>")
         \    : (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-n>\<c-n>" : "\<c-n>")
         \   )
@@ -225,9 +228,9 @@ endf
 
 fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
   let l:m = s:compl_methods[s:i]
-  return get(s:default_dir, l:m, 1) == get(s:select_dir, l:m, 1) || stridx(&l:completeopt, 'noselect') != -1
+  return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || stridx(&l:completeopt, 'noselect') != -1
         \ ? ''
-        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir, l:m, 1) ? "\<up>\<up>" : "\<down>\<down>")
+        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1) ? "\<up>\<up>" : "\<down>\<down>") " FIXME: use plugs here
 endf
 
 fun! s:act_on_pumvisible()
@@ -282,7 +285,7 @@ endf
 fun! mucomplete#cycle_or_select(dir)
   return get(g:, 'mucomplete#cycle_with_trigger', 0)
         \ ? mucomplete#cycle(a:dir)
-        \ : (get(s:select_dir, s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
+        \ : (get(s:select_dir(), s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
 endf
 
 " Precondition: pumvisible() is false.
