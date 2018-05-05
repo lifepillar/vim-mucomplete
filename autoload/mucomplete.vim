@@ -41,9 +41,6 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   catch /^Vim\%((\a\+)\)\=:E227/
     echohl ErrorMsg
     echomsg "[MUcomplete]" s:map "is already mapped. Use :verbose imap ".s:map." to see where it is mapped."
-    if s:map != '<c-j>' && s:map != '<c-h>'
-      echomsg  "[MUcomplete] NOTE: since v1.0.0, you do not need to map ".s:map." in your vimrc any longer."
-    endif
     echohl NONE
   finally
     unlet s:map
