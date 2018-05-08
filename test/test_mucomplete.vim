@@ -3,6 +3,8 @@
 " 1. vim -u ../troubleshooting_vimrc.vim test_mucomplete.vim
 " 2. :source %
 "
+" NOTE: some tests require Vim >8.0.XXXX to pass.
+"
 " TODO: use option_save() and option_restore() when implemented
 
 let s:testdir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
@@ -52,6 +54,20 @@ fun! Test_MU_buffer_keyword_completion()
   call feedkeys("ajump ju", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
+  call assert_equal("jump jump", getline(1))
+  bwipe!
+  set completeopt&
+endf
+
+fun! Test_MU_buffer_keyword_completion_plug()
+  new
+  let b:mucomplete_chain = ['keyn']
+  MUcompleteAutoOff
+  set completeopt=menuone,noselect
+  call feedkeys("ajump ju", "tx")
+  call feedkeys("a", "t!")
+  " Check that invoking the plug directly has the same effect as <tab>
+  call feedkeys("\<plug>(MUcompleteFwd)\<esc>", "tx")
   call assert_equal("jump jump", getline(1))
   bwipe!
   set completeopt&
@@ -370,6 +386,234 @@ fun! Test_MU_popup_complete_backwards_issues_61_and_95()
   call assert_equal(expected, getline(1, '$'))
   bwipe!
 endfunc
+
+fun! Test_MU_popup_direction()
+  new
+  let b:mucomplete_chain = ['keyp']
+  MUcompleteAutoOff
+
+  " Manual completion must be independent of completeopt when
+  " always_use_completeopt is off.
+  for l:opt in ['menuone', 'menuone,noselect', 'menuone,noinsert', 'menuone,noinsert,noselect']
+    let g:mucomplete#popup_direction = {}
+    norm ggdG
+    let &completeopt = l:opt
+    call setline(1, ['bowl', 'bowling', 'bowtie', 'bo'])
+    let expected = ['bowl', 'bowling', 'bowtie', 'bowtie', 'bowling']
+    call cursor(4,2)
+    call feedkeys("A\<tab>", 'tx')
+    call feedkeys("obo", 'tx')
+    call feedkeys("a", 't!')
+    call feedkeys("\<tab>\<tab>", 'tx')
+    call assert_equal(expected, getline(1, '$'))
+    norm ggdG
+    let g:mucomplete#popup_direction = { 'keyp': 1 }
+    call setline(1, ['bowl', 'bowling', 'bowtie', 'bo'])
+    let expected = ['bowl', 'bowling', 'bowtie', 'bowl', 'bowtie']
+    call cursor(4,2)
+    call feedkeys("A\<tab>", 'tx')
+    call feedkeys("obo", 'tx')
+    call feedkeys("a", 't!')
+    call feedkeys("\<tab>\<tab>", 'tx')
+    call assert_equal(expected, getline(1, '$'))
+  endfor
+
+  bwipe!
+  unlet g:mucomplete#popup_direction
+  set completeopt&
+endf
+
+fun! Test_MU_basic_autocompletion()
+  new
+  set completeopt=menuone,noselect
+  let b:mucomplete_chain = ['keyn']
+  call assert_equal('<Plug>(MUcompleteFwd)', maparg('<tab>', 'i'))
+  call assert_equal('<Plug>(MUcompleteBwd)', maparg('<s-tab>', 'i'))
+  MUcompleteAutoOn
+  call setline(1, ['topolino', 'topomoto', ''])
+  let l:expected = ['topolino', 'topomoto', 'topomoto', 'topomoto']
+  call cursor(3,1)
+  call test_override("char_avail", 1)
+  call feedkeys("Ato\<c-p>\<c-y>\<cr>\<esc>", 'tx')
+  call feedkeys("Ato\<s-tab>\<c-y>\<esc>", 'tx')
+  call assert_equal(l:expected, getline(1,'$'))
+  call test_override("char_avail", 0)
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_autocompletion_tab_shifttab()
+  new
+  let b:mucomplete_chain = ['keyn']
+  set completeopt=menuone,noselect
+  MUcompleteAutoOn
+
+  " Test that we are able to select menu entries with TAB and SHIFT-TAB
+  call setline(1,  ['monadelphous', 'monadism', 'monazite', 'mondegreen'])
+  let l:expected = ['monadelphous', 'monadism', 'monazite', 'mondegreen',
+        \           'monadelphous', 'monadism', 'monazite', 'mondegreen',
+        \           'mondegreen',   'monazite', 'monadism', 'monadelphous']
+  call cursor(4,1)
+  call test_override("char_avail", 1)
+  call feedkeys("omo\<tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("omo", 't!')
+  call feedkeys("\<tab>\<tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("omo", 't!')
+  call feedkeys("\<tab>\<tab>\<tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("omo", 't!')
+  call feedkeys("\<tab>\<tab>\<tab>\<tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("omo", 't!')
+  call feedkeys("\<s-tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("omo", 't!')
+  call feedkeys("\<s-tab>\<s-tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("omo", 't!')
+  call feedkeys("\<s-tab>\<s-tab>\<s-tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("omo", 't!')
+  call feedkeys("\<s-tab>\<s-tab>\<s-tab>\<s-tab>\<c-y>\<esc>", 'tx')
+  call assert_equal(l:expected, getline(1, '$'))
+  call test_override("char_avail", 0)
+
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_natural_popup_direction_auto_on_noselect()
+  new
+  set completeopt=menuone,noselect
+  MUcompleteAutoOn
+  let g:mucomplete#popup_direction = { 'keyp': -1 }
+  let b:mucomplete_chain = ['keyp']
+
+  call test_override("char_avail", 1)
+  call setline(1, ['bowl', 'bowling', 'bowtie'])
+  let expected = ['bowl', 'bowling', 'bowtie', 'bowtie', 'bowling', 'bowl']
+  call cursor(3,1)
+  call feedkeys("obo\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>\<tab>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  call test_override("char_avail", 0)
+
+  MUcompleteAutoOff
+  unlet g:mucomplete#popup_direction
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_reverse_popup_direction_auto_on_noselect()
+  new
+  set completeopt=menuone,noselect
+  MUcompleteAutoOn
+  let g:mucomplete#popup_direction = { 'keyp': 1 }
+  let b:mucomplete_chain = ['keyp']
+
+  call test_override("char_avail", 1)
+  call setline(1, ['bowl', 'bowling', 'bowtie'])
+  let expected = ['bowl', 'bowling', 'bowtie', 'bowl', 'bowtie', 'bowtie']
+  call cursor(3,1)
+  call feedkeys("obo\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>\<tab>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  call test_override("char_avail", 0)
+
+  unlet g:mucomplete#popup_direction
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_natural_popup_direction_auto_on_noinsert()
+  new
+  set completeopt=menuone,noinsert
+  MUcompleteAutoOn
+  let g:mucomplete#popup_direction = { 'keyp': -1 }
+  let b:mucomplete_chain = ['keyp']
+
+  call test_override("char_avail", 1)
+  call setline(1, ['bowl', 'bowling', 'bowtie'])
+  let expected = ['bowl', 'bowling', 'bowtie', 'bowtie', 'bowling', 'bowl']
+  call cursor(3,1)
+  call feedkeys("obo\<c-y>", 'tx')
+  call feedkeys("obo\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  call test_override("char_avail", 0)
+
+  unlet g:mucomplete#popup_direction
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_reverse_popup_direction_auto_on_noinsert()
+  new
+  set completeopt=menuone,noinsert
+  MUcompleteAutoOn
+  let g:mucomplete#popup_direction = { 'keyp': 1 }
+  let b:mucomplete_chain = ['keyp']
+
+  call test_override("char_avail", 1)
+  call setline(1, ['bowl', 'bowling', 'bowtie'])
+  let expected = ['bowl', 'bowling', 'bowtie', 'bowl', 'bowtie', 'bowtie']
+  call cursor(3,1)
+  call feedkeys("obo\<c-y>", 'tx')
+  call feedkeys("obo\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  call test_override("char_avail", 0)
+
+  unlet g:mucomplete#popup_direction
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_natural_popup_direction_auto_on_noinsert_noselect()
+  new
+  set completeopt=menuone,noselect,noinsert
+  MUcompleteAutoOn
+  let g:mucomplete#popup_direction = { 'keyp': -1 }
+  let b:mucomplete_chain = ['keyp']
+
+  call test_override("char_avail", 1)
+  call setline(1, ['bowl', 'bowling', 'bowtie'])
+  let expected = ['bowl', 'bowling', 'bowtie', 'bowtie', 'bowling']
+  call cursor(3,1)
+  call feedkeys("obo\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  call test_override("char_avail", 0)
+
+  unlet g:mucomplete#popup_direction
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_reverse_popup_direction_auto_on_noselect_noinsert()
+  new
+  set completeopt=menuone,noselect,noinsert
+  MUcompleteAutoOn
+  let g:mucomplete#popup_direction = { 'keyp': 1 }
+  let b:mucomplete_chain = ['keyp']
+
+  call test_override("char_avail", 1)
+  call setline(1, ['bowl', 'bowling', 'bowtie'])
+  let expected = ['bowl', 'bowling', 'bowtie', 'bowl', 'bowtie']
+  call cursor(3,1)
+  call feedkeys("obo\<tab>", 'tx')
+  call feedkeys("obo\<tab>\<tab>", 'tx')
+  call assert_equal(expected, getline(1, '$'))
+  call test_override("char_avail", 0)
+
+  unlet g:mucomplete#popup_direction
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
 
 
 call RunBabyRun('MU')
