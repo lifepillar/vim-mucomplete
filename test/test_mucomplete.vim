@@ -117,8 +117,8 @@ fun! Test_MU_buffer_extend_keyword_completion()
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
   call assert_equal("In Xanadu did Kubla Khan", getline(9))
-  bwipe!
   set completeopt&
+  bwipe!
 endf
 
 fun! Test_MU_cmd_completion()
@@ -611,6 +611,44 @@ fun! Test_MU_reverse_popup_direction_auto_on_noselect_noinsert()
 
   unlet g:mucomplete#popup_direction
   MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
+" MUcomplete must be immune to remappings of CTRL-N and CTRL-P in Insert mode
+fun! Test_MU_ctrl_p_and_ctrl_n_remapped()
+  new
+  inoremap <buffer> <c-p> P
+  inoremap <buffer> <c-n> N
+  set completeopt=menu,noselect
+  call feedkeys("Ajust jump ju", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<tab>\<c-y>\<esc>", 'tx')
+  call assert_equal('just jump jump', getline(1))
+  call feedkeys("oju", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<s-tab>\<s-tab>\<s-tab>\<c-y>\<esc>", 'tx')
+  call assert_equal('jump', getline(2))
+
+  set completeopt&
+  bwipe!
+endf
+
+" MUcomplete must be immune to remappings of Up and Down arrows
+fun! Test_MU_up_and_down_arrow_remapped()
+  new
+  inoremap <buffer> <up> UP
+  inoremap <buffer> <down> DOWN
+  set completeopt=menu,noinsert
+  call feedkeys("Ajust jump ju", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<tab>\<c-y>\<esc>", 'tx')
+  call assert_equal('just jump jump', getline(1))
+  call feedkeys("oju", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<s-tab>\<s-tab>\<s-tab>\<c-y>\<esc>", 'tx')
+  call assert_equal('jump', getline(2))
+
   set completeopt&
   bwipe!
 endf
