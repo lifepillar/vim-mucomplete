@@ -8,16 +8,16 @@
 
 # What is it?
 
-MUcomplete (or µcomplete) is a minimalist autocompletion plugin for Vim.
+MUcomplete is a minimalist autocompletion plugin for Vim.
 
 MUcomplete is an implementation of *chained (fallback) completion*, whereby
 several completion methods are attempted one after another until a result is
 returned.
 
-Under the hood, µcomplete does nothing more than typing some completion
+Under the hood, MUcomplete does nothing more than typing some completion
 mappings for you, either when you press `<tab>`/`<s-tab>` or automatically
 while you are typing. You choose which completion methods to use and in which
-order, and µcomplete does the rest. It does no caching, no asynchronous
+order, and MUcomplete does the rest. It does no caching, no asynchronous
 computation, no intelligent guessing. It just makes use of core Vim features.
 
 MUcomplete brings Vim completion down to earth again.
@@ -39,8 +39,7 @@ Mandatory Vim settings:
   set completeopt+=menuone
 ```
 
-For automatic completion, you also need to put at least one of the following
-in your `vimrc` (choose the combination that best fits your taste):
+For automatic completion, you also need one of the following:
 
 ```vim
   set completeopt+=noselect
@@ -70,7 +69,7 @@ mappings, you may set `g:mucomplete#no_mappings` to `1` in your `vimrc`. Read
 the documentation for more options and for hints about making MUcomplete work
 with plugins having conflicting mappings.*
 
-By default, µcomplete attempts:
+By default, MUcomplete attempts:
 
 1. path completion, if the text in front of the cursor looks like a path;
 2. omni-completion, if enabled in the current buffer;
@@ -87,7 +86,7 @@ for an example.
 MUcomplete is fully customizable. See `:help mucomplete.txt` for detailed
 documentation.
 
-**Important:** by itself, µcomplete does not provide any
+**Important:** by itself, MUcomplete does not provide any
 “intellisense”/semantic completion. If you want that, you also need to install
 suitable omni completion plugins for the languages you are using (see the
 examples below).
@@ -99,7 +98,7 @@ With jedi-vim (Python)     |  With SQL (Vim)
 :-------------------------:|:-------------------------:
 ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/jedi.gif) | ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/sql.gif)
 
-The first example shows µcomplete automatically offering suggestions from
+The first example shows MUcomplete automatically offering suggestions from
 [jedi-vim](https://github.com/davidhalter/jedi-vim), which provides semantic
 completion for Python. Used settings:
 
@@ -124,7 +123,7 @@ With clang_complete        |  Extending completion
 :-------------------------:|:-------------------------:
 ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/clang.gif) | ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/ctrlx-ctrln.gif)
 
-The example above shows µcomplete used with
+The example above shows MUcomplete used with
 [clang-complete](https://github.com/Rip-Rip/clang_complete). You may also see
 how it is possible to switch between different completion methods (omni
 completion and keyword completion in this case) when the pop-up menu is visible,
@@ -150,7 +149,7 @@ imap <expr> <down> pumvisible() ? "\<plug>(MUcompleteExtendFwd)" : "\<down>"
 ```
 
 In the example, `<tab>` was typed to trigger a completion, then `<down>` was
-pressed repeatedly to extend the completion. To my knowledge, µcomplete is the
+pressed repeatedly to extend the completion. To my knowledge, MUcomplete is the
 only completion plugin that streamlines such Vim feature.
 
 

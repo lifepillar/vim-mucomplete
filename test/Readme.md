@@ -2,8 +2,8 @@
 
 This folder contains:
 
-- a Vim script to test the behaviour of µcomplete;
-- an AppleScript script to profile µcomplete's performance.
+- a Vim script to test the behaviour of MUcomplete;
+- an AppleScript script to profile MUcomplete's performance.
 
 To run the test suite, execute:
 
@@ -17,8 +17,8 @@ The AppleScript script uses macOS's assistive technologies to send keystrokes to
 Vim as if typed by a (fast) human typist (the speed can be set in the source
 code).
 
-To profile µcomplete, open `profile.applescript` in Script Editor and run it
-(the script can be run from source). The script assumes that µcomplete is
+To profile MUcomplete, open `profile.applescript` in Script Editor and run it
+(the script can be run from source). The script assumes that MUcomplete is
 installed in `~/.vim/pack/my/start/mucomplete`. Adjust the `MUcompleteFolder`
 variable inside the script if necessary.
 

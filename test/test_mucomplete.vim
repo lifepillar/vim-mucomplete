@@ -273,7 +273,7 @@ fun! Test_MU_issues_95_Ctrl_N_smart_enter()
   " Vim does not always insert a new line after pressing Enter with the pop-up
   " menu visible. This function tests a situation is which Vim would not
   " normally insert a new line (so "ok" would end on the same line as
-  " "hawkfish"), but µcomplete does when g:mucomplete#smart_enter = 1.
+  " "hawkfish"), but MUcomplete does when g:mucomplete#smart_enter = 1.
   new
   let b:mucomplete_chain = ['keyn']
   set completeopt=menuone
@@ -355,7 +355,7 @@ fun! Test_MU_popup_complete_backwards_issues_61_and_95()
   call cursor(3,2)
   call feedkeys("A\<c-p>\<c-n>rt\<cr>", 'tx')
   call assert_equal(expected, getline(1, '$'))
-  " Check that µcomplete behaves the same
+  " Check that MUcomplete behaves the same
   norm ggdG
   call setline(1, ['Post', 'Port', 'Po'])
   let b:mucomplete_chain = ['keyp']
