@@ -11,6 +11,8 @@ inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
 inoremap <silent>        <plug>(MUcompleteCte) <c-e>
+inoremap <silent>        <plug>(MUcompleteUp)  <up>
+inoremap <silent>        <plug>(MUcompleteDown) <down>
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   try
@@ -214,7 +216,7 @@ fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect an
   let l:m = s:compl_methods[s:i]
   return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1)
         \ ? (stridx(&l:completeopt, 'noselect') == -1
-        \    ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<up>\<c-n>")
+        \    ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteUp)\<c-n>")
         \    : (get(s:default_dir, l:m, 1) > 0 ? "\<c-n>" : "\<c-p>")
         \   )
         \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
@@ -227,7 +229,9 @@ fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomp
   let l:m = s:compl_methods[s:i]
   return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || stridx(&l:completeopt, 'noselect') != -1
         \ ? ''
-        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1) ? "\<up>\<up>" : "\<down>\<down>") " FIXME: use plugs here
+        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
+        \    ? "\<plug>(MUcompleteUp)\<plug>(MUcompleteUp)"
+        \    : "\<plug>(MUcompleteDown)\<plug>(MUcompleteDown)")
 endf
 
 fun! s:act_on_pumvisible()
