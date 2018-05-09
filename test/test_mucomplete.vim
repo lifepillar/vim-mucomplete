@@ -3,7 +3,7 @@
 " 1. vim -u ../troubleshooting_vimrc.vim test_mucomplete.vim
 " 2. :source %
 "
-" NOTE: some tests require Vim >8.0.XXXX to pass.
+" NOTE: some tests pass only in Vim 8.0.1806 or later.
 "
 " TODO: use option_save() and option_restore() when implemented
 
@@ -73,6 +73,7 @@ fun! Test_MU_buffer_keyword_completion_plug()
   set completeopt&
 endf
 
+" Extending completion should work the same no matter how completeopt is set
 fun! Test_MU_buffer_extend_keyword_completion()
   new
   let b:mucomplete_chain = ['keyn']
@@ -390,12 +391,13 @@ endfunc
 fun! Test_MU_popup_direction()
   new
   let b:mucomplete_chain = ['keyp']
+  let g:mucomplete#always_use_completeopt = 0
   MUcompleteAutoOff
 
   " Manual completion must be independent of completeopt when
   " always_use_completeopt is off.
   for l:opt in ['menuone', 'menuone,noselect', 'menuone,noinsert', 'menuone,noinsert,noselect']
-    let g:mucomplete#popup_direction = {}
+    let g:mucomplete#popup_direction = { 'keyp': -1 }
     norm ggdG
     let &completeopt = l:opt
     call setline(1, ['bowl', 'bowling', 'bowtie', 'bo'])
@@ -418,9 +420,10 @@ fun! Test_MU_popup_direction()
     call assert_equal(expected, getline(1, '$'))
   endfor
 
-  bwipe!
+  unlet g:mucomplete#always_use_completeopt
   unlet g:mucomplete#popup_direction
   set completeopt&
+  bwipe!
 endf
 
 fun! Test_MU_basic_autocompletion()
