@@ -480,16 +480,16 @@ This is how they are defined by MUcomplete:
 <
 					*'g:mucomplete#popup_direction'*
 >
-	let g:mucomplete#popup_direction = { 'c-p': -1, 'keyp': -1 }
+	let g:mucomplete#popup_direction = {'c-p': -1, 'keyp': -1, 'line': -1}
 <
 MUcomplete by default follows the "natural" direction of each completion
-method. Except for |i_CTRL-P| and |i_CTRL-X_CTRL-P|, Vim always starts by
-selecting the first (topmost) entry in the pop-up menu; for |i_CTRL-P| and
-|i_CTRL-X_CTRL-P|, though, Vim highlights the last (bottomost) entry instead.
-Therefore, when you press <tab> to select the "next" entry in the pop-up menu,
-MUcomplete moves downwards in all cases, except for CTRL-P completions, where
-<tab> moves from bottom to top. The same applies to <s-tab>, with the
-directions inverted.
+method. Except for |i_CTRL-X_CTRL-L|, |i_CTRL-P| and |i_CTRL-X_CTRL-P|, Vim
+always starts by selecting the first (topmost) entry in the pop-up menu; for
+|i_CTRL-X_CTRL-L|, |i_CTRL-P| and |i_CTRL-X_CTRL-P|, though, Vim highlights
+the last (bottomost) entry instead. Therefore, when you press <tab> to select
+the "next" entry in the pop-up menu, MUcomplete moves downwards in most cases;
+for the exceptions mentioned above, though, <tab> moves from bottom to top. In
+all cases, you may use <s-tab> to move in the opposite direction.
 
 The default behaviour may be overridden for each completion type by setting
 |g:mucomplete#popup_direction| in your |vimrc|. The value of this variable is
@@ -506,7 +506,7 @@ If you also want to invert the direction of "c-p" completion, you may write:
 <
 For the completion methods not explicitly mentioned in the value of
 |g:mucomplete#popup_direction|, the natural value is assumed, i.e., -1 for
-"c-p" and "keyp", and 1 for all the other methods.
+"c-p", "keyp" and "line", and 1 for all the other methods.
 
 						*'g:mucomplete#smart_enter'*
 When set to 1, override Vim's default behaviour and always insert a new line

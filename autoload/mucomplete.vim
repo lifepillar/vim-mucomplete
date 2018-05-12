@@ -70,7 +70,7 @@ let s:compl_mappings = extend({
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
-let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
+let s:default_dir = { 'c-p' : -1, 'keyp': -1, 'line': -1 }
 let s:pathstart = exists('+shellslash') && !&shellslash
       \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
       \ : '[/~]'
@@ -211,7 +211,7 @@ else
 endif
 
 fun! s:select_dir()
-  return extend({ 'c-p' : -1, 'keyp': -1 }, get(g:, 'mucomplete#popup_direction', {}))
+  return extend({ 'c-p' : -1, 'keyp': -1, 'line': -1 }, get(g:, 'mucomplete#popup_direction', {}))
 endf
 
 fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect and noinsert
