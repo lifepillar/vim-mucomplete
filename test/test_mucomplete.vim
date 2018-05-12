@@ -107,6 +107,36 @@ fun! Test_MU_buffer_extend_keyword_completion()
   bwipe!
 endf
 
+fun! Test_MU_extend_line_completion()
+  new
+  imap <buffer> <up> <plug>(MUcompleteExtendBwd)
+  imap <buffer> <down> <plug>(MUcompleteExtendFwd)
+  let b:mucomplete_chain = ['line']
+  MUcompleteAutoOff
+
+  for l:opt in ['menuone', 'menuone,noselect', 'menuone,noinsert', 'menuone,noinsert,noselect']
+    let &completeopt = l:opt
+    norm ggdG
+    call setline(1,  ['abc def', 'abc def ghi', 'abc def ghi jkl'])
+    let l:expected = ['abc def', 'abc def ghi', 'abc def ghi jkl',
+          \           'abc def', 'abc def ghi', 'abc def ghi jkl',
+          \           'abc def', 'abc def ghi', 'abc def ghi jkl']
+    call cursor(3,1)
+    call feedkeys("oabc", "tx")
+    call feedkeys("a", "t!")
+    " Select the first line, then extend with the remaining lines
+    call feedkeys("\<tab>\<tab>\<tab>\<down>\<down>\<c-y>\<esc>", "tx")
+    call feedkeys("oabc", "tx")
+    call feedkeys("a", "t!")
+    " Ditto
+    call feedkeys("\<tab>\<tab>\<tab>\<up>\<up>\<c-y>\<esc>", "tx")
+    call assert_equal(l:expected, getline(1, '$'))
+  endfor
+
+  set completeopt&
+  bwipe!
+endf
+
 fun! Test_MU_cmd_completion()
   new
   set ft=vim
