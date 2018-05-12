@@ -70,24 +70,6 @@ let s:compl_mappings = extend({
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
-let s:further_fwd = {
-      \ 'c-n' : "\<c-x>\<c-n>\<c-n>",
-      \ 'c-p' : "\<c-x>\<c-n>\<c-n>",
-      \ 'defs': "\<c-x>\<c-d>\<c-n>",
-      \ 'incl': "\<c-x>\<c-i>\<c-n>",
-      \ 'keyn': "\<c-x>\<c-n>\<c-n>",
-      \ 'keyp': "\<c-x>\<c-n>\<c-n>",
-      \ 'line': "\<c-x>\<c-l>\<c-n>",
-      \ }
-let s:further_bwd = {
-      \ 'c-n' : "\<c-x>\<c-p>\<c-p>",
-      \ 'c-p' : "\<c-x>\<c-p>\<c-p>",
-      \ 'defs': "\<c-x>\<c-d>\<c-p>",
-      \ 'incl': "\<c-x>\<c-i>\<c-p>",
-      \ 'keyn': "\<c-x>\<c-p>\<c-p>",
-      \ 'keyp': "\<c-x>\<c-p>\<c-p>",
-      \ 'line': "\<c-x>\<c-l>\<c-p>",
-      \ }
 let s:default_dir = { 'c-p' : -1, 'keyp': -1 }
 let s:pathstart = exists('+shellslash') && !&shellslash
       \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
@@ -106,11 +88,31 @@ let s:complete_empty_text = 0  " When set to 1, completion is tried even at the 
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
 fun! mucomplete#further_fwd()
-  return pumvisible() ? get(s:further_fwd, get(s:compl_methods, s:i, ''), '') : ''
+  return pumvisible() ? s:further(1) : ''
 endf
 
 fun! mucomplete#further_bwd()
-  return pumvisible() ? get(s:further_bwd, get(s:compl_methods, s:i, ''), '') : ''
+  return pumvisible() ? s:further(-1) : ''
+endf
+
+fun! s:further(dir)
+  let l:keys = index(['keyn','keyp','c-n','c-p'], s:compl_methods[s:i]) > -1
+        \      ? (a:dir > 0 ? "\<c-x>\<c-n>" : "\<c-x>\<c-p>")
+        \      : (s:compl_methods[s:i] ==# 'line'
+        \         ? "\<c-x>\<c-l>"
+        \         : s:compl_mappings[s:compl_methods[s:i]]
+        \        )
+  return l:keys
+        \   . (a:dir > 0
+        \      ? (stridx(&l:completeopt, 'noselect') == -1
+        \         ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteUp)\<c-n>")
+        \         : "\<plug>(MUcompleteDown)\<c-p>\<c-n>"
+        \        )
+        \      : (stridx(&l:completeopt, 'noselect') == -1
+        \         ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteDown)\<c-p>")
+        \         : "\<plug>(MUcompleteUp)\<c-n>\<c-p>"
+        \        )
+        \     )
 endf
 
 fun! mucomplete#popup_exit(ctrl)
