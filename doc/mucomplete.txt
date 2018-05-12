@@ -295,15 +295,17 @@ mappings for them in your |vimrc|.
 
 <plug>(MUcompleteExtendFwd)
 <plug>(MUcompleteExtendBwd)
-	When the popup menu is visible, repeated invocation of these plugs
-	will copy the words following the previous expansion in other
-	contexts using the current completion method.
+        When the popup menu is visible, repeated invocation of these plugs
+        will copy the words following the previous expansion in other contexts
+        using the current completion method. For line completion, whole lines
+        will be copied.
 
 	This works for "c-n", "c-p", "defs", "incl", "keyn", "keyp", and
 	"line". See |i_CTRL-X_CTRL-N|, |i_CTRL-X_CTRL-P|, |i_CTRL-X_CTRL-D|,
 	|i_CTRL-X_CTRL-I|, and |i_CTRL-X_CTRL-L|.
 
-	To try this, define:
+	This feature is more easily understood with examples rather than
+        words. Try this:
 >
 	:imap <right> <plug>(MUcompleteExtendFwd)
         :set completeopt=menuone,noselect
@@ -312,6 +314,12 @@ mappings for them in your |vimrc|.
 >
 	Shall I compare thee to a summer’s day?
 	S<tab><right><right><right><right><right><right>
+<
+        Another example:
+>
+        New Zealand
+        New York Times
+        Ne<tab><right><tab><right>
 <
 ==============================================================================
 10. Customization				*mucomplete-customization*
