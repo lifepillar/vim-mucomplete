@@ -21,7 +21,7 @@ fun! RunTheTest(test)
       if l:err =~# '^Caught exception'
         call add(s:errors, substitute(l:err, '^Caught exception\zs.*: Vim[^:]*\ze:', '', ''))
       else
-        call add(s:errors, substitute(l:err, '^.*\zeline \d\+', '', '') })
+        call add(s:errors, substitute(l:err, '^.*\zeline \d\+', '', ''))
       endif
     endfor
     let v:errors = []
