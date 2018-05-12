@@ -73,51 +73,36 @@ fun! Test_MU_buffer_keyword_completion_plug()
   set completeopt&
 endf
 
-" Extending completion should work the same no matter how completeopt is set
+" Extending completion should work the same no matter how completeopt is set.
+" It should not depend on the value on g:mucomplete#popup_direction either.
 fun! Test_MU_buffer_extend_keyword_completion()
   new
-  let b:mucomplete_chain = ['keyn']
   imap <buffer> <up> <plug>(MUcompleteExtendBwd)
   imap <buffer> <down> <plug>(MUcompleteExtendFwd)
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
-  call feedkeys("aIn Xanadu did Kubla Khan\<cr>", "tx")
-  call feedkeys("aIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(1))
-  call assert_equal("In Xanadu did Kubla Khan", getline(2))
-  call feedkeys("oIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(3))
-  set completeopt=menuone,noinsert
-  call feedkeys("oIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(4))
-  call feedkeys("oIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(5))
-  set completeopt=menuone,noinsert,noselect
-  call feedkeys("oIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(6))
-  call feedkeys("oIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(7))
-  set completeopt=menuone
-  call feedkeys("oIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(8))
-  call feedkeys("oIn", "tx")
-  call feedkeys("a", "t!")
-  call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
-  call assert_equal("In Xanadu did Kubla Khan", getline(9))
+
+  for l:opt in ['menuone', 'menuone,noselect', 'menuone,noinsert', 'menuone,noinsert,noselect']
+    for l:method in ['keyn', 'keyp']
+      let b:mucomplete_chain = [l:method]
+      for l:popup_dir in [1,-1]
+        let g:mucomplete#popup_direction = { l:method: l:popup_dir }
+        let &completeopt = l:opt
+        norm ggdG
+        call feedkeys("aIn Xanadu did Kubla Khan", "tx")
+        call feedkeys("oIn", "tx")
+        call feedkeys("a", "t!")
+        call feedkeys("\<tab>\<up>\<up>\<up>\<up>", "tx")
+        call assert_equal("In Xanadu did Kubla Khan", getline(1))
+        call assert_equal("In Xanadu did Kubla Khan", getline(2))
+        call feedkeys("oIn", "tx")
+        call feedkeys("a", "t!")
+        call feedkeys("\<tab>\<down>\<down>\<down>\<down>", "tx")
+        call assert_equal("In Xanadu did Kubla Khan", getline(3))
+      endfor
+    endfor
+  endfor
+
+  unlet g:mucomplete#popup_direction
   set completeopt&
   bwipe!
 endf
