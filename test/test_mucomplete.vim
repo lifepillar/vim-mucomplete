@@ -7,6 +7,12 @@
 "
 " TODO: use option_save() and option_restore() when implemented
 
+if !has('patch-8.0.1806')
+  echohl WarningMsg
+  echomsg "[MUcomplete Test] Vim 8.0.1806 or later is needed to run the tests successfully"
+  echohl None
+endif
+
 let s:testdir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let s:mudir = fnamemodify(s:testdir, ':h')
 
