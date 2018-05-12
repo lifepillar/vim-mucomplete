@@ -347,29 +347,29 @@ fun! Test_MU_popup_complete_backwards_issues_61_and_95()
   " See https://github.com/vim/vim/issues/1645
   new
   call setline(1, ['Post', 'Port', 'Po'])
-  let expected = ['Post', 'Port', 'Port']
+  let l:expected = ['Post', 'Port', 'Port']
   call cursor(3,2)
   " Check that Vim does not have bugs
   call feedkeys("A\<c-x>". repeat("\<c-p>", 3). "rt\<cr>", 'tx')
-  call assert_equal(expected, getline(1, '$'))
+  call assert_equal(l:expected, getline(1, '$'))
   norm ddgG
   call setline(1, ['Post', 'Port', 'Po'])
   call cursor(3,2)
   call feedkeys("A\<c-p>\<c-n>rt\<cr>", 'tx')
-  call assert_equal(expected, getline(1, '$'))
+  call assert_equal(l:expected, getline(1, '$'))
   " Check that MUcomplete behaves the same
   norm ggdG
   call setline(1, ['Post', 'Port', 'Po'])
   let b:mucomplete_chain = ['keyp']
   call cursor(3,2)
   call feedkeys("A\<tab>\<tab>\<tab>rt\<cr>", 'tx')
-  call assert_equal(expected, getline(1, '$'))
+  call assert_equal(l:expected, getline(1, '$'))
   norm ggdG
   call setline(1, ['Post', 'Port', 'Po'])
   let b:mucomplete_chain = ['c-p']
   call cursor(3,2)
   call feedkeys("A\<tab>\<s-tab>rt\<cr>", 'tx')
-  call assert_equal(expected, getline(1, '$'))
+  call assert_equal(l:expected, getline(1, '$'))
   bwipe!
 endfunc
 
@@ -386,23 +386,23 @@ fun! Test_MU_popup_direction()
     norm ggdG
     let &completeopt = l:opt
     call setline(1, ['bowl', 'bowling', 'bowtie', 'bo'])
-    let expected = ['bowl', 'bowling', 'bowtie', 'bowtie', 'bowling']
+    let l:expected = ['bowl', 'bowling', 'bowtie', 'bowtie', 'bowling']
     call cursor(4,2)
     call feedkeys("A\<tab>", 'tx')
     call feedkeys("obo", 'tx')
     call feedkeys("a", 't!')
     call feedkeys("\<tab>\<tab>", 'tx')
-    call assert_equal(expected, getline(1, '$'))
+    call assert_equal(l:expected, getline(1, '$'))
     norm ggdG
     let g:mucomplete#popup_direction = { 'keyp': 1 }
     call setline(1, ['bowl', 'bowling', 'bowtie', 'bo'])
-    let expected = ['bowl', 'bowling', 'bowtie', 'bowl', 'bowtie']
+    let l:expected = ['bowl', 'bowling', 'bowtie', 'bowl', 'bowtie']
     call cursor(4,2)
     call feedkeys("A\<tab>", 'tx')
     call feedkeys("obo", 'tx')
     call feedkeys("a", 't!')
     call feedkeys("\<tab>\<tab>", 'tx')
-    call assert_equal(expected, getline(1, '$'))
+    call assert_equal(l:expected, getline(1, '$'))
   endfor
 
   unlet g:mucomplete#always_use_completeopt
