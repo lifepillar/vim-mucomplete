@@ -700,12 +700,18 @@ MUcomplete tries to be a responsible citizen in Vimland. This section
 describes how to make it peacefully coexist with other plugins.
 
 auto-pairs ~
-This plugin maps <cr> in Insert mode in a way that conflicts with MUcomplete's
-default mapping. To resolve the conflict, put this in your |vimrc|:
+This plugin maps <cr> and <space> in Insert mode in ways that conflict with
+MUcomplete's operation. To resolve the conflicts, put this in your
+|vimrc|:
 >
 	let g:AutoPairsMapCR = 0
 	imap <Plug>MyCR <Plug>(MUcompleteCR)<Plug>AutoPairsReturn
 	imap <cr> <Plug>MyCR
+
+	let g:AutoPairsMapSpace = 0
+	imap <silent> <expr> <space> pumvisible()
+		\ ? "<space>"
+		\ : "<c-r>=AutoPairsSpace()<cr>"
 <
 Mapping things this way will also make MUcomplete and auto-pairs work well
 together with endwise.vim (see below).
