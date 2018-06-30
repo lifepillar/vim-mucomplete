@@ -173,6 +173,7 @@ let g:mucomplete#chains = extend({
 if has('lambda')
   let s:yes_you_can = { _ -> 1 } " Try always
   let s:is_keyword = { t -> t =~# '\m\k\k$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\k$')) }
+  let s:is_keyword_or_dot = { t -> t =~# '\m\k\%(\k\|\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$')) }
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'c-n' : s:is_keyword,
@@ -193,11 +194,12 @@ if has('lambda')
         \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) },
         \     'user': { t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) },
         \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }
-        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {})),
-        \ 'python'  : extend({
-        \     'omni': { t -> t =~# '\m\k\%(\k\|\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$')) }
-        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'python', {}))
+        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
+  " Special cases
+  if (has('python') || has('python3'))
+    call extend(extend(g:mucomplete#can_complete, { 'python': {} }, 'keep')['python'], { 'omni': s:is_keyword_or_dot }, 'keep')
+  endif
 else
   let s:yes_you_can = function('mucomplete#compat#yes_you_can')
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
