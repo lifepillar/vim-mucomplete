@@ -60,7 +60,7 @@ fun! mucomplete#compat#omni_python(t)
 endf
 
 fun! mucomplete#compat#can_complete()
-  return extend({
+  let l:can_complete = extend({
         \ 'default' : extend({
         \     'c-n' :  function('mucomplete#compat#default'),
         \     'c-p' :  function('mucomplete#compat#default'),
@@ -81,10 +81,12 @@ fun! mucomplete#compat#can_complete()
         \     'uspl':  function('mucomplete#compat#spel'),
         \     'ulti':  function('mucomplete#compat#ulti')
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {})),
-        \ 'python'  : extend({
-        \     'omni':  function('mucomplete#compat#omni_python')
-        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'python', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
+  " Special cases
+  if has('python') || has('python3')
+    call extend(extend(l:can_complete, { 'python': {} }, 'keep')['python'], { 'omni': function('mucomplete#compat#omni_python') }, 'keep')
+  endif
+  return l:can_complete
 endf
 
 let &cpo = s:save_cpo
