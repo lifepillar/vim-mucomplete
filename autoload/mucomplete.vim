@@ -197,7 +197,7 @@ if has('lambda')
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
   " Special cases
-  if (has('python') || has('python3'))
+  if has('python') || has('python3')
     call extend(extend(g:mucomplete#can_complete, { 'python': {} }, 'keep')['python'], { 'omni': s:is_keyword_or_dot }, 'keep')
   endif
 else
