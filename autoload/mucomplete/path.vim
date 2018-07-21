@@ -26,8 +26,8 @@ else
 endif
 
 let s:pathstart = exists('+shellslash') && !&shellslash
-      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '^[\\~]' : '^[/\\~]')
-      \ : '^[/~]'
+      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
+      \ : '[/~]'
 
 if exists('&fileignorecase')
 
@@ -87,7 +87,7 @@ fun! mucomplete#path#complete() abort
       return ''
     else
       let l:files = s:glob(
-            \ (get(g:, 'mucomplete#buffer_relative_paths', 0) && l:prefix !~# s:pathstart
+            \ (get(g:, 'mucomplete#buffer_relative_paths', 0) && l:prefix !~# '^'.s:pathstart
             \   ? s:fnameescape(expand('%:p:h')) . '/'
             \   : '')
             \ . s:fnameescape(l:prefix) . '*', 0, 1, 1)
@@ -102,7 +102,7 @@ fun! mucomplete#path#complete() abort
         return ''
       endif
     endif
-    let l:prefix = matchstr(l:prefix, '\s\zs\f.*$', 1) " Next potential path
+    let l:prefix = matchstr(l:prefix, '\s\zs.*'.s:pathstart.'.*$', 1) " Next potential path
   endwhile
   return ''
 endf
