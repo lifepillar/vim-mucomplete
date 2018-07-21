@@ -219,6 +219,20 @@ fun! Test_MU_path_completion_with_non_default_isfname()
   endtry
 endf
 
+fun! Test_MU_double_slash_comment_is_not_path()
+  new
+  execute 'lcd' s:testdir
+  let b:mucomplete_chain = ['path']
+  MUcompleteAutoOff
+  set completeopt=menuone,noselect
+  call feedkeys("a// t", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<esc>", "tx")
+  call assert_equal("// t", getline(1))
+  bwipe!
+  set completeopt&
+endf
+
 fun! Test_MU_uspl_completion()
   new
   setlocal spell
