@@ -307,37 +307,24 @@ fun! Test_MU_issue_89()
   call delete('Xout')
 endf
 
-fun! Test_MU_issue_92()
-  " Make sure that <cr> is defined before the autoload file is loaded.
-  let l:vimrc = [
-        \ 'imap <Plug>MyCR <Plug>(MUcompleteCR)',
-        \ 'imap <cr> <Plug>MyCR'
-        \ ]
-  let l:cmd = ['edit Xout', 'set ft=ruby', 'call feedkeys("idef App\<cr>ok", "tx")', 'norm! ZZ']
-  call s:vim(l:vimrc, l:cmd)
-  let l:output = readfile('Xout')
-  call assert_equal('def App', get(l:output, 0, 'NA'))
-  call assert_equal('ok', get(l:output, 1, 'NA'))
-  call delete('Xout')
-endfun
-
-fun! Test_MU_issues_95_Ctrl_N_smart_enter()
+fun! Test_MU_smart_enter()
   " Vim does not always insert a new line after pressing Enter with the pop-up
   " menu visible. This function tests a situation is which Vim would not
   " normally insert a new line (so "ok" would end on the same line as
-  " "hawkfish"), but MUcomplete does when g:mucomplete#smart_enter = 1.
+  " "hawkfish"), but MUcomplete does, after remapping <cr>.
   new
   let b:mucomplete_chain = ['keyn']
   set completeopt=menuone
   MUcompleteAutoOff
-  " g:mucomplete#smart_enter is 0 by default
+  " Default behaviour: Enter does not start a new line
   call feedkeys("ahawkfish\<cr>hawk", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<c-p>fish\<cr>ok", "tx")
   call assert_equal("hawkfish", getline(1))
   call assert_equal("hawkfishok", getline(2))
   call assert_equal(2, line('$'))
-  let g:mucomplete#smart_enter = 1
+  " Remap <cr> to always Insert a new line when the pop up menu is dismissed
+  imap <buffer> <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
   call feedkeys("ohawk", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<c-p>fish\<cr>ok", "tx")
@@ -346,30 +333,6 @@ fun! Test_MU_issues_95_Ctrl_N_smart_enter()
   call assert_equal(4, line('$'))
   bwipe!
   set completeopt&
-  unlet g:mucomplete#smart_enter
-endf
-
-fun! Test_MU_smart_enter_with_autocomplete()
-  new
-  call test_override("char_avail", 1)
-  let b:mucomplete_chain = ['keyn']
-  set completeopt=menuone,noinsert
-  unlet! g:mucomplete#smart_enter " Default is 0
-  MUcompleteAutoOn
-  call feedkeys("ahawkfish\<cr>hawkfish\<cr>", "tx")
-  call feedkeys("aok", "tx")
-  call assert_equal("hawkfish", getline(1))
-  call assert_equal("hawkfishok", getline(2))
-  call assert_equal(2, line('$'))
-  let g:mucomplete#smart_enter = 1
-  call feedkeys("ohawkfish\<cr>ok", "tx")
-  call assert_equal("hawkfish", getline(3))
-  call assert_equal("ok", getline(4))
-  call assert_equal(4, line('$'))
-  call test_override("char_avail", 0)
-  bwipe!
-  set completeopt&
-  unlet g:mucomplete#smart_enter
 endf
 
 if has('python') || has('python3')

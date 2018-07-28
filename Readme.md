@@ -65,11 +65,8 @@ with `:MUcompleteAutoToggle`.
 triggers by default. It also changes how `<c-j>` and `<c-h>` work when the
 pop-up menu is visible (and only in that situation). You may override
 MUcomplete's defaults, of course, or prevent MUcomplete to define any mappings
-at all. MUcomplete also defines thin wrappers for `<cr>`, `<c-e>`, `<c-y>` in
-Insert mode, which do not change the functionality of those keys in any way (it
-just records that one of those keys has been pressed). Read the documentation
-for options and for hints about making MUcomplete work with plugins having
-conflicting mappings.*
+at all. Read the documentation for options and for hints about making MUcomplete
+work with plugins having conflicting mappings.*
 
 By default, MUcomplete attempts:
 

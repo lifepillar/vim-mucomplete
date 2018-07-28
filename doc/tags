@@ -10,9 +10,7 @@
 'g:mucomplete#enable_auto_at_startup'	mucomplete.txt	/*'g:mucomplete#enable_auto_at_startup'*
 'g:mucomplete#look_behind'	mucomplete.txt	/*'g:mucomplete#look_behind'*
 'g:mucomplete#no_mappings'	mucomplete.txt	/*'g:mucomplete#no_mappings'*
-'g:mucomplete#no_popup_mappings'	mucomplete.txt	/*'g:mucomplete#no_popup_mappings'*
 'g:mucomplete#popup_direction'	mucomplete.txt	/*'g:mucomplete#popup_direction'*
-'g:mucomplete#smart_enter'	mucomplete.txt	/*'g:mucomplete#smart_enter'*
 'g:mucomplete#spel#good_words'	mucomplete.txt	/*'g:mucomplete#spel#good_words'*
 'g:mucomplete#spel#max'	mucomplete.txt	/*'g:mucomplete#spel#max'*
 'g:mucomplete#ultisnips#match_at_start'	mucomplete.txt	/*'g:mucomplete#ultisnips#match_at_start'*

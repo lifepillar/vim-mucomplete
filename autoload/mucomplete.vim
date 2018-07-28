@@ -26,20 +26,6 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
       inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
       imap <unique> <c-h> <plug>(MUcompleteCycBwd)
     endif
-    if !get(g:, 'mucomplete#no_popup_mappings', 0)
-      let s:map = '<c-e>'
-      if !hasmapto('<plug>(MUcompletePopupCancel)', 'i')
-        imap <unique> <c-e> <plug>(MUcompletePopupCancel)
-      endif
-      let s:map = '<c-y>'
-      if !hasmapto('<plug>(MUcompletePopupAccept)', 'i')
-        imap <unique> <c-y> <plug>(MUcompletePopupAccept)
-      endif
-      let s:map = '<cr>'
-      if !hasmapto('<plug>(MUcompleteCR)', 'i')
-        imap <unique> <cr> <plug>(MUcompleteCR)
-      endif
-    endif
   catch /^Vim\%((\a\+)\)\=:E227/
     echohl ErrorMsg
     echomsg "[MUcomplete]" s:map "is already mapped. Use :verbose imap ".s:map." to see where it is mapped."
@@ -47,6 +33,12 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   finally
     unlet s:map
   endtry
+endif
+
+if exists('g:mucomplete#smart_enter')
+  echohl ErrorMsg
+  echomsg "[MUcomplete] g:mucomplete#smart_enter has been removed. See :help mucomplete-tips"
+  echohl NONE
 endif
 
 let s:ctrlx_out = "\<plug>(MUcompleteOut)"
@@ -82,7 +74,6 @@ let s:i = 0                    " Index of the current completion method in the c
 let s:countdown = 0            " Keeps track of how many other completion attempts to try
 let s:compl_text = ''          " Text to be completed
 let s:dir = 1                  " Direction to search for the next completion method (1=fwd, -1=bwd)
-let s:cancel_auto = 0          " Used to detect whether the user leaves the pop-up menu with ctrl-y, ctrl-e, or enter.
 let s:insertcharpre = 0        " Was a non-whitespace character inserted?
 let s:complete_empty_text = 0  " When set to 1, completion is tried even at the start of the line or after a space
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
@@ -108,23 +99,12 @@ fun! mucomplete#further(dir)
         \ : ''
 endf
 
-fun! mucomplete#popup_exit(ctrl)
-  let s:cancel_auto = pumvisible()
-  return s:cancel_auto && get(g:, "mucomplete#smart_enter", 0) && a:ctrl == "\<cr>"
-        \ ? "\<c-y>" . a:ctrl
-        \ : a:ctrl
+fun! mucomplete#insertcharpre()
+  let s:insertcharpre = !pumvisible() && (v:char =~# '\m\S')
 endf
 
-fun! mucomplete#insert_char_pre()
-  let s:insertcharpre = (v:char =~# '\m\S')
-endf
-
-fun! mucomplete#act_on_textchanged() " Assumes pumvisible() is false
-  if s:cancel_auto
-    let [s:cancel_auto, s:insertcharpre] = [0,0]
-    return
-  endif
-  if s:insertcharpre
+fun! mucomplete#autocomplete()
+  if s:insertcharpre || mode(1) ==# 'ic'
     let s:insertcharpre = 0
     let s:compl_text = mucomplete#get_compl_text()
     call mucomplete#init(1, 0)
@@ -141,8 +121,8 @@ endf
 fun! mucomplete#enable_auto()
   augroup MUcompleteAuto
     autocmd!
-    autocmd InsertCharPre * noautocmd call mucomplete#insert_char_pre()
-    autocmd TextChangedI  * noautocmd call mucomplete#act_on_textchanged()
+    autocmd InsertCharPre * noautocmd call mucomplete#insertcharpre()
+    autocmd TextChangedI  * noautocmd call mucomplete#autocomplete()
   augroup END
 endf
 

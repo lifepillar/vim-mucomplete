@@ -16,9 +16,6 @@ imap     <silent> <expr> <plug>(MUcompleteCycFwd) mucomplete#cycle( 1)
 imap     <silent> <expr> <plug>(MUcompleteCycBwd) mucomplete#cycle(-1)
 imap     <silent> <expr> <plug>(MUcompleteExtendFwd) mucomplete#further( 1)
 imap     <silent> <expr> <plug>(MUcompleteExtendBwd) mucomplete#further(-1)
-inoremap <silent> <expr> <plug>(MUcompletePopupCancel) mucomplete#popup_exit("\<c-e>")
-inoremap <silent> <expr> <plug>(MUcompletePopupAccept) mucomplete#popup_exit("\<c-y>")
-inoremap <silent> <expr> <plug>(MUcompleteCR) mucomplete#popup_exit("\<cr>")
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   if !hasmapto('<plug>(MUcompleteFwd)', 'i')
@@ -37,8 +34,8 @@ if has('patch-7.4.775') " noinsert was added there
   if get(g:, 'mucomplete#enable_auto_at_startup', 0)
     augroup MUcompleteAuto
       autocmd!
-      autocmd InsertCharPre * noautocmd call mucomplete#insert_char_pre()
-      autocmd TextChangedI  * noautocmd call mucomplete#act_on_textchanged()
+      autocmd InsertCharPre * noautocmd call mucomplete#insertcharpre()
+      autocmd TextChangedI  * noautocmd call mucomplete#autocomplete()
     augroup END
   endif
 endif
