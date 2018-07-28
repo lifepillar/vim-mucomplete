@@ -653,6 +653,15 @@ completion cannot be performed otherwise.
 MUcomplete tries to be a responsible citizen in Vimland. This section
 describes how to make it peacefully coexist with other plugins.
 
+auto-pairs ~
+This plugin maps <space> in Insert mode in ways that conflict with
+MUcomplete's operation. To resolve the conflict, put this in your |vimrc|:
+>
+    let g:AutoPairsMapSpace = 0
+    imap <silent> <expr> <space> pumvisible()
+        \ ? "<space>"
+        \ : "<c-r>=AutoPairsSpace()<cr>"
+<
 PHP + UltiSnips ~
 In some versions of Vim, there is a (now solved) compatibility issue between
 PHP's 'omnifunc' function and UltiSnips. This bug is hit by MUcomplete when:
