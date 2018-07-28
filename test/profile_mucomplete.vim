@@ -41,7 +41,7 @@ let s:termbuf = term_start([v:progpath,
       \ "--cmd", "profile start mucomplete-".strftime("%Y%m%d-%H%M").".profile",
       \ "--cmd", "profile! file */autoload/mucomplete.vim",
       \ "-c", "MUcompleteAutoOn",
-      \ "-c", "let g:mucomplete#smart_enter=1",
+      \ "-c", 'inoremap <expr> <cr> pumvisible() ? "<c-y><cr>" : "<cr>"',
       \ "-c", "set noshowmode shortmess+=c"], {
       \     "curwin": 0,
       \     "hidden": 0,
@@ -61,7 +61,8 @@ call s:type(s:termbuf, s:text, 60)
 
 " Test 1
 let s:text = readfile(s:mudir."/plugin/mucomplete.vim")
-call s:prepare_buffer(s:termbuf, ["set ft=vim", "setl nospell formatoptions="])
+call map(s:text, { i,v -> substitute(v, '^\s*', '', '') })  " Remove leading space (for correct indentation)
+call s:prepare_buffer(s:termbuf, ["set ft=vim", "setl nospell et formatoptions="])
 call s:type(s:termbuf, s:text, 200)
 
 " Test 2
