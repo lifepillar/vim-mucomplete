@@ -59,14 +59,15 @@ let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 in your `.vimrc`. Automatic completion may be enabled and disabled at any time
-with `:MUcompleteAutoToggle`.
+with `:MUcompleteAutoToggle`. If autocompletion looks a little too overzealous
+for you, you may set:
 
-**Note:** *MUcomplete maps `<tab>` and `<s-tab>` to act as manual completion
-triggers by default. It also changes how `<c-j>` and `<c-h>` work when the
-pop-up menu is visible (and only in that situation). You may override
-MUcomplete's defaults, of course, or prevent MUcomplete to define any mappings
-at all. Read the documentation for options and for hints about making MUcomplete
-work with plugins having conflicting mappings.*
+```vim
+let g:mucomplete#delayed_completion = 1
+```
+
+Then, MUcomplete kicks in only when you pause typing (for `updatetime`
+milliseconds).
 
 By default, MUcomplete attempts:
 
@@ -84,6 +85,13 @@ for an example.
 
 MUcomplete is fully customizable. See `:help mucomplete.txt` for detailed
 documentation.
+
+**Note:** *MUcomplete maps `<tab>` and `<s-tab>` to act as manual completion
+triggers by default. It also changes how `<c-j>` and `<c-h>` work when the
+pop-up menu is visible (and only in that situation). You may override
+MUcomplete's defaults, of course, or prevent MUcomplete to define any mappings
+at all. Read the documentation for options and for hints about making MUcomplete
+work with plugins having conflicting mappings.*
 
 **Important:** by itself, MUcomplete does not provide any
 “intellisense”/semantic completion. If you want that, you also need to install
