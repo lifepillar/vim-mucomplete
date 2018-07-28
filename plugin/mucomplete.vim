@@ -33,9 +33,13 @@ if has('patch-7.4.775') " noinsert was added there
 
   if get(g:, 'mucomplete#enable_auto_at_startup', 0)
     augroup MUcompleteAuto
-      autocmd!
       autocmd InsertCharPre * noautocmd call mucomplete#insertcharpre()
-      autocmd TextChangedI  * noautocmd call mucomplete#autocomplete()
+      if get(g:, 'mucomplete#delayed_completion', 0)
+        autocmd TextChangedI * noautocmd call mucomplete#ic_autocomplete()
+        autocmd  CursorHoldI * noautocmd call mucomplete#autocomplete()
+      else
+        autocmd TextChangedI * noautocmd call mucomplete#autocomplete()
+      endif
     augroup END
   endif
 endif

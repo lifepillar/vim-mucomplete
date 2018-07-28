@@ -44,7 +44,8 @@ guessing. It just makes use of built-in Vim features.
 
 MUcomplete requires Vim 7.2 compiled with |+insert_expand| and |+menu|.
 Automatic completion is available in Vim 7.4.775 or later (Vim 7.4.784 or
-later recommended).
+later recommended). Delayed autocompletion is available in Vim 7.4.1758 or
+later.
 
 MUcomplete is developed and tested on Vim 8.
 
@@ -408,6 +409,13 @@ through the current completion chain when the pop-up menu is visible.
 Note: if you set this to 1, you have to use the standard CTRL-N and CTRL-P to
 select the entries in the pop-up menu.
 
+					*'g:mucomplete#delayed_completion'*
+Set to 1 if you want autocompletion to be triggered only when you pause
+typing (autocompletion must be on for this to work). Use |'updatetime'| to set
+the delay. See also |CursorHoldI|.
+>
+	let g:mucomplete#delayed_completion = 0
+<
 						*'b:mucomplete_empty_text'*
 						*'g:mucomplete#empty_text'*
 By default, when you press <tab> to complete a word, MUcomplete inserts

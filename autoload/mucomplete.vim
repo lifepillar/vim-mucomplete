@@ -99,22 +99,32 @@ fun! mucomplete#further(dir)
         \ : ''
 endf
 
+fun! s:autocomplete()
+  let s:insertcharpre = 0
+  let s:compl_text = mucomplete#get_compl_text()
+  call mucomplete#init(1, 0)
+  while s:countdown > 0
+    let s:countdown -= 1
+    let s:i += 1
+    if s:can_complete(s:i)
+      return feedkeys("\<plug>(MUcompleteTry)", 'i')
+    endif
+  endwhile
+endf
+
 fun! mucomplete#insertcharpre()
   let s:insertcharpre = !pumvisible() && (v:char =~# '\m\S')
 endf
 
+fun! mucomplete#ic_autocomplete()
+  if mode(1) ==# 'ic'  " In Insert completion mode, CursorHoldI in not invoked
+    call s:autocomplete()
+  endif
+endf
+
 fun! mucomplete#autocomplete()
   if s:insertcharpre || mode(1) ==# 'ic'
-    let s:insertcharpre = 0
-    let s:compl_text = mucomplete#get_compl_text()
-    call mucomplete#init(1, 0)
-    while s:countdown > 0
-      let s:countdown -= 1
-      let s:i += 1
-      if s:can_complete(s:i)
-        return feedkeys("\<plug>(MUcompleteTry)", 'i')
-      endif
-    endwhile
+    call s:autocomplete()
   endif
 endf
 
@@ -122,7 +132,12 @@ fun! mucomplete#enable_auto()
   augroup MUcompleteAuto
     autocmd!
     autocmd InsertCharPre * noautocmd call mucomplete#insertcharpre()
-    autocmd TextChangedI  * noautocmd call mucomplete#autocomplete()
+    if get(g:, 'mucomplete#delayed_completion', 0)
+      autocmd TextChangedI * noautocmd call mucomplete#ic_autocomplete()
+      autocmd  CursorHoldI * noautocmd call mucomplete#autocomplete()
+    else
+      autocmd TextChangedI * noautocmd call mucomplete#autocomplete()
+    endif
   augroup END
 endf
 
