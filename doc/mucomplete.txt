@@ -570,7 +570,7 @@ You may adapt the following snippet:
 MUcomplete does not always insert a new line when I press Enter… ~
 Put this in your `vimrc`:
 >
-	imap <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
+	inoremap <expr> <cr> pumvisible() ? "<c-y><cr>" : "<cr>"
 <
 How to simulate ZSH behaviour for "file" completion? ~
 Some people like ZSH behaviour, whereby typing a slash enters the current
