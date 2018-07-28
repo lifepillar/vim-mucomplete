@@ -194,6 +194,9 @@ Disable automatic completion.
 						*:MUcompleteAutoToggle*
 Toggle automatic completion.
 
+Note: autocompletion works only in Vim 7.4.775 or later (Vim 7.4.784
+recommended).
+
 ==============================================================================
 8. Mappings					*mucomplete-mappings*
 
