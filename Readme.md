@@ -59,14 +59,14 @@ let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 in your `.vimrc`. Automatic completion may be enabled and disabled at any time
-with `:MUcompleteAutoToggle`. If autocompletion looks a little too overzealous
-for you, you may set:
+with `:MUcompleteAutoToggle`. If autocompletion looks a little overzealous to
+you, you may set:
 
 ```vim
 let g:mucomplete#delayed_completion = 1
 ```
 
-Then, MUcomplete kicks in only when you pause typing (for `updatetime`
+Then, MUcomplete will kick in only when you pause typing (for `updatetime`
 milliseconds).
 
 By default, MUcomplete attempts:
