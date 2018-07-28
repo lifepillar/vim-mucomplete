@@ -631,10 +631,10 @@ manual and automatic completion, you may adapt the following snippet:
 	  MUcompleteAutoToggle
 	  if exists('#MUcompleteAuto')
 	    " Settings for automatic completion
-	    set completeopt-=noinsert,noselect
+	    set completeopt+=noinsert,noselect
 	  else
 	    " Settings for manual completion
-	    set completeopt+=noinsert,noselect
+	    set completeopt-=noinsert,noselect
 	  endif
 	endf
 
