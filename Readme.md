@@ -24,9 +24,9 @@ MUcomplete brings Vim completion down to earth again.
 # Getting Started
 
 MUcomplete requires Vim 7.2 compiled with `+insert_expand` and `+menu`.
-Automatic completion works in Vim 7.4.775 or later (Vim 7.4.784 or later
-recommended). The delayed autocompletion feature requires Vim 7.4.1758 or later.
-MUcomplete is developed and tested on Vim 8. NeoVim is supported, too.
+Automatic completion is available in Vim 7.4.775 or later, although Vim
+8.0.0283 is recommended (if you have Vim 7.4, you should use the `v1` branch
+of this plugin).
 
 Installation does not require anything special. If you need help, please read
 [How to Install](https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
