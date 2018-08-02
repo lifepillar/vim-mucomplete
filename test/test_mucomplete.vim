@@ -83,8 +83,8 @@ endf
 " It should not depend on the value on g:mucomplete#popup_direction either.
 fun! Test_MU_buffer_extend_keyword_completion()
   new
-  imap <buffer> <up> <plug>(MUcompleteExtendBwd)
-  imap <buffer> <down> <plug>(MUcompleteExtendFwd)
+  imap <expr> <buffer> <up>   mucomplete#extend_bwd("\<up>")
+  imap <expr> <buffer> <down> mucomplete#extend_fwd("\<down>")
   MUcompleteAutoOff
 
   for l:opt in ['menuone', 'menuone,noselect', 'menuone,noinsert', 'menuone,noinsert,noselect']
@@ -115,8 +115,8 @@ endf
 
 fun! Test_MU_extend_line_completion()
   new
-  imap <buffer> <up> <plug>(MUcompleteExtendBwd)
-  imap <buffer> <down> <plug>(MUcompleteExtendFwd)
+  imap <expr> <buffer> <up>   mucomplete#extend_bwd("\<up>")
+  imap <expr> <buffer> <down> mucomplete#extend_fwd("\<down>")
   let b:mucomplete_chain = ['line']
   MUcompleteAutoOff
 
