@@ -149,16 +149,18 @@ let g:mucomplete#enable_auto_at_startup = 1
 ```
 
 The last example shows how the current completion can be extended with words
-following the previous expansion in other contexts. Relevant settings:
+following the previous expansion in other contexts. This is useful, for
+instance, to complete sentences or terms made of several words (e.g., to
+extend *New* to *New York* or *New Zealand*). Relevant settings:
 
 ```vim
-imap <expr> <down> pumvisible() ? "\<plug>(MUcompleteExtendFwd)" : "\<down>"
+imap <expr> <down> mucomplete#extend_fwd("\<down>")
 ```
 
 In the example, `<tab>` was typed to trigger a completion, then `<down>` was
 pressed repeatedly to extend the completion. To my knowledge, MUcomplete is the
-only completion plugin that streamlines such Vim feature. See `:help
-mucomplete-plugs` for more examples of this feature.
+only completion plugin that streamlines this Vim feature. See `:help
+mucomplete-extend-compl` for more details.
 
 
 

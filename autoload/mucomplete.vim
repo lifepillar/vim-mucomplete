@@ -78,7 +78,7 @@ let s:insertcharpre = 0        " Was a non-whitespace character inserted?
 let s:complete_empty_text = 0  " When set to 1, completion is tried even at the start of the line or after a space
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
-fun! mucomplete#further(dir)
+fun! s:extend_completion(dir, keys)
   return pumvisible() && index(['keyn', 'keyp', 'c-n', 'c-p', 'defs', 'incl', 'line'], s:compl_methods[s:i]) > -1
         \ ? (index(['keyn','keyp','c-n','c-p'], s:compl_methods[s:i]) > -1
         \   ? (a:dir > 0 ? "\<c-x>\<c-n>" : "\<c-x>\<c-p>")
@@ -96,7 +96,15 @@ fun! mucomplete#further(dir)
         \      : "\<plug>(MUcompleteUp)\<c-n>\<c-p>"
         \      )
         \   )
-        \ : ''
+        \ : a:keys
+endf
+
+fun! mucomplete#extend_fwd(keys)
+  return s:extend_completion(1, a:keys)
+endf
+
+fun! mucomplete#extend_bwd(keys)
+  return s:extend_completion(-1, a:keys)
 endf
 
 fun! s:autocomplete()
