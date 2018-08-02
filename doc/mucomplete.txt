@@ -18,15 +18,16 @@ CONTENTS						*mucomplete-contents*
 	4.  Completion methods ....... |mucomplete-methods|
 	5.  Path completion .......... |mucomplete-path-complete|
 	6.  Spelling suggestions ..... |mucomplete-spel-complete|
-	7.  Commands ................. |mucomplete-commands|
-	8.  Mappings ................. |mucomplete-mappings|
-	9.  Plugs .................... |mucomplete-plugs|
-	10. Customization ............ |mucomplete-customization|
-	11. Tips & tricks ............ |mucomplete-tips|
-	12. Compatibility ............ |mucomplete-compatibility|
-	13. Troubleshooting .......... |mucomplete-troubleshooting|
-	14. Providing feedback ....... |mucomplete-feedback|
-	15. Implementation details ... |mucomplete-internals|
+	7.  Extending completions .... |mucomplete-extend-compl|
+	8.  Commands ................. |mucomplete-commands|
+	9.  Mappings ................. |mucomplete-mappings|
+	10. Plugs .................... |mucomplete-plugs|
+	11. Customization ............ |mucomplete-customization|
+	12. Tips & tricks ............ |mucomplete-tips|
+	13. Compatibility ............ |mucomplete-compatibility|
+	14. Troubleshooting .......... |mucomplete-troubleshooting|
+	15. Providing feedback ....... |mucomplete-feedback|
+	16. Implementation details ... |mucomplete-internals|
 
 ==============================================================================
 1. Introduction				 	*mucomplete-introduction*
@@ -183,7 +184,41 @@ chain, although it is actively used only when 'spell' is on and 'spelllang' is
 defined.
 
 ==============================================================================
-7. Commands					*mucomplete-commands*
+7. Extending completions			*mucomplete-extend-compl*
+
+Vim has a very nice, though possibly not very well known, feature allowing you
+to extend the current completion by copying the words following the previous
+expansion in other contexts using the current completion method. This works
+for |i_CTRL-X_CTRL-N|, |i_CTRL-X_CTRL-P|, |i_CTRL-X_CTRL-D|, |i_CTRL-X_CTRL-I|
+and |i_CTRL-X_CTRL-L| (for line completion, whole lines are copied).
+
+MUcomplete streamlines such feature with the help of two functions:
+>
+	mucomplete#extend_fwd(keys)
+	mucomplete#extend_bwd(keys)
+<
+MUcomplete does not provide mappings by default, though, so you will have to
+map those functions in your `vimrc`. The `keys` argument is the key sequence
+to use when expanding the mapping in a context different from completion.
+
+All this is more easily understood with examples rather than words. Try this:
+>
+	:imap <expr> <right> mucomplete#extend_fwd("\<right>")
+	:set completeopt=menuone,noselect
+<
+	Now type:
+>
+	Shall I compare thee to a summer’s day?
+	S<tab><right><right><right><right><right><right>
+<
+        Another example:
+>
+        New Zealand
+        New York Times
+        Ne<tab><right><tab><right>
+<
+==============================================================================
+8. Commands					*mucomplete-commands*
 
 						*:MUcompleteAutoOn*
 Enable automatic completion.
@@ -195,7 +230,7 @@ Disable automatic completion.
 Toggle automatic completion.
 
 ==============================================================================
-8. Mappings					*mucomplete-mappings*
+9. Mappings					*mucomplete-mappings*
 
 By default, MUcomplete maps the keys below in Insert mode. If you do not want
 MUcomplete to define any mapping, set |g:mucomplete#no_mappings| or
@@ -248,7 +283,7 @@ CTRL-K is already used by Vim during dictionary completion to search for the
 next matching keyword (see |i_CTRL-X_CTRL-K|).
 
 ==============================================================================
-9. Plugs						*mucomplete-plugs*
+10. Plugs						*mucomplete-plugs*
 
 <plug>(MUcompleteFwd)
 <plug>(MUcompleteBwd)
@@ -289,40 +324,8 @@ next matching keyword (see |i_CTRL-X_CTRL-K|).
 	imap <unique> <c-y> <plug>(MUcompletePopupAccept)
 	imap <unique> <cr> <plug>(MUcompleteCR)
 <
-The following functionality is exposed by MUcomplete, but no mappings are
-associated with it. If you want to use the following plugs, you need to define
-mappings for them in your |vimrc|.
-
-<plug>(MUcompleteExtendFwd)
-<plug>(MUcompleteExtendBwd)
-        When the popup menu is visible, repeated invocation of these plugs
-        will copy the words following the previous expansion in other contexts
-        using the current completion method. For line completion, whole lines
-        will be copied.
-
-	This works for "c-n", "c-p", "defs", "incl", "keyn", "keyp", and
-	"line". See |i_CTRL-X_CTRL-N|, |i_CTRL-X_CTRL-P|, |i_CTRL-X_CTRL-D|,
-	|i_CTRL-X_CTRL-I|, and |i_CTRL-X_CTRL-L|.
-
-	This feature is more easily understood with examples rather than
-        words. Try this:
->
-	:imap <right> <plug>(MUcompleteExtendFwd)
-        :set completeopt=menuone,noselect
-<
-	Now type:
->
-	Shall I compare thee to a summer’s day?
-	S<tab><right><right><right><right><right><right>
-<
-        Another example:
->
-        New Zealand
-        New York Times
-        Ne<tab><right><tab><right>
-<
 ==============================================================================
-10. Customization				*mucomplete-customization*
+11. Customization				*mucomplete-customization*
 
 					*'g:mucomplete#always_use_completeopt'*
 By default, 'completeopt' does not affect manual completion (when pressing
@@ -588,7 +591,7 @@ user or it was triggered automatically. See |mucomplete-tips| for an example.
 Note: do not set the value of this variable!
 
 ==============================================================================
-11. Tips & tricks					*mucomplete-tips*
+12. Tips & tricks					*mucomplete-tips*
 
 How to insert a tab character when <tab> is used by MUcomplete? ~
 Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped). See also |i_<Tab>|.
@@ -694,7 +697,7 @@ so that searching included files and/or tags will happen only when
 completion cannot be performed otherwise.
 
 ==============================================================================
-12. Compatibility				*mucomplete-compatibility*
+13. Compatibility				*mucomplete-compatibility*
 
 MUcomplete tries to be a responsible citizen in Vimland. This section
 describes how to make it peacefully coexist with other plugins.
@@ -791,7 +794,7 @@ on |i_CTRL-R| in an essential way, you have to change vim-peekabo's mapping:
 Note: now you need to press <c-x><c-r> to view the registers.
 
 ==============================================================================
-13. Troubleshooting				*mucomplete-troubleshooting*
+14. Troubleshooting				*mucomplete-troubleshooting*
 
 Why am I getting the error: "E227: mapping already exists for..."? ~
 MUcomplete takes great care not to override an existing mapping defined in
@@ -853,7 +856,7 @@ Before reporting a bug, please do the following:
   MUcomplete behaves differently, please report the bug.
 
 ==============================================================================
-14. Providing feedback					*mucomplete-feedback*
+15. Providing feedback					*mucomplete-feedback*
 
 For bug reports and feature requests please use:
 
@@ -862,7 +865,7 @@ For bug reports and feature requests please use:
 Pull requests are welcome, too!
 
 ==============================================================================
-15. Implementation details				*mucomplete-internals*
+16. Implementation details				*mucomplete-internals*
 
 This section describes some technicalities of MUcomplete's implementation, and
 is not intended for the regular user: it is mostly a memo for myself and
