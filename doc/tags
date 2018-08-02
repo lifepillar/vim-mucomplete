@@ -26,6 +26,7 @@ mucomplete-commands	mucomplete.txt	/*mucomplete-commands*
 mucomplete-compatibility	mucomplete.txt	/*mucomplete-compatibility*
 mucomplete-contents	mucomplete.txt	/*mucomplete-contents*
 mucomplete-customization	mucomplete.txt	/*mucomplete-customization*
+mucomplete-extend-compl	mucomplete.txt	/*mucomplete-extend-compl*
 mucomplete-feedback	mucomplete.txt	/*mucomplete-feedback*
 mucomplete-howto	mucomplete.txt	/*mucomplete-howto*
 mucomplete-internals	mucomplete.txt	/*mucomplete-internals*
