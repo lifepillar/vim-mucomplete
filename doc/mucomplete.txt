@@ -1,4 +1,4 @@
-*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Aug 02
+*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Aug 03
 
 			|\/|| | _ _ ._ _ ._ | __|_ _                      ~
 			|  ||_|(_(_)| | ||_)|(/_|_(/_                     ~
@@ -45,8 +45,7 @@ guessing. It just makes use of built-in Vim features.
 
 MUcomplete requires Vim 7.2 compiled with |+insert_expand| and |+menu|.
 Automatic completion is available in Vim 7.4.775 or later, although Vim
-8.0.0283 is recommended (if you have Vim 7.4, you should use the `v1` branch
-of this plugin).
+8.0.0283 or later is recommended.
 
 MUcomplete is developed and tested on Vim 8.
 
@@ -199,8 +198,9 @@ MUcomplete streamlines such feature with the help of two functions:
 	mucomplete#extend_bwd(keys)
 <
 MUcomplete does not provide mappings by default, though, so you will have to
-map those functions in your `vimrc`. The `keys` argument is the key sequence
-to use when expanding the mapping in a context different from completion.
+map those functions in your `vimrc` to enable this feature. The `keys`
+argument is the key sequence to use when expanding the mapping in a context
+different from completion.
 
 All this is more easily understood with examples rather than words. Try this:
 >
@@ -275,6 +275,17 @@ be shadowed when the pop-up menu is offering dictionary suggestions, because
 CTRL-K is already used by Vim during dictionary completion to search for the
 next matching keyword (see |i_CTRL-X_CTRL-K|).
 
+The following mappings are defined only in Vim 8.0.0282 or older.
+
+<c-e>
+<c-y>
+<cr>
+    MUcomplete defines a thin wrapper around these keys in Vim 8.0.0282 or
+    older, without changing their function. If you want to prevent MUcomplete
+    from defining these three mappings, set |g:mucomplete#no_popup_mappings|.
+    See also |mucomplete-compatibility| for suggestions on fixing conflicts
+    with some popular plugins.
+
 ==============================================================================
 10. Plugs						*mucomplete-plugs*
 
@@ -285,7 +296,7 @@ next matching keyword (see |i_CTRL-X_CTRL-K|).
         empty) text that completes the current word.
 >
 	imap <unique> <tab> <plug>(MUcompleteFwd)
-        imap <unique> <s-tab> <plug>(MUcompleteBwd)
+	imap <unique> <s-tab> <plug>(MUcompleteBwd)
 <
 <plug>(MUcompleteCycFwd)
 <plug>(MUcompleteCycBwd)
@@ -294,7 +305,7 @@ next matching keyword (see |i_CTRL-X_CTRL-K|).
         empty) text that completes the current word.
 >
 	imap <unique> <c-j> <plug>(MUcompleteCycFwd)
-        imap <unique> <c-h> <plug>(MUcompleteCycBwd)
+	imap <unique> <c-h> <plug>(MUcompleteCycBwd)
 <
 <plug>(MUcompleteFwdKey)
 <plug>(MUcompleteBwdKey)
@@ -302,6 +313,20 @@ next matching keyword (see |i_CTRL-X_CTRL-K|).
         contexts different from completion. They must be redefined when
         <plug>(MUcompleteCycFwd) and <plug>(MUcompleteCycBwd) are remapped by
         the user. See |mucomplete-mappings| for an example.
+
+The following plugs are defined only in Vim 8.0.0282 or older.
+
+<plug>(MUcompletePopupCancel)
+<plug>(MUcompletePopupAccept)
+<plug>(MUcompleteCR)
+        These are used to detect when the popup menu is closed with <c-e>,
+        <c-y> or <cr>, respectively. They are ultimately mapped to the
+        corresponding key (<c-e>, <c-y> and <cr>, respectively).
+>
+	imap <unique> <c-e> <plug>(MUcompletePopupCancel)
+	imap <unique> <c-y> <plug>(MUcompletePopupAccept)
+	imap <unique> <cr> <plug>(MUcompleteCR)
+<
 
 ==============================================================================
 11. Customization				*mucomplete-customization*
@@ -459,6 +484,27 @@ When set to 1, MUcomplete does not define any mapping.
 <
 Note: MUcomplete also honours |no_plugin_maps|.
 
+					*'g:mucomplete#no_popup_mappings'*
+Set to 1 to prevent MUcomplete from mapping <c-e>, <c-y> and <cr>.
+
+>
+	let g:mucomplete#no_popup_mappings = 0
+<
+You may safely set this variable to 1 if you use manual completion
+exclusively. These mappings, however, are necessary for automatic completion
+in Vim versions older than v8.0.0283, so if you disable them (likely because
+they conflict with some other plugin or with your own mappings), you will need
+to provide alternative definitions in your |vimrc|. This is how they are
+defined by MUcomplete:
+>
+	imap <c-e> <plug>(MUcompletePopupCancel)
+	imap <c-y> <plug>(MUcompletePopupAccept)
+	imap <cr> <plug>(MUcompleteCR)
+<
+Note: Only for Vim 8.0.0282 or older. MUcomplete does not map <c-e>, <c-y> and
+<cr> in recent Vim versions, so this option does nothing in Vim 8.0.0283 or
+later.
+
 					*'g:mucomplete#popup_direction'*
 >
 	let g:mucomplete#popup_direction = {'c-p': -1, 'keyp': -1, 'line': -1}
@@ -550,7 +596,7 @@ Note: do not set the value of this variable!
 ==============================================================================
 12. Tips & tricks					*mucomplete-tips*
 
-How to insert a tab character when <tab> is used by MUcomplete? ~
+How to insert a literal tab character when <tab> is used by MUcomplete? ~
 Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped). See also |i_<Tab>|.
 
 I want to do something special with <tab> in some circumstances, ~
@@ -571,9 +617,17 @@ You may adapt the following snippet:
 	imap <expr> <silent> <tab> MyTabAction()
 <
 MUcomplete does not always insert a new line when I press Enter… ~
-Put this in your `vimrc`:
+When the popup menu is closed by pressing <Enter>, sometimes Vim does not
+insert a new line. If you always want a new line to be inserted, proceed as
+follows. If you use Vim 8.0.0283 or later, put this in your `vimrc`:
 >
 	inoremap <expr> <cr> pumvisible() ? "<c-y><cr>" : "<cr>"
+<
+If you use a Vim version older than 8.0.0283, put this in your `vimrc`
+instead:
+>
+	imap <expr> <cr> pumvisible() ? "<c-y><plug>(MUcompleteCR)"
+	                              : "<plug>(MUcompleteCR)"
 <
 How to simulate ZSH behaviour for "file" completion? ~
 Some people like ZSH behaviour, whereby typing a slash enters the current
@@ -668,11 +722,33 @@ auto-pairs ~
 This plugin maps <space> in Insert mode in ways that conflict with
 MUcomplete's operation. To resolve the conflict, put this in your |vimrc|:
 >
-    let g:AutoPairsMapSpace = 0
-    imap <silent> <expr> <space> pumvisible()
-        \ ? "<space>"
-        \ : "<c-r>=AutoPairsSpace()<cr>"
+	let g:AutoPairsMapSpace = 0
+	imap <silent> <expr> <space> pumvisible()
+		\ ? "<space>"
+		\ : "<c-r>=AutoPairsSpace()<cr>"
 <
+If you use Vim 8.0.0282 or older, you must also remap <cr>:
+>
+	let g:AutoPairsMapCR = 0
+	imap <Plug>MyCR <Plug>(MUcompleteCR)<Plug>AutoPairsReturn
+	imap <cr> <Plug>MyCR
+<
+Mapping things this way will also make MUcomplete and auto-pairs work well
+together with endwise.vim (see below).
+
+endwise.vim ~
+If you use Vim 8.0.0283 or later, MUcomplete works just fine with endwise.
+
+With older versions of Vim, both MUcomplete and endwise map <cr> in Insert
+mode, so you must resolve the conflict. The simplest way is to override
+MUcomplete's definition of <cr> in your |vimrc|, as follows:
+>
+    imap <Plug>MyCR <Plug>(MUcompleteCR)
+    imap <cr> <Plug>MyCR
+<
+If you use endwise.vim together with auto-pairs, see the section above
+instead.
+
 PHP + UltiSnips ~
 In some versions of Vim, there is a (now solved) compatibility issue between
 PHP's 'omnifunc' function and UltiSnips. This bug is hit by MUcomplete when:

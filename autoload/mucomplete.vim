@@ -14,31 +14,33 @@ inoremap <silent>        <plug>(MUcompleteCte) <c-e>
 inoremap <silent>        <plug>(MUcompleteUp)  <up>
 inoremap <silent>        <plug>(MUcompleteDown) <down>
 
-if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
+fun! s:errmsg(msg)
+  echohl ErrorMsg
+  echomsg "[MUcomplete]" a:msg
+  echohl NONE
+endf
+
+fun! mucomplete#map(mode, lhs, rhs)
   try
-    let s:map = '<c-j>'
-    if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
-      inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
-      imap <unique> <c-j> <plug>(MUcompleteCycFwd)
-    endif
-    let s:map = '<c-h>'
-    if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
-      inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
-      imap <unique> <c-h> <plug>(MUcompleteCycBwd)
-    endif
+    execute a:mode '<silent> <unique>' a:lhs a:rhs
   catch /^Vim\%((\a\+)\)\=:E227/
-    echohl ErrorMsg
-    echomsg "[MUcomplete]" s:map "is already mapped. Use :verbose imap ".s:map." to see where it is mapped."
-    echohl NONE
-  finally
-    unlet s:map
+    call s:errmsg(a:lhs . ' is already mapped (use :verbose '.a:mode.' '.a:lhs.' to see by whom). See :help mucomplete-compatibility.')
   endtry
+endf
+
+if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
+  if !hasmapto('<plug>(MUcompleteCycFwd)', 'i')
+    inoremap <silent> <plug>(MUcompleteFwdKey) <c-j>
+    call mucomplete#map('imap', '<c-j>', '<plug>(MUcompleteCycFwd)')
+  endif
+  if !hasmapto('<plug>(MUcompleteCycBwd)', 'i')
+    inoremap <silent> <plug>(MUcompleteBwdKey) <c-h>
+    call mucomplete#map('imap', '<c-h>', '<plug>(MUcompleteCycBwd)')
+  endif
 endif
 
 if exists('g:mucomplete#smart_enter')
-  echohl ErrorMsg
-  echomsg "[MUcomplete] g:mucomplete#smart_enter has been removed. See :help mucomplete-tips"
-  echohl NONE
+  call s:errmsg("g:mucomplete#smart_enter has been removed. See :help mucomplete-tips.")
 endif
 
 let s:ctrlx_out = "\<plug>(MUcompleteOut)"
@@ -74,7 +76,6 @@ let s:i = 0                    " Index of the current completion method in the c
 let s:countdown = 0            " Keeps track of how many other completion attempts to try
 let s:compl_text = ''          " Text to be completed
 let s:dir = 1                  " Direction to search for the next completion method (1=fwd, -1=bwd)
-let s:insertcharpre = 0        " Was a non-whitespace character inserted?
 let s:complete_empty_text = 0  " When set to 1, completion is tried even at the start of the line or after a space
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
@@ -99,16 +100,7 @@ fun! s:extend_completion(dir, keys)
         \ : a:keys
 endf
 
-fun! mucomplete#extend_fwd(keys)
-  return s:extend_completion(1, a:keys)
-endf
-
-fun! mucomplete#extend_bwd(keys)
-  return s:extend_completion(-1, a:keys)
-endf
-
-fun! s:autocomplete()
-  let s:insertcharpre = 0
+fun! mucomplete#autocomplete()
   let s:compl_text = mucomplete#get_compl_text()
   call mucomplete#init(1, 0)
   while s:countdown > 0
@@ -120,50 +112,12 @@ fun! s:autocomplete()
   endwhile
 endf
 
-fun! mucomplete#insertcharpre()
-  let s:insertcharpre = !pumvisible() && (v:char =~# '\m\S')
+fun! mucomplete#extend_fwd(keys)
+  return s:extend_completion(1, a:keys)
 endf
 
-fun! mucomplete#ic_autocomplete()
-  if mode(1) ==# 'ic'  " In Insert completion mode, CursorHoldI in not invoked
-    call s:autocomplete()
-  endif
-endf
-
-fun! mucomplete#autocomplete()
-  if s:insertcharpre || mode(1) ==# 'ic'
-    call s:autocomplete()
-  endif
-endf
-
-fun! mucomplete#enable_auto()
-  augroup MUcompleteAuto
-    autocmd!
-    autocmd InsertCharPre * noautocmd call mucomplete#insertcharpre()
-    if get(g:, 'mucomplete#delayed_completion', 0)
-      autocmd TextChangedI * noautocmd call mucomplete#ic_autocomplete()
-      autocmd  CursorHoldI * noautocmd call mucomplete#autocomplete()
-    else
-      autocmd TextChangedI * noautocmd call mucomplete#autocomplete()
-    endif
-  augroup END
-endf
-
-fun! mucomplete#disable_auto()
-  if exists('#MUcompleteAuto')
-    autocmd! MUcompleteAuto
-    augroup! MUcompleteAuto
-  endif
-endf
-
-fun! mucomplete#toggle_auto()
-  if exists('#MUcompleteAuto')
-    call mucomplete#disable_auto()
-    echomsg '[MUcomplete] Auto off'
-  else
-    call mucomplete#enable_auto()
-    echomsg '[MUcomplete] Auto on'
-  endif
+fun! mucomplete#extend_bwd(keys)
+  return s:extend_completion(-1, a:keys)
 endf
 
 " Completion chains
