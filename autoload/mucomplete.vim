@@ -79,35 +79,6 @@ let s:dir = 1                  " Direction to search for the next completion met
 let s:complete_empty_text = 0  " When set to 1, completion is tried even at the start of the line or after a space
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
-fun! s:extend_completion(dir, keys)
-  return pumvisible() && index(['keyn', 'keyp', 'c-n', 'c-p', 'defs', 'incl', 'line'], s:compl_methods[s:i]) > -1
-        \ ? (index(['keyn','keyp','c-n','c-p'], s:compl_methods[s:i]) > -1
-        \   ? (a:dir > 0 ? "\<c-x>\<c-n>" : "\<c-x>\<c-p>")
-        \   : (s:compl_methods[s:i] ==# 'line' ? "\<c-x>\<c-l>" : s:compl_mappings[s:compl_methods[s:i]]
-        \     )
-        \   )
-        \   .
-        \   (a:dir > 0
-        \    ? (stridx(&l:completeopt, 'noselect') == -1
-        \      ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteUp)\<c-n>")
-        \      : "\<plug>(MUcompleteDown)\<c-p>\<c-n>"
-        \      )
-        \    : (stridx(&l:completeopt, 'noselect') == -1
-        \      ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteDown)\<c-p>")
-        \      : "\<plug>(MUcompleteUp)\<c-n>\<c-p>"
-        \      )
-        \   )
-        \ : a:keys
-endf
-
-fun! mucomplete#extend_fwd(keys)
-  return s:extend_completion(1, a:keys)
-endf
-
-fun! mucomplete#extend_bwd(keys)
-  return s:extend_completion(-1, a:keys)
-endf
-
 " Completion chains
 let g:mucomplete#chains = extend({
       \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
@@ -150,8 +121,24 @@ else
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
 endif
 
+fun! s:can_complete(i) " Is the i-th completion method applicable?
+  return get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
+        \          s:compl_methods[a:i],
+        \          get(g:mucomplete#can_complete['default'], s:compl_methods[a:i], s:yes_you_can)
+        \ )(s:compl_text)
+endf
+
 fun! s:select_dir()
   return extend({ 'c-p' : -1, 'keyp': -1, 'line': -1 }, get(g:, 'mucomplete#popup_direction', {}))
+endf
+
+fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
+  let l:m = s:compl_methods[s:i]
+  return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || stridx(&l:completeopt, 'noselect') != -1
+        \ ? ''
+        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
+        \    ? "\<plug>(MUcompleteUp)\<plug>(MUcompleteUp)"
+        \    : "\<plug>(MUcompleteDown)\<plug>(MUcompleteDown)")
 endf
 
 fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect and noinsert
@@ -167,26 +154,10 @@ fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect an
         \   )
 endf
 
-fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
-  let l:m = s:compl_methods[s:i]
-  return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || stridx(&l:completeopt, 'noselect') != -1
-        \ ? ''
-        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
-        \    ? "\<plug>(MUcompleteUp)\<plug>(MUcompleteUp)"
-        \    : "\<plug>(MUcompleteDown)\<plug>(MUcompleteDown)")
-endf
-
 fun! s:act_on_pumvisible()
   return !g:mucomplete_with_key || get(g:, 'mucomplete#always_use_completeopt', 0) || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
-endf
-
-fun! s:can_complete(i) " Is the i-th completion method applicable?
-  return get(get(g:mucomplete#can_complete, getbufvar("%","&ft"), {}),
-        \          s:compl_methods[a:i],
-        \          get(g:mucomplete#can_complete['default'], s:compl_methods[a:i], s:yes_you_can)
-        \ )(s:compl_text)
 endf
 
 fun! s:try_completion() " Assumes s:i in [0, s:N - 1]
@@ -210,6 +181,35 @@ fun! s:verify_completion()
             \ ? s:act_on_pumvisible()
             \ : (s:compl_methods[s:i] ==# 'cmd' ? s:ctrlx_out : '')
             \ . s:next_method()
+endf
+
+fun! s:extend_completion(dir, keys)
+  return pumvisible() && index(['keyn', 'keyp', 'c-n', 'c-p', 'defs', 'incl', 'line'], s:compl_methods[s:i]) > -1
+        \ ? (index(['keyn','keyp','c-n','c-p'], s:compl_methods[s:i]) > -1
+        \   ? (a:dir > 0 ? "\<c-x>\<c-n>" : "\<c-x>\<c-p>")
+        \   : (s:compl_methods[s:i] ==# 'line' ? "\<c-x>\<c-l>" : s:compl_mappings[s:compl_methods[s:i]]
+        \     )
+        \   )
+        \   .
+        \   (a:dir > 0
+        \    ? (stridx(&l:completeopt, 'noselect') == -1
+        \      ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteUp)\<c-n>")
+        \      : "\<plug>(MUcompleteDown)\<c-p>\<c-n>"
+        \      )
+        \    : (stridx(&l:completeopt, 'noselect') == -1
+        \      ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteDown)\<c-p>")
+        \      : "\<plug>(MUcompleteUp)\<c-n>\<c-p>"
+        \      )
+        \   )
+        \ : a:keys
+endf
+
+fun! mucomplete#extend_fwd(keys)
+  return s:extend_completion(1, a:keys)
+endf
+
+fun! mucomplete#extend_bwd(keys)
+  return s:extend_completion(-1, a:keys)
 endf
 
 fun! mucomplete#cycle(dir)
