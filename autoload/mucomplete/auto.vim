@@ -7,10 +7,10 @@ fun! mucomplete#auto#enable_auto()
     autocmd!
     autocmd InsertCharPre * noautocmd call mucomplete#auto#insertcharpre()
     if get(g:, 'mucomplete#delayed_completion', 0)
-      autocmd TextChangedI * noautocmd call mucomplete#auto#ic_autocomplete()
-      autocmd  CursorHoldI * noautocmd call mucomplete#auto#autocomplete()
+      autocmd TextChangedI * noautocmd call mucomplete#auto#ic_auto_complete()
+      autocmd  CursorHoldI * noautocmd call mucomplete#auto#auto_complete()
     else
-      autocmd TextChangedI * noautocmd call mucomplete#auto#autocomplete()
+      autocmd TextChangedI * noautocmd call mucomplete#auto#auto_complete()
     endif
   augroup END
 endf
@@ -39,16 +39,16 @@ if has('patch-8.0.0283')
     let s:insertcharpre = !pumvisible() && (v:char =~# '\m\S')
   endf
 
-  fun! mucomplete#auto#ic_autocomplete()
+  fun! mucomplete#auto#ic_auto_complete()
     if mode(1) ==# 'ic'  " In Insert completion mode, CursorHoldI in not invoked
-      call mucomplete#autocomplete()
+      call mucomplete#auto_complete()
     endif
   endf
 
-  fun! mucomplete#auto#autocomplete()
+  fun! mucomplete#auto#auto_complete()
     if s:insertcharpre || mode(1) ==# 'ic'
       let s:insertcharpre = 0
-      call mucomplete#autocomplete()
+      call mucomplete#auto_complete()
     endif
   endf
 
@@ -80,24 +80,24 @@ fun! mucomplete#auto#insertcharpre()
   let s:insertcharpre = (v:char =~# '\m\S')
 endf
 
-fun! mucomplete#auto#ic_autocomplete()
+fun! mucomplete#auto#ic_auto_complete()
   if s:cancel_auto
     let s:cancel_auto = 0
     return
   endif
   if !s:insertcharpre
-    call mucomplete#autocomplete()
+    call mucomplete#auto_complete()
   endif
 endf
 
-fun! mucomplete#auto#autocomplete()
+fun! mucomplete#auto#auto_complete()
   if s:cancel_auto
     let [s:cancel_auto, s:insertcharpre] = [0,0]
     return
   endif
   if s:insertcharpre
     let s:insertcharpre = 0
-    call mucomplete#autocomplete()
+    call mucomplete#auto_complete()
   endif
 endf
 

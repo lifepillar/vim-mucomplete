@@ -100,18 +100,6 @@ fun! s:extend_completion(dir, keys)
         \ : a:keys
 endf
 
-fun! mucomplete#autocomplete()
-  let s:compl_text = mucomplete#get_compl_text()
-  call mucomplete#init(1, 0)
-  while s:countdown > 0
-    let s:countdown -= 1
-    let s:i += 1
-    if s:can_complete(s:i)
-      return feedkeys("\<plug>(MUcompleteTry)", 'i')
-    endif
-  endwhile
-endf
-
 fun! mucomplete#extend_fwd(keys)
   return s:extend_completion(1, a:keys)
 endf
@@ -276,5 +264,18 @@ fun! mucomplete#tab_complete(dir)
   endif
 endf
 
+fun! mucomplete#auto_complete()
+  let s:compl_text = mucomplete#get_compl_text()
+  call mucomplete#init(1, 0)
+  while s:countdown > 0
+    let s:countdown -= 1
+    let s:i += 1
+    if s:can_complete(s:i)
+      return feedkeys("\<plug>(MUcompleteTry)", 'i')
+    endif
+  endwhile
+endf
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
+
