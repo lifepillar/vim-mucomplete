@@ -77,7 +77,14 @@ let s:countdown = 0            " Keeps track of how many other completion attemp
 let s:compl_text = ''          " Text to be completed
 let s:dir = 1                  " Direction to search for the next completion method (1=fwd, -1=bwd)
 let s:complete_empty_text = 0  " When set to 1, completion is tried even at the start of the line or after a space
+let s:noselect = 0             " Set to 1 when completeopt contains 'noselect'; 0 otherwise
+let s:noinsert = 0             " Set to 1 when completeopt contains 'noinsert'; 0 otherwise
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
+
+fun! s:set_cot()
+  let s:noselect = (stridx(&l:completeopt, 'noselect') != -1)
+  let s:noinsert = (stridx(&l:completeopt, 'noinsert') != -1)
+endf
 
 " Completion chains
 let g:mucomplete#chains = extend({
@@ -134,7 +141,7 @@ endf
 
 fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
   let l:m = s:compl_methods[s:i]
-  return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || stridx(&l:completeopt, 'noselect') != -1
+  return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || s:noselect
         \ ? ''
         \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
         \    ? "\<plug>(MUcompleteUp)\<plug>(MUcompleteUp)"
@@ -144,17 +151,18 @@ endf
 fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect and noinsert
   let l:m = s:compl_methods[s:i]
   return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1)
-        \ ? (stridx(&l:completeopt, 'noselect') == -1
-        \    ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteUp)\<c-n>")
-        \    : (get(s:default_dir, l:m, 1) > 0 ? "\<c-n>" : "\<c-p>")
+        \ ? (s:noselect
+        \    ? (get(s:default_dir, l:m, 1) > 0 ? "\<c-n>" : "\<c-p>")
+        \    : (s:noinsert ? "\<plug>(MUcompleteUp)\<c-n>" : '')
         \   )
         \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
-        \    ? (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-p>\<c-p>" : "\<c-p>")
-        \    : (stridx(&l:completeopt, 'noselect') == -1 ? "\<c-n>\<c-n>" : "\<c-n>")
+        \    ? (s:noselect ?  "\<c-p>" : "\<c-p>\<c-p>")
+        \    : (s:noselect ? "\<c-n>" : "\<c-n>\<c-n>")
         \   )
 endf
 
 fun! s:act_on_pumvisible()
+  call s:set_cot()
   return !g:mucomplete_with_key || get(g:, 'mucomplete#always_use_completeopt', 0) || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
@@ -192,12 +200,12 @@ fun! s:extend_completion(dir, keys)
         \   )
         \   .
         \   (a:dir > 0
-        \    ? (stridx(&l:completeopt, 'noselect') == -1
-        \      ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteUp)\<c-n>")
+        \    ? (!s:noselect
+        \      ? (!s:noinsert ? '' : "\<plug>(MUcompleteUp)\<c-n>")
         \      : "\<plug>(MUcompleteDown)\<c-p>\<c-n>"
         \      )
-        \    : (stridx(&l:completeopt, 'noselect') == -1
-        \      ? (stridx(&l:completeopt, 'noinsert') == -1 ? '' : "\<plug>(MUcompleteDown)\<c-p>")
+        \    : (!s:noselect
+        \      ? (!s:noinsert ? '' : "\<plug>(MUcompleteDown)\<c-p>")
         \      : "\<plug>(MUcompleteUp)\<c-n>\<c-p>"
         \      )
         \   )
