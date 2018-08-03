@@ -954,3 +954,4 @@ too early, i.e., when the pop-up menu has not appeared yet (but it is going to
 appear, because completion was successful).
 
 vim:tw=78:ts=8:norl:
+
