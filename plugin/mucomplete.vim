@@ -31,12 +31,12 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
 endif
 
 if has('patch-7.4.775') " noinsert was added there
-  command -bar -nargs=0 MUcompleteAutoOn call mucomplete#auto#enable_auto()
-  command -bar -nargs=0 MUcompleteAutoOff call mucomplete#auto#disable_auto()
-  command -bar -nargs=0 MUcompleteAutoToggle call mucomplete#auto#toggle_auto()
+  command -bar -nargs=0 MUcompleteAutoOn call mucomplete#auto#enable()
+  command -bar -nargs=0 MUcompleteAutoOff call mucomplete#auto#disable()
+  command -bar -nargs=0 MUcompleteAutoToggle call mucomplete#auto#toggle()
 
   if get(g:, 'mucomplete#enable_auto_at_startup', 0)
-    call mucomplete#auto#enable_auto()
+    call mucomplete#auto#enable()
   endif
 endif
 
