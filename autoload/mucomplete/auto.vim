@@ -2,6 +2,9 @@
 " Maintainer: Lifepillar <lifepillar@lifepillar.me>
 " License: This file is placed in the public domain
 
+let s:save_cpo = &cpo
+set cpo&vim
+
 fun! mucomplete#auto#enable()
   augroup MUcompleteAuto
     autocmd!
@@ -52,6 +55,9 @@ if has('patch-8.0.0283')
     endif
   endf
 
+  let &cpo = s:save_cpo
+  unlet s:save_cpo
+
   finish
 endif
 
@@ -100,4 +106,7 @@ fun! mucomplete#auto#auto_complete()
     call mucomplete#auto_complete()
   endif
 endf
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
 
