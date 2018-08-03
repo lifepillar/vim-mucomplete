@@ -24,7 +24,7 @@ fun! mucomplete#map(mode, lhs, rhs)
   try
     execute a:mode '<silent> <unique>' a:lhs a:rhs
   catch /^Vim\%((\a\+)\)\=:E227/
-    call s:errmsg(a:lhs . ' is already mapped (use :verbose '.a:mode.' '.a:lhs.' to see by whom). See :help mucomplete-compatibility.')
+    call s:errmsg(a:lhs . ' is already mapped (use `:verbose '.a:mode.' '.a:lhs.'` to see by whom). See :help mucomplete-compatibility.')
   endtry
 endf
 
