@@ -36,10 +36,16 @@ Mandatory Vim settings:
   set completeopt+=menuone
 ```
 
-For automatic completion, you also need one of the following:
+For automatic completion, if you use Vim 7.4.775 or later you also need one of
+the following:
 
 ```vim
   set completeopt+=noselect
+```
+
+or
+
+```vim
   set completeopt+=noinsert
 ```
 
