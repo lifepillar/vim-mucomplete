@@ -214,13 +214,13 @@ fun! s:extend_completion(dir, keys)
         \   )
         \   .
         \   (a:dir > 0
-        \    ? (!s:noselect
-        \      ? (!s:noinsert ? '' : "\<plug>(MUcompleteUp)\<c-n>")
-        \      : "\<plug>(MUcompleteDown)\<c-p>\<c-n>"
+        \    ? (s:noselect
+        \      ? "\<plug>(MUcompleteDown)\<c-p>\<c-n>"
+        \      : (s:noinsert ? "\<plug>(MUcompleteUp)\<c-n>" : '')
         \      )
-        \    : (!s:noselect
-        \      ? (!s:noinsert ? '' : "\<plug>(MUcompleteDown)\<c-p>")
-        \      : "\<plug>(MUcompleteUp)\<c-n>\<c-p>"
+        \    : (s:noselect
+        \      ? "\<plug>(MUcompleteUp)\<c-n>\<c-p>"
+        \      : (s:noinsert ? "\<plug>(MUcompleteDown)\<c-p>" : '')
         \      )
         \   )
         \ : a:keys
