@@ -96,7 +96,7 @@ else " First menu entry is always selected and inserted
   endf
 
   fun! s:select_entry(dir)
-    return (a:dir > 0 ? "\<c-p>" : "\<c-n>") " Works as with noselect 
+    return (a:dir > 0 ? "\<c-p>" : "\<c-n>") " Works as with noselect
   endf
 endif
 
