@@ -87,7 +87,7 @@ if has("patch-7.4.775") || (v:version == 704 && has("patch775"))  " noinsert and
     let s:noinsert = (stridx(&l:completeopt, 'noinsert') != -1)
   endf
 
-  fun! s:select_entry(dir) " argument is default dir of the current method
+  fun! s:select_entry(dir) " argument is natural direction of the current method
     return ''
   endf
 else " First menu entry is always selected and inserted
