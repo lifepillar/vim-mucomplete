@@ -81,10 +81,24 @@ let s:noselect = 0             " Set to 1 when completeopt contains 'noselect'; 
 let s:noinsert = 0             " Set to 1 when completeopt contains 'noinsert'; 0 otherwise
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
-fun! s:set_cot()
-  let s:noselect = (stridx(&l:completeopt, 'noselect') != -1)
-  let s:noinsert = (stridx(&l:completeopt, 'noinsert') != -1)
-endf
+if has("patch-7.4.775") || (v:version == 704 && has("patch775"))  " noinsert and noselect added there
+  fun! s:set_cot()
+    let s:noselect = (stridx(&l:completeopt, 'noselect') != -1)
+    let s:noinsert = (stridx(&l:completeopt, 'noinsert') != -1)
+  endf
+
+  fun! s:select_entry(dir) " argument is default dir of the current method
+    return ''
+  endf
+else " First menu entry is always selected and inserted
+  fun! s:set_cot()
+    " noop
+  endf
+
+  fun! s:select_entry(dir)
+    return (a:dir > 0 ? "\<c-p>" : "\<c-n>") " Works as with noselect 
+  endf
+endif
 
 " Completion chains
 let g:mucomplete#chains = extend({
@@ -142,7 +156,7 @@ endf
 fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
   let l:m = s:compl_methods[s:i]
   return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || s:noselect
-        \ ? ''
+        \ ? s:select_entry(get(s:default_dir, l:m, 1))
         \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
         \    ? "\<plug>(MUcompleteUp)\<plug>(MUcompleteUp)"
         \    : "\<plug>(MUcompleteDown)\<plug>(MUcompleteDown)")
