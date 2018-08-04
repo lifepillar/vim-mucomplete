@@ -131,6 +131,10 @@ let g:mucomplete#user_mappings = { 'sqla' : "\<c-c>a" }
 let g:mucomplete#chains = { 'sql' : ['file', 'sqla', 'keyn'] }
 ```
 
+This example also shows how you can define custom completion methods. In this
+case, a method called `'sqla'` (the name is arbitrary) is mapped to the key
+sequence `<c-c>a` (see `:help sql-completion`).
+
 With clang_complete        |  Extending completion
 :-------------------------:|:-------------------------:
 ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/clang.gif) | ![](https://raw.github.com/lifepillar/Resources/master/mucomplete/ctrlx-ctrln.gif)
