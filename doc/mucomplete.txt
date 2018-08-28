@@ -143,6 +143,10 @@ snippets (if you use SnipMate, see |mucomplete-compatibility|):
 
 "ulti": UltiSnips snippets.
 
+Note: UltiSnips maps <tab> and <c-j> in a way that conflicts with MUcomplete.
+See |mucomplete-compatibility| for a recommended configuration.
+
+
 Additional completion methods may be defined by the user with
 |g:mucomplete#user_mappings|.
 
@@ -810,6 +814,38 @@ mappings get too much in the way, you may also disable them completely (see
 |g:mucomplete#no_mappings|). Finally, see also |mucomplete-tips| for a more
 sophisticated definition of a <tab> mapping.
 
+UltiSnips ~
+UltiSnips maps <tab> and <c-j> in a way that conflicts with MUcomplete. The
+recommended way to solve the conflict is to redefine UltiSnips's mappings. For
+example:
+>
+	let g:UltiSnipsExpandTrigger = "<f5>"        " Do not use <tab>
+	let g:UltiSnipsJumpForwardTrigger = "<c-b>"  " Do not use <c-j>
+<
+If you want snippets to be expanded automatically when you accept a menu entry
+by typing Enter, also add the following code to your `vimrc`:
+>
+	fun! MyExpandSnippet()
+	    if get(v:completed_item, 'menu', '') =~# '[snip]'
+	        return UltiSnips#ExpandSnippet()
+	    endif
+	    return ""  " Or "\<cr>" if you always want to start a new line
+	endf
+
+	fun! s:my_cr()
+	    return pumvisible()
+	        \ ? "\<c-y>\<c-r>=MyExpandSnippet()\<cr>"
+	        \ : "\<cr>"
+	endf
+
+	inoremap <silent> <expr> <plug>(MyCR) <sid>my_cr()
+	imap <cr> <plug>(MyCR)
+<
+Note: don't forget to add `'ulti'` to your completion chains! For example:
+>
+	let g:mucomplete_chains = {}
+	let g:mucomplete_chains.default = ['path', 'ulti', 'keyn']
+<
 vim-peekabo ~
 By default, vim-peekabo remaps <c-r> in Insert mode. Since MUcomplete relies
 on |i_CTRL-R| in an essential way, you have to change vim-peekabo's mapping:
