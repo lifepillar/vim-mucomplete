@@ -826,8 +826,8 @@ by typing Enter, also add the following code to your `vimrc`:
 <
 Note: don't forget to add `'ulti'` to your completion chains! For example:
 >
-	let g:mucomplete_chains = {}
-	let g:mucomplete_chains.default = ['path', 'ulti', 'keyn']
+	let g:mucomplete#chains = {}
+	let g:mucomplete#chains.default = ['path', 'ulti', 'keyn']
 <
 UltiSnips + PHP ~
 In some versions of Vim, there is a (now solved) compatibility issue between
