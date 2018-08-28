@@ -11,6 +11,7 @@ inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
 inoremap <silent>        <plug>(MUcompleteCte) <c-e>
+imap     <silent> <expr> <plug>(MUcompleteCyc) <sid>cycle()
 inoremap <silent>        <plug>(MUcompleteUp)  <up>
 inoremap <silent>        <plug>(MUcompleteDown) <down>
 
@@ -234,16 +235,18 @@ fun! mucomplete#extend_bwd(keys)
   return s:extend_completion(-1, a:keys)
 endf
 
+fun! s:cycle()
+  let g:mucomplete_with_key = g:mucomplete_with_key || get(g:, 'mucomplete#cycle_all', 0)
+  let s:compl_text = mucomplete#get_compl_text()
+  let s:countdown = s:N " Reset counter
+  return s:next_method()
+endf
+
 fun! mucomplete#cycle(dir)
-  if pumvisible()
-    let s:dir = a:dir
-    let g:mucomplete_with_key = g:mucomplete_with_key || get(g:, 'mucomplete#cycle_all', 0)
-    let s:compl_text = mucomplete#get_compl_text()
-    let s:countdown = s:N " Reset counter
-    return "\<plug>(MUcompleteCte)" . s:next_method()
-  else
-    return a:dir > 0 ? "\<plug>(MUcompleteFwdKey)" : "\<plug>(MUcompleteBwdKey)"
-  endif
+  let s:dir = a:dir
+  return pumvisible()
+        \ ? "\<plug>(MUcompleteCte)\<plug>(MUcompleteCyc)"
+        \ : (a:dir > 0 ? "\<plug>(MUcompleteFwdKey)" : "\<plug>(MUcompleteBwdKey)")
 endf
 
 " Precondition: pumvisible() is true.

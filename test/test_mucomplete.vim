@@ -654,6 +654,69 @@ fun! Test_MU_up_and_down_arrow_remapped()
   bwipe!
 endf
 
+fun! Test_MU_cycling_uses_correct_compl_text()
+  new
+  set completeopt=menuone,noselect
+  set filetype=c
+  setlocal omnifunc=ccomplete#Complete
+  setlocal tags=./testtags
+  let b:mucomplete_chain = ['omni', 'keyn']
+  call writefile(['incCount	path/to/somefile.c	/^void incCount(int n) {$/;"	f'], 'testtags')
+
+  call feedkeys("Aint incredible;", 'tx')
+  call feedkeys("oin", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<s-tab>c\<tab>\<c-h>\<esc>", 'tx')
+  call assert_equal('incredible', getline(2))
+  call feedkeys("oin", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<s-tab>c\<tab>\<c-h>\<c-h>\<c-h>\<esc>", 'tx')
+  call assert_equal('incredible', getline(3))
+  call feedkeys("oin", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<s-tab>c\<tab>\<c-j>\<esc>", 'tx')
+  call assert_equal('incredible', getline(3))
+  call feedkeys("oin", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<s-tab>c\<tab>\<c-j>\<c-j>\<c-j>\<esc>", 'tx')
+  call assert_equal('incredible', getline(4))
+
+  call delete('testtags')
+  set completeopt&
+  bwipe!
+endf
+
+fun! Test_MU_ccomplete_and_cycling()
+  new
+  set completeopt=menuone,noselect
+  set filetype=c
+  setlocal omnifunc=ccomplete#Complete
+  setlocal tags=./testtags
+  let b:mucomplete_chain = ['omni', 'keyn']
+  call writefile(['incCount	path/to/somefile.c	/^void incCount(int n) {$/;"	f'], 'testtags')
+
+  call feedkeys("Aint in", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<c-j>\<c-y>\<esc>", 'tx')
+  call assert_equal('int int', getline(1))
+  call feedkeys("oin", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<c-j>\<c-j>\<c-j>\<c-y>\<esc>", 'tx')
+  call assert_equal('int', getline(2))
+  call feedkeys("oin", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<c-h>\<c-y>\<esc>", 'tx')
+  call assert_equal('int', getline(3))
+  call feedkeys("oin", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<c-h>\<c-h>\<c-h>\<c-y>\<esc>", 'tx')
+  call assert_equal('int', getline(4))
+
+  call delete('testtags')
+  set completeopt&
+  bwipe!
+endf
+
 
 call RunBabyRun('MU')
 
