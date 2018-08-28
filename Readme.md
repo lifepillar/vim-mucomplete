@@ -83,10 +83,11 @@ By default, MUcomplete attempts:
 5. spelling completion, if `'spell'` is on and `'spelllang'` is set;
 
 in this order (this is called a *completion chain*). At the first successful
-attempt, the pop-up menu shows the results. When the pop-up menu is visible,
-you may cycle back and forth through the completion chain and try different
-completion methods by pressing `<c-h>` and `<c-j>`, respectively. See below
-for an example.
+attempt, the pop-up menu shows the results. When the pop-up menu is visible, you
+may cycle back and forth through the completion chain and try different
+completion methods by pressing `<c-h>` and `<c-j>`, respectively. In other
+words, `<c-h>` and `<c-j>` mean: “cancel the current menu and try completing the
+text I originally typed in a different way”. See below for an example.
 
 MUcomplete is fully customizable. See `:help mucomplete.txt` for detailed
 documentation.

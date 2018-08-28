@@ -84,7 +84,9 @@ or buffer-specific completion chains.
 
 Sometimes, the first method returning results is not the one you want. With
 the pop-up menu visible, you may type <c-h> and <c-j> to cycle back and forth,
-respectively, through the current completion chain.
+respectively, through the current completion chain. In other words, <c-h> and
+<c-j> mean: "cancel the current menu and try completing the text I originally
+typed in a different way".
 
 If you want completion to be triggered automatically, set
 |g:mucomplete#enable_auto_at_startup|.
