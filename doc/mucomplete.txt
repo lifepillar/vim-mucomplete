@@ -759,23 +759,6 @@ MUcomplete's definition of <cr> in your |vimrc|, as follows:
 If you use endwise.vim together with auto-pairs, see the section above
 instead.
 
-PHP + UltiSnips ~
-In some versions of Vim, there is a (now solved) compatibility issue between
-PHP's 'omnifunc' function and UltiSnips. This bug is hit by MUcomplete when:
-
-- automatic completion is on;
-- the "omni" method is in your completion chain;
-- you try to move between the different parts of a snippet while expanding
-  a snippet (and you discover that you can't).
-
-There are two workarounds if you still want to use UltiSnips with PHP:
-
-- remove "omni" from PHP's completion chain;
-- disable automatic completion (and do not trigger completion during snippet
-  expansion).
-
-Note: this is not a bug in MUcomplete.
-
 SnipMate ~
 In your |vimrc|, set:
 >
@@ -846,6 +829,23 @@ Note: don't forget to add `'ulti'` to your completion chains! For example:
 	let g:mucomplete_chains = {}
 	let g:mucomplete_chains.default = ['path', 'ulti', 'keyn']
 <
+UltiSnips + PHP ~
+In some versions of Vim, there is a (now solved) compatibility issue between
+PHP's 'omnifunc' function and UltiSnips. This bug is hit by MUcomplete when:
+
+- automatic completion is on;
+- the "omni" method is in your completion chain;
+- you try to move between the different parts of a snippet while expanding
+  a snippet (and you discover that you can't).
+
+There are two workarounds if you still want to use UltiSnips with PHP:
+
+- remove "omni" from PHP's completion chain;
+- disable automatic completion (and do not trigger completion during snippet
+  expansion).
+
+Note: this is not a bug in MUcomplete.
+
 vim-peekabo ~
 By default, vim-peekabo remaps <c-r> in Insert mode. Since MUcomplete relies
 on |i_CTRL-R| in an essential way, you have to change vim-peekabo's mapping:
