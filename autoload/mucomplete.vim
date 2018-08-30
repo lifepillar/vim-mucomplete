@@ -109,29 +109,39 @@ let g:mucomplete#chains = extend({
 
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
+  if get(g:, 'mucomplete#force_manual', 0)
+    fun! s:fm(f)
+      return { t -> g:mucomplete_with_key && a:f(t) }
+    endf
+  else
+    fun! s:fm(f)
+      return a:f
+    endf
+  endif
+
   let s:yes_you_can = { _ -> 1 } " Try always
   let s:is_keyword = { t -> t =~# '\m\k\k$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\k$')) }
   let s:is_keyword_or_dot = { t -> t =~# '\m\k\%(\k\|\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$')) }
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
-        \     'c-n' : s:is_keyword,
-        \     'c-p' : s:is_keyword,
-        \     'cmd' : s:is_keyword,
-        \     'defs': s:is_keyword,
-        \     'dict': { t -> strlen(&l:dictionary) > 0 && (t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$')) },
-        \     'file': { t -> t =~# '\m\%(\~\|'.s:pathsep.'\)\f*$' },
-        \     'incl': s:is_keyword,
-        \     'keyn': s:is_keyword,
-        \     'keyp': s:is_keyword,
-        \     'line': s:is_keyword,
-        \     'omni': { t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) },
-        \     'path': { t -> t =~# '\m\%(\%(\f'.s:pathsep.'\|'.s:pathsep.'\f\)[^/\\]*\)\+$' || (g:mucomplete_with_key && t =~# '\m\%(\~\|'.s:pathsep.'\)\%(\f\|\s\)*$') },
-        \     'spel': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
-        \     'tags': { t -> !empty(tagfiles()) && s:is_keyword(t) },
-        \     'thes': { t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' },
-        \     'ulti': { t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) },
-        \     'user': { t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) },
-        \     'uspl': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }
+        \     'c-n' : s:fm(s:is_keyword),
+        \     'c-p' : s:fm(s:is_keyword),
+        \     'cmd' : s:fm(s:is_keyword),
+        \     'defs': s:fm(s:is_keyword),
+        \     'dict': s:fm({ t -> strlen(&l:dictionary) > 0 && (t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$')) }),
+        \     'file': s:fm({ t -> t =~# '\m\%(\~\|'.s:pathsep.'\)\f*$' }),
+        \     'incl': s:fm(s:is_keyword),
+        \     'keyn': s:fm(s:is_keyword),
+        \     'keyp': s:fm(s:is_keyword),
+        \     'line': s:fm(s:is_keyword),
+        \     'omni': s:fm({ t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) }),
+        \     'path': s:fm({ t -> t =~# '\m\%(\%(\f'.s:pathsep.'\|'.s:pathsep.'\f\)[^/\\]*\)\+$' || (g:mucomplete_with_key && t =~# '\m\%(\~\|'.s:pathsep.'\)\%(\f\|\s\)*$') }),
+        \     'spel': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }),
+        \     'tags': s:fm({ t -> !empty(tagfiles()) && s:is_keyword(t) }),
+        \     'thes': s:fm({ t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' }),
+        \     'ulti': s:fm({ t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) }),
+        \     'user': s:fm({ t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) }),
+        \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' })
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
   " Special cases

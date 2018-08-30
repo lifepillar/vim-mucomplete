@@ -472,6 +472,15 @@ Set to 1 to enable automatic completion at startup.
 >
 	let g:mucomplete#enable_auto_at_startup = 0
 <
+						*'g:mucomplete#force_manual'*
+When set to 1, force each completion method in your completion chain to be
+tried only when completion is triggered manually (e.g., by pressing <tab>)
+even if auto-completion is on. This is useful only if you override
+|g:mucomplete#can_complete| for at least one completion method. See
+|mucomplete-tips| for an example.
+>
+	let g:mucomplete#force_manual = 0
+<
 						*'g:mucomplete#look_behind'*
 This is the maximum number of characters before the cursor that are considered
 when deciding which completion methods can be applied.
@@ -696,6 +705,23 @@ define:
 Then, searching for synonyms will happen only when you press <tab> and keyword
 completion returns no results, or when you press <s-tab>. During normal
 typing, only keyword completion will be active.
+
+If you find yourself adding checks of the form `g:mucomplete_with_key && ...`
+to all your completion methods except one or two, you may find it more
+convenient to set |g:mucomplete#force_manual| to 1 and redefine only the
+methods that should be enabled for automatic completion. In other words, the
+configuration above might be rewritten as follows:
+>
+	let g:mucomplete#force_manual = 1  " All methods enabled only manually
+	let g:mucomplete#can_complete = {}
+	let g:mucomplete#can_complete.default = {
+	    \  'keyn': { t -> { t -> t =~# '\m\k\k$' } }
+	    \ }
+	let g:mucomplete#chains = { 'default': ['keyn', 'thes'] }
+<
+With these settings, all the methods in your completion chain, except for
+`'keyn'`, will be tried only with manual completion: but keyword completion
+will be triggered automatically.
 
 Optimize your completion chains ~
 The "c-n", "c-p" and "line" methods allow you to aggregate completion

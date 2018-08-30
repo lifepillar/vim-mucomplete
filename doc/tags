@@ -9,6 +9,7 @@
 'g:mucomplete#delayed_completion'	mucomplete.txt	/*'g:mucomplete#delayed_completion'*
 'g:mucomplete#empty_text'	mucomplete.txt	/*'g:mucomplete#empty_text'*
 'g:mucomplete#enable_auto_at_startup'	mucomplete.txt	/*'g:mucomplete#enable_auto_at_startup'*
+'g:mucomplete#force_manual'	mucomplete.txt	/*'g:mucomplete#force_manual'*
 'g:mucomplete#look_behind'	mucomplete.txt	/*'g:mucomplete#look_behind'*
 'g:mucomplete#no_mappings'	mucomplete.txt	/*'g:mucomplete#no_mappings'*
 'g:mucomplete#no_popup_mappings'	mucomplete.txt	/*'g:mucomplete#no_popup_mappings'*

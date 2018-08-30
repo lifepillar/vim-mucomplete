@@ -59,27 +59,40 @@ fun! mucomplete#compat#omni_python(t)
         \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || a:t =~# '\m\%(\k\|\.\)$'))
 endf
 
+if get(g:, 'mucomplete#force_manual', 0)
+  fun! s:fm(f)
+    fun! s:foo(t)
+      return g:mucomplete_with_key && a:f(a:t)
+    endf
+    return funcref('s:foo')
+  endf
+else
+  fun! s:fm(f)
+    return a:f
+  endf
+endif
+
 fun! mucomplete#compat#can_complete()
   let l:can_complete = extend({
         \ 'default' : extend({
-        \     'c-n' :  function('mucomplete#compat#default'),
-        \     'c-p' :  function('mucomplete#compat#default'),
-        \     'cmd' :  function('mucomplete#compat#default'),
-        \     'defs':  function('mucomplete#compat#default'),
-        \     'dict':  function('mucomplete#compat#dict'),
-        \     'file':  function('mucomplete#compat#file'),
-        \     'incl':  function('mucomplete#compat#default'),
-        \     'keyn':  function('mucomplete#compat#default'),
-        \     'keyp':  function('mucomplete#compat#default'),
-        \     'line':  function('mucomplete#compat#default'),
-        \     'omni':  function('mucomplete#compat#omni'),
-        \     'spel':  function('mucomplete#compat#spel'),
-        \     'tags':  function('mucomplete#compat#tags'),
-        \     'thes':  function('mucomplete#compat#thes'),
-        \     'user':  function('mucomplete#compat#user'),
-        \     'path':  function('mucomplete#compat#path'),
-        \     'uspl':  function('mucomplete#compat#spel'),
-        \     'ulti':  function('mucomplete#compat#ulti')
+        \     'c-n' :  s:fm(function('mucomplete#compat#default')),
+        \     'c-p' :  s:fm(function('mucomplete#compat#default')),
+        \     'cmd' :  s:fm(function('mucomplete#compat#default')),
+        \     'defs':  s:fm(function('mucomplete#compat#default')),
+        \     'dict':  s:fm(function('mucomplete#compat#dict')),
+        \     'file':  s:fm(function('mucomplete#compat#file')),
+        \     'incl':  s:fm(function('mucomplete#compat#default')),
+        \     'keyn':  s:fm(function('mucomplete#compat#default')),
+        \     'keyp':  s:fm(function('mucomplete#compat#default')),
+        \     'line':  s:fm(function('mucomplete#compat#default')),
+        \     'omni':  s:fm(function('mucomplete#compat#omni')),
+        \     'spel':  s:fm(function('mucomplete#compat#spel')),
+        \     'tags':  s:fm(function('mucomplete#compat#tags')),
+        \     'thes':  s:fm(function('mucomplete#compat#thes')),
+        \     'user':  s:fm(function('mucomplete#compat#user')),
+        \     'path':  s:fm(function('mucomplete#compat#path')),
+        \     'uspl':  s:fm(function('mucomplete#compat#spel')),
+        \     'ulti':  s:fm(function('mucomplete#compat#ulti'))
         \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {})),
         \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
   " Special cases
