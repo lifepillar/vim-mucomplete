@@ -24,6 +24,22 @@ fun! mucomplete#ultisnips#complete() abort
   return ''
 endf
 
+
+" Automatic expansion of snippets
+
+fun! mucomplete#ultisnips#do_expand(keys)
+  if get(v:completed_item, 'menu', '') =~# '[snip]'
+    return UltiSnips#ExpandSnippet()
+  endif
+  return a:keys
+endf
+
+fun! mucomplete#ultisnips#expand_snippet(keys)
+  return pumvisible()
+        \ ? "\<c-y>\<c-r>=mucomplete#ultisnips#do_expand('')\<cr>"
+        \ : a:keys
+endf
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
 
