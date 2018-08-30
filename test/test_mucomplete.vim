@@ -233,6 +233,25 @@ fun! Test_MU_double_slash_comment_is_not_path()
   set completeopt&
 endf
 
+fun! Test_MU_slash_is_not_path_in_autocompletion()
+  new
+  set completeopt=menuone,noselect
+  let b:mucomplete_chain = ['path']
+  call assert_equal('<Plug>(MUcompleteFwd)', maparg('<tab>', 'i'))
+  call assert_equal('<Plug>(MUcompleteBwd)', maparg('<s-tab>', 'i'))
+  MUcompleteAutoOn
+  call cursor(3,1)
+  call test_override("char_avail", 1)
+  call feedkeys("A/\<down>\<c-y>\<esc>", 'tx')
+  call assert_equal('/', getline(1))
+  call feedkeys("o//\<down>\<c-y>\<esc>", 'tx')
+  call assert_equal('//', getline(2))
+  call test_override("char_avail", 0)
+  MUcompleteAutoOff
+  set completeopt&
+  bwipe!
+endf
+
 fun! Test_MU_uspl_completion()
   new
   setlocal spell

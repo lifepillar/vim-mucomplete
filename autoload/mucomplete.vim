@@ -66,9 +66,9 @@ let s:compl_mappings = extend({
       \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>"
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 let s:default_dir = { 'c-p' : -1, 'keyp': -1, 'line': -1 }
-let s:pathstart = exists('+shellslash') && !&shellslash
-      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
-      \ : '[/~]'
+let s:pathsep = exists('+shellslash') && !&shellslash
+      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\]' : '[/\\]')
+      \ : '[/]'
 
 " Internal state
 let s:compl_methods = ['keyn'] " Current completion chain
@@ -119,13 +119,13 @@ if has('lambda')
         \     'cmd' : s:is_keyword,
         \     'defs': s:is_keyword,
         \     'dict': { t -> strlen(&l:dictionary) > 0 && (t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$')) },
-        \     'file': { t -> t =~# '\m'.s:pathstart.'\f*$' },
+        \     'file': { t -> t =~# '\m\%(\~\|'.s:pathsep.'\)\f*$' },
         \     'incl': s:is_keyword,
         \     'keyn': s:is_keyword,
         \     'keyp': s:is_keyword,
         \     'line': s:is_keyword,
         \     'omni': { t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) },
-        \     'path': { t -> t =~# '\m'.s:pathstart.'\%(\f\|\s\)*$' },
+        \     'path': { t -> t =~# '\m\%(\%(\f'.s:pathsep.'\|'.s:pathsep.'\f\)[^/\\]*\)\+$' || (g:mucomplete_with_key && t =~# '\m\%(\~\|'.s:pathsep.'\)\%(\f\|\s\)*$') },
         \     'spel': { t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' },
         \     'tags': { t -> !empty(tagfiles()) && s:is_keyword(t) },
         \     'thes': { t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' },
