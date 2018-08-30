@@ -5,9 +5,9 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:pathstart = exists('+shellslash') && !&shellslash
-      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\~]' : '[/\\~]')
-      \ : '[/~]'
+let s:pathsep = exists('+shellslash') && !&shellslash
+      \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\]' : '[/\\]')
+      \ : '[/]'
 
 fun! mucomplete#compat#yes_you_can(t)
   return 1
@@ -23,7 +23,7 @@ fun! mucomplete#compat#dict(t)
 endf
 
 fun! mucomplete#compat#file(t)
-  return a:t =~# '\m'.s:pathstart.'\f*$'
+  return a:t =~# '\m\%(\~\|'.s:pathsep.'\)\f*$'
 endf
 
 fun! mucomplete#compat#omni(t)
@@ -47,7 +47,7 @@ fun! mucomplete#compat#user(t)
 endf
 
 fun! mucomplete#compat#path(t)
-  return a:t =~# '\m'.s:pathstart.'\%(\f\|\s\)*$'
+  return a:t =~# '\m\%(\%(\f'.s:pathsep.'\|'.s:pathsep.'\f\)[^/\\]*\)\+$' || (g:mucomplete_with_key && a:t =~# '\m\%(\~\|'.s:pathsep.'\)\%(\f\|\s\)*$')
 endf
 
 fun! mucomplete#compat#ulti(t)
