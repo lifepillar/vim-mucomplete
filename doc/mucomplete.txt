@@ -598,6 +598,21 @@ example:
 	let g:mucomplete#chains.default = ['keyp', 'xyz']
 	let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
+					 *'g:mucomplete#show_completion_type'*
+Set to 1 to have a message printed in the command line, to inform you of the
+current completion method that is being tried.
+>
+	let g:mucomplete#show_completion_type = 0
+<
+				    *'g:mucomplete#custom_types_descriptions'*
+If |g:mucomplete#show_completion_type| is active, you may want to add
+descriptions for your custom completion methods:
+>
+	let g:mucomplete#custom_types_descriptions = {
+			\ 'sqla' : "description here",
+			\ 'xyz'  : "description here"
+			\ }
+<
 						*'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually by the
 user or it was triggered automatically. See |mucomplete-tips| for an example.
