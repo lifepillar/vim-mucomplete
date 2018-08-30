@@ -4,8 +4,6 @@
 >
 >(Peter Gabriel)
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7VXF4VMBTLKDQ)
-
 # What is it?
 
 MUcomplete is a minimalist autocompletion plugin for Vim.
@@ -21,6 +19,8 @@ order, and MUcomplete does the rest. It does no caching, no asynchronous
 computation, no intelligent guessing. It just makes use of core Vim features.
 
 MUcomplete brings Vim completion down to earth again.
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7VXF4VMBTLKDQ)
 
 
 # Getting Started
