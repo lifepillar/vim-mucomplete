@@ -10,8 +10,8 @@ fun! mucomplete#auto#start_timer() abort
     call mucomplete#auto#stop_timer()
   endif
 
-  let l:delay = max([20, get(g:, 'mucomplete#delayed_completion', 0)])
-  let s:completion_timer = timer_start(l:delay, {-> mucomplete#auto#auto_complete() })
+  let l:delay = max([100, get(g:, 'mucomplete#delayed_completion', 0)])
+  let s:completion_timer = timer_start(l:delay, 'mucomplete#auto#auto_complete')
 endf
 
 fun! mucomplete#auto#stop_timer() abort
@@ -71,7 +71,7 @@ if has('patch-8.0.0283')
     endif
   endf
 
-  fun! mucomplete#auto#auto_complete()
+  fun! mucomplete#auto#auto_complete(...)
     if s:insertcharpre || mode(1) ==# 'ic'
       let s:insertcharpre = 0
       call mucomplete#auto_complete()
@@ -119,7 +119,7 @@ fun! mucomplete#auto#ic_auto_complete()
   endif
 endf
 
-fun! mucomplete#auto#auto_complete()
+fun! mucomplete#auto#auto_complete(...)
   if s:cancel_auto
     let [s:cancel_auto, s:insertcharpre] = [0,0]
     return
