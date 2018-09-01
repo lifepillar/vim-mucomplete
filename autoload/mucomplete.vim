@@ -129,7 +129,7 @@ if has('lambda')
         \     'cmd' : s:fm(s:is_keyword),
         \     'defs': s:fm(s:is_keyword),
         \     'dict': s:fm({ t -> strlen(&l:dictionary) > 0 && (t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$')) }),
-        \     'file': s:fm({ t -> t =~# '\m\%(\~\|'.s:pathsep.'\)\f*$' }),
+        \     'file': s:fm({ t -> t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\)\+\)$' || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\f*$') }),
         \     'incl': s:fm(s:is_keyword),
         \     'keyn': s:fm(s:is_keyword),
         \     'keyp': s:fm(s:is_keyword),
