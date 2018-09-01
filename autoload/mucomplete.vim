@@ -121,7 +121,10 @@ if has('lambda')
 
   let s:yes_you_can = { _ -> 1 } " Try always
   let s:is_keyword = { t -> t =~# '\m\k\k$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\k$')) }
-  let s:is_keyword_or_dot = { t -> t =~# '\m\k\%(\k\|\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$')) }
+  let s:omni_c   = { t -> strlen(&l:omnifunc) > 0 && t =~# '\m\%(\k\k\|\S->\|\S\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\S->\|\S\.\)$')) }
+  let s:omni_py  = { t -> strlen(&l:omnifunc) > 0 && t =~# '\m\k\%(\k\|\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$')) }
+  let s:omni_xml = { t -> strlen(&l:omnifunc) > 0 && t =~# '\m\%(\k\k\|</\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|</\)$')) }
+  let s:cc = get(g:, 'mucomplete#can_complete', {}) " Get user's settings, then merge them with defaults
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
         \     'c-n' : s:fm(s:is_keyword),
@@ -142,12 +145,16 @@ if has('lambda')
         \     'ulti': s:fm({ t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) }),
         \     'user': s:fm({ t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) }),
         \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' })
-        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {}))
-        \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
-  " Special cases
+        \   }, get(s:cc, 'default', {})),
+        \       'c' : extend({ 'omni': s:omni_c   }, get(s:cc, 'c',    {})),
+        \     'cpp' : extend({ 'omni': s:omni_c   }, get(s:cc, 'cpp',  {})),
+        \    'html' : extend({ 'omni': s:omni_xml }, get(s:cc, 'html', {})),
+        \     'xml' : extend({ 'omni': s:omni_xml }, get(s:cc, 'xml',  {})),
+        \ }, s:cc, 'keep')
   if has('python') || has('python3')
-    call extend(extend(g:mucomplete#can_complete, { 'python': {} }, 'keep')['python'], { 'omni': s:is_keyword_or_dot }, 'keep')
+    call extend(extend(g:mucomplete#can_complete, { 'python': {} }, 'keep')['python'], { 'omni': s:fm(s:omni_py) }, 'keep')
   endif
+  unlet s:cc s:omni_xml s:omni_py s:omni_c s:is_keyword
 else
   let s:yes_you_can = function('mucomplete#compat#yes_you_can')
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
