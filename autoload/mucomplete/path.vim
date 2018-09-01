@@ -77,9 +77,6 @@ endif
 
 fun! mucomplete#path#complete() abort
   let l:prefix = matchstr(getline('.'), '\f\%(\f\|\s\)*\%'.col('.').'c')
-  if l:prefix =~# '//$' && !g:mucomplete_with_key " Do not confuse with comments
-    return ''
-  endif
   let l:case_insensitive = s:case_insensitive()
   while strlen(l:prefix) > 0 " Try to find an existing path (consider paths with spaces, too)
     if l:prefix ==# '~'
