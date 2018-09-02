@@ -154,7 +154,7 @@ if has('lambda')
   if has('python') || has('python3')
     call extend(extend(g:mucomplete#can_complete, { 'python': {} }, 'keep')['python'], { 'omni': s:fm(s:omni_py) }, 'keep')
   endif
-  unlet s:cc s:omni_xml s:omni_py s:omni_c s:is_keyword
+  unlet s:cc s:omni_xml s:omni_py s:omni_c
 else
   let s:yes_you_can = function('mucomplete#compat#yes_you_can')
   let g:mucomplete#can_complete = mucomplete#compat#can_complete()
