@@ -598,25 +598,16 @@ example:
 	let g:mucomplete#chains.default = ['keyp', 'xyz']
 	let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
-					 *'g:mucomplete#show_completion_type'*
-Set to 1 to have a message printed in the command line, to inform you of the
-current completion method that is being tried.
->
-	let g:mucomplete#show_completion_type = 0
-<
-				    *'g:mucomplete#custom_types_descriptions'*
-If |g:mucomplete#show_completion_type| is active, you may want to add
-descriptions for your custom completion methods:
->
-	let g:mucomplete#custom_types_descriptions = {
-			\ 'sqla' : "description here",
-			\ 'xyz'  : "description here"
-			\ }
-<
 						*'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually by the
 user or it was triggered automatically. See |mucomplete-tips| for an example.
 Note: do not set the value of this variable!
+
+						        *MUcompletePmenu*
+You can define this |User| |autocmd|, see |mucomplete-tips| for examples.
+>
+	autocmd User MUcompletePmenu { called when showing the popup }
+<
 
 ==============================================================================
 12. Tips & tricks					*mucomplete-tips*
@@ -736,6 +727,94 @@ which would always scan tags and included files, you might use:
 <
 so that searching included files and/or tags will happen only when
 completion cannot be performed otherwise.
+
+Call functions on User events ~
+This example shows how you can evoke a message in the command line, to show
+the current completion type:
+>
+	let s:comp_types = {
+	    \"c-n" : "keywords in 'complete' (search forwards)",
+	    \"c-p" : "keywords in 'complete' (search backwards)",
+	    \"cmd" : "Vim command line",
+	    \"defs": "definitions or macros",
+	    \"dict": "keywords in 'dictionary'",
+	    \"file": "file names",
+	    \"incl": "keywords in the current and included files",
+	    \"keyn": "keywords in the current file (search forwards)",
+	    \"keyp": "keywords in the current file (search backwards)",
+	    \"line": "whole lines",
+	    \"omni": "omni completion ('omnifunc')",
+	    \"path": "paths",
+	    \"spel": "spelling suggestions",
+	    \"tags": "tags",
+	    \"thes": "keywords in 'thesaurus'",
+	    \"user": "user defined completion ('completefunc')",
+	    \"ulti": "Ultisnips",
+	    \"uspl": "user-defined spelling suggestions",
+	    \... your custom types here
+	    \}
+
+	fun! s:mupmenu()
+	  let type = g:mucomplete#completion_type
+	  echohl Label   | echo "[MUcomplete]\t"
+	  echohl Special | echon has_key(s:comp_types, type) ?
+			 \ s:comp_types[type] : type.' (custom)'
+	  echohl None
+	endfun
+
+	augroup mucomplete-user
+	  au!
+	  autocmd User MUcompletePmenu unsilent call s:mupmenu()
+	  autocmd CompleteDone * redraw!
+	augroup END
+<
+Integrate with lightline.vim ~
+You could show the current completion type in the statusline instead:
+>
+	let g:lightline = {
+	    \ 'component_function': {
+            \   'mode': 'g:lightline.mode',
+	    \ },
+	    \ }
+
+	let g:lightline.comp_types = {
+            \"c-n" : "c-n",
+            \"c-p" : "c-p",
+            \"cmd" : "vim cmd",
+            \"defs": "definitions",
+            \"dict": "dictionary",
+            \"file": "file names",
+            \"incl": "included files",
+            \"keyn": "buffer",
+            \"keyp": "buffer",
+            \"line": "whole lines",
+            \"omni": "omni completion",
+            \"path": "paths",
+            \"spel": "spelling",
+            \"tags": "tags",
+            \"thes": "thesaurus",
+            \"user": "completefunc",
+            \"ulti": "Ultisnips",
+            \"uspl": "user spelling",
+	    \... your custom types here
+            \}
+
+	fun! g:lightline.mode() dict
+	  if exists('g:mucomplete#completion_type')
+	    \ && !empty(g:mucomplete#completion_type)
+	    return 'COMPLETE > '.
+	       \g:lightline.comp_types[g:mucomplete#completion_type]
+	  else
+	    return lightline#mode()
+	  endif
+	endfun
+
+	augroup mucomp
+	  au!
+	  autocmd User MUcompletePmenu call lightline#update()
+	  autocmd CompleteDone * let g:mucomplete#completion_type = ''
+	augroup END
+<
 
 ==============================================================================
 13. Compatibility				*mucomplete-compatibility*

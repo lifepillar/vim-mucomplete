@@ -178,34 +178,15 @@ endf
 
 fun! s:act_on_pumvisible()
   call s:set_cot()
-  call s:cl_msg()
+  let g:mucomplete#completion_type = s:compl_methods[s:i]
+  silent doautocmd User MUcompletePmenu
   return !g:mucomplete_with_key || get(g:, 'mucomplete#always_use_completeopt', 0) || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
 endf
 
-let s:comp_types = extend({
-      \"c-n" : "keywords in 'complete' (search forwards)",
-      \"c-p" : "keywords in 'complete' (search backwards)",
-      \"cmd" : "Vim command line",
-      \"defs": "definitions or macros",
-      \"dict": "keywords in 'dictionary'",
-      \"file": "file names",
-      \"incl": "keywords in the current and included files",
-      \"keyn": "keywords in the current file (search forwards)",
-      \"keyp": "keywords in the current file (search backwards)",
-      \"line": "whole lines",
-      \"omni": "omni completion ('omnifunc')",
-      \"path": "paths",
-      \"spel": "spelling suggestions",
-      \"tags": "tags",
-      \"thes": "keywords in 'thesaurus'",
-      \"user": "user defined completion ('completefunc')",
-      \"ulti": "Ultisnips",
-      \"uspl": "user-defined spelling suggestions",
-      \}, get(g:, 'mucomplete#custom_types_descriptions', {}))
-
 fun! s:try_completion() " Assumes s:i in [0, s:N - 1]
+  let g:mucomplete#completion_type = s:compl_methods[s:i]
   return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=''\<cr>\<plug>(MUcompleteVerify)"
 endf
 
@@ -256,13 +237,6 @@ endf
 fun! mucomplete#extend_bwd(keys)
   return s:extend_completion(-1, a:keys)
 endf
-
-fun! s:cl_msg()
-  if get(g:, 'mucomplete#show_completion_type', 0)
-    let type = s:compl_methods[s:i]
-    echo "[MUcomplete]" has_key(s:comp_types, type) ? s:comp_types[type] : type.' (custom)'
-  endif
-endfun
 
 fun! s:cycle()
   let g:mucomplete_with_key = g:mucomplete_with_key || get(g:, 'mucomplete#cycle_all', 0)
