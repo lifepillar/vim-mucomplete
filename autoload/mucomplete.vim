@@ -178,7 +178,6 @@ endf
 
 fun! s:act_on_pumvisible()
   call s:set_cot()
-  let g:mucomplete#completion_type = s:compl_methods[s:i]
   silent doautocmd User MUcompletePmenu
   return !g:mucomplete_with_key || get(g:, 'mucomplete#always_use_completeopt', 0) || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
