@@ -9,7 +9,10 @@ fun! mucomplete#auto#enable()
   augroup MUcompleteAuto
     autocmd!
     autocmd InsertCharPre * noautocmd call mucomplete#auto#insertcharpre()
-    if get(g:, 'mucomplete#delayed_completion', 0)
+    if get(g:, 'mucomplete#completion_delay', 0) > 1 && has('timers')
+      autocmd TextChangedI * noautocmd call <sid>start_timer()
+      autocmd  InsertLeave * noautocmd call <sid>stop_timer()
+    elseif get(g:, 'mucomplete#completion_delay', 0)
       autocmd TextChangedI * noautocmd call mucomplete#auto#ic_auto_complete()
       autocmd  CursorHoldI * noautocmd call mucomplete#auto#auto_complete()
     else
@@ -32,6 +35,29 @@ fun! mucomplete#auto#toggle()
   else
     call mucomplete#auto#enable()
     echomsg '[MUcomplete] Auto on'
+  endif
+endf
+
+let s:ic = 0
+
+fun! s:start_timer()
+  if exists('s:completion_timer')
+    call timer_stop(s:completion_timer)
+  endif
+  let s:completion_timer = timer_start(get(g:, 'mucomplete#completion_delay', 150), 'mucomplete#auto#timer_complete')
+endf
+
+fun! s:stop_timer()
+  if exists('s:completion_timer')
+    call timer_stop(s:completion_timer)
+    unlet s:completion_timer
+  endif
+endf
+
+fun! mucomplete#auto#timer_complete(tid)
+  unlet s:completion_timer
+  if !pumvisible()
+    call mucomplete#auto#auto_complete()
   endif
 endf
 

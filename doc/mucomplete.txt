@@ -423,6 +423,20 @@ completion chains. For example:
 	let g:mucomplete#chains.default  = ['omni', 'c-p']
 	let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
+					*'g:mucomplete#completion_delay'*
+Set to a positive value if you want autocompletion to be triggered only when
+you pause typing (autocompletion must be on for this to work). When set to 0,
+no delay occurs. If this is set to 1, or it is set to a positive value but Vim
+does not have the |+timers| feature, then |'updatetime'| is used for the delay
+(see also |CursorHoldI|). If Vim is built with |+timers| and this is set to
+a value greater than 1 then the value is interpreted as the number of
+milliseconds to wait before triggering auto-completion.
+>
+	let g:mucomplete#completion_delay = 0
+<
+Note: auto-completion must be turned off and on again for this setting to take
+effect.
+
 						*'g:mucomplete#cycle_all'*
 MUcomplete allows you to use specific completion methods only when the trigger
 keys are pressed (<tab>/<s-tab> by default), even when auto-completion is on.
@@ -446,13 +460,6 @@ through the current completion chain when the pop-up menu is visible.
 Note: if you set this to 1, you have to use the standard CTRL-N and CTRL-P to
 select the entries in the pop-up menu.
 
-					*'g:mucomplete#delayed_completion'*
-Set to 1 if you want autocompletion to be triggered only when you pause
-typing (autocompletion must be on for this to work). Use |'updatetime'| to set
-the delay. See also |CursorHoldI|.
->
-	let g:mucomplete#delayed_completion = 0
-<
 						*'b:mucomplete_empty_text'*
 						*'g:mucomplete#empty_text'*
 By default, when you press <tab> to complete a word, MUcomplete inserts
