@@ -38,8 +38,6 @@ fun! mucomplete#auto#toggle()
   endif
 endf
 
-let s:ic = 0
-
 fun! s:start_timer()
   if exists('s:completion_timer')
     call timer_stop(s:completion_timer)
