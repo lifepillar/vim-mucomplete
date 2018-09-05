@@ -5,13 +5,36 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+fun! mucomplete#auto#start_timer() abort
+  if exists('s:completion_timer')
+    call mucomplete#auto#stop_timer()
+  endif
+
+  let l:delay = max([100, get(g:, 'mucomplete#delayed_completion', 0)])
+  let s:completion_timer = timer_start(l:delay, 'mucomplete#auto#auto_complete')
+endf
+
+fun! mucomplete#auto#stop_timer() abort
+  if !exists('s:completion_timer')
+    return
+  endif
+
+  call timer_stop(s:completion_timer)
+  unlet s:completion_timer
+endf
+
 fun! mucomplete#auto#enable()
   augroup MUcompleteAuto
     autocmd!
     autocmd InsertCharPre * noautocmd call mucomplete#auto#insertcharpre()
     if get(g:, 'mucomplete#delayed_completion', 0)
-      autocmd TextChangedI * noautocmd call mucomplete#auto#ic_auto_complete()
-      autocmd  CursorHoldI * noautocmd call mucomplete#auto#auto_complete()
+      if has('timers')
+        autocmd TextChangedI * noautocmd call mucomplete#auto#start_timer()
+        autocmd  InsertLeave * noautocmd call mucomplete#auto#stop_timer()
+      else
+        autocmd TextChangedI * noautocmd call mucomplete#auto#ic_auto_complete()
+        autocmd  CursorHoldI * noautocmd call mucomplete#auto#auto_complete()
+      endif
     else
       autocmd TextChangedI * noautocmd call mucomplete#auto#auto_complete()
     endif
@@ -48,7 +71,7 @@ if has('patch-8.0.0283')
     endif
   endf
 
-  fun! mucomplete#auto#auto_complete()
+  fun! mucomplete#auto#auto_complete(...)
     if s:insertcharpre || mode(1) ==# 'ic'
       let s:insertcharpre = 0
       call mucomplete#auto_complete()
@@ -96,7 +119,7 @@ fun! mucomplete#auto#ic_auto_complete()
   endif
 endf
 
-fun! mucomplete#auto#auto_complete()
+fun! mucomplete#auto#auto_complete(...)
   if s:cancel_auto
     let [s:cancel_auto, s:insertcharpre] = [0,0]
     return
