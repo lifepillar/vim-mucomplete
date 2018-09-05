@@ -56,9 +56,19 @@ fun! mucomplete#compat#ulti(t)
   return get(g:, 'did_plugin_ultisnips', 0) && mucomplete#compat#default(a:t)
 endf
 
+fun! mucomplete#compat#omni_c(t)
+  return strlen(&l:omnifunc) > 0 && a:t =~# '\m\%(\k\k\|\S->\|\S\.\)$'
+        \ || (g:mucomplete_with_key && (s:complete_empty_text || a:t =~# '\m\%(\k\|\S->\|\S\.\)$'))
+endf
+
 fun! mucomplete#compat#omni_python(t)
   return a:t =~# '\m\k\%(\k\|\.\)$' ||
         \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || a:t =~# '\m\%(\k\|\.\)$'))
+endf
+
+fun! mucomplete#compat#omni_xml(t)
+  return strlen(&l:omnifunc) > 0 && a:t =~# '\m\%(\k\k\|</\)$'
+        \ || (g:mucomplete_with_key && (s:complete_empty_text || a:t =~# '\m\%(\k\|</\)$'))
 endf
 
 if get(g:, 'mucomplete#force_manual', 0)
@@ -75,6 +85,7 @@ else
 endif
 
 fun! mucomplete#compat#can_complete()
+  let l:cc = get(g:, 'mucomplete#can_complete', {}) " Get user's settings, then merge them with defaults
   let l:can_complete = extend({
         \ 'default' : extend({
         \     'c-n' :  s:fm(function('mucomplete#compat#default')),
@@ -95,8 +106,12 @@ fun! mucomplete#compat#can_complete()
         \     'path':  s:fm(function('mucomplete#compat#path')),
         \     'uspl':  s:fm(function('mucomplete#compat#spel')),
         \     'ulti':  s:fm(function('mucomplete#compat#ulti'))
-        \   }, get(get(g:, 'mucomplete#can_complete', {}), 'default', {})),
-        \ }, get(g:, 'mucomplete#can_complete', {}), 'keep')
+        \   }, get(l:cc, 'default', {})),
+        \       'c' : extend({ 'omni': function('mucomplete#compat#omni_c') },   get(l:cc, 'c',    {})),
+        \     'cpp' : extend({ 'omni': function('mucomplete#compat#omni_c') },   get(l:cc, 'cpp',  {})),
+        \    'html' : extend({ 'omni': function('mucomplete#compat#omni_xml') }, get(l:cc, 'html', {})),
+        \     'xml' : extend({ 'omni': function('mucomplete#compat#omni_xml') }, get(l:cc, 'xml',  {})),
+        \ }, l:cc, 'keep')
   " Special cases
   if has('python') || has('python3')
     call extend(extend(l:can_complete, { 'python': {} }, 'keep')['python'], { 'omni': function('mucomplete#compat#omni_python') }, 'keep')
