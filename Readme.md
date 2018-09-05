@@ -70,11 +70,11 @@ with `:MUcompleteAutoToggle`. If autocompletion looks a little overzealous to
 you, you may set:
 
 ```vim
-let g:mucomplete#delayed_completion = 1
+let g:mucomplete#completion_delay = 1
 ```
 
-Then, MUcomplete will kick in only when you pause typing (for `updatetime`
-milliseconds).
+Then, MUcomplete will kick in only when you pause typing. The delay can be
+adjusted, of course: see `:help mucomplete-customization`.
 
 By default, MUcomplete attempts:
 
