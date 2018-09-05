@@ -6,20 +6,20 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 fun! mucomplete#auto#enable()
-  augroup MUcompleteAuto
-    autocmd!
-    autocmd InsertCharPre * noautocmd call mucomplete#auto#insertcharpre()
-    if get(g:, 'mucomplete#completion_delay', 0) > 1 && has('timers')
-      autocmd InsertCharPre * noautocmd call <sid>start_timer()
-      autocmd TextChangedI * noautocmd call mucomplete#auto#ic_auto_complete()
-      autocmd  InsertLeave * noautocmd call <sid>stop_timer()
-    elseif get(g:, 'mucomplete#completion_delay', 0)
-      autocmd TextChangedI * noautocmd call mucomplete#auto#ic_auto_complete()
-      autocmd  CursorHoldI * noautocmd call mucomplete#auto#auto_complete()
-    else
-      autocmd TextChangedI * noautocmd call mucomplete#auto#auto_complete()
-    endif
-  augroup END
+  if get(g:, 'mucomplete#completion_delay', 0) > 1 && has('timers')
+    call mucomplete#timer#enable()
+  else
+    augroup MUcompleteAuto
+      autocmd!
+      autocmd InsertCharPre * noautocmd call mucomplete#auto#insertcharpre()
+      if get(g:, 'mucomplete#completion_delay', 0)
+        autocmd TextChangedI * noautocmd call mucomplete#auto#ic_auto_complete()
+        autocmd  CursorHoldI * noautocmd call mucomplete#auto#auto_complete()
+      else
+        autocmd TextChangedI * noautocmd call mucomplete#auto#auto_complete()
+      endif
+    augroup END
+  endif
 endf
 
 fun! mucomplete#auto#disable()
@@ -39,27 +39,6 @@ fun! mucomplete#auto#toggle()
   endif
 endf
 
-fun! s:start_timer()
-  if exists('s:completion_timer')
-    call timer_stop(s:completion_timer)
-  endif
-  let s:completion_timer = timer_start(get(g:, 'mucomplete#completion_delay', 150), 'mucomplete#auto#timer_complete')
-endf
-
-fun! s:stop_timer()
-  if exists('s:completion_timer')
-    call timer_stop(s:completion_timer)
-    unlet s:completion_timer
-  endif
-endf
-
-fun! mucomplete#auto#timer_complete(tid)
-  unlet s:completion_timer
-  if !pumvisible()
-    call mucomplete#auto#auto_complete()
-  endif
-endf
-
 if has('patch-8.0.0283')
   let s:insertcharpre = 0
 
@@ -73,7 +52,7 @@ if has('patch-8.0.0283')
     endif
   endf
 
-  fun! mucomplete#auto#auto_complete(...)
+  fun! mucomplete#auto#auto_complete()
     if s:insertcharpre || mode(1) ==# 'ic'
       let s:insertcharpre = 0
       call mucomplete#auto_complete()
@@ -121,7 +100,7 @@ fun! mucomplete#auto#ic_auto_complete()
   endif
 endf
 
-fun! mucomplete#auto#auto_complete(...)
+fun! mucomplete#auto#auto_complete()
   if s:cancel_auto
     let [s:cancel_auto, s:insertcharpre] = [0,0]
     return
