@@ -23,7 +23,8 @@ fun! mucomplete#compat#dict(t)
 endf
 
 fun! mucomplete#compat#file(t)
-  return a:t =~# '\m\%(\~\|'.s:pathsep.'\)\f*$'
+  return a:t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\)\+\)$'
+        \     || (g:mucomplete_with_key && a:t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\f*$')
 endf
 
 fun! mucomplete#compat#omni(t)
@@ -47,7 +48,8 @@ fun! mucomplete#compat#user(t)
 endf
 
 fun! mucomplete#compat#path(t)
-  return a:t =~# '\m\%(\%(\f'.s:pathsep.'\|'.s:pathsep.'\f\)[^/\\]*\)\+$' || (g:mucomplete_with_key && a:t =~# '\m\%(\~\|'.s:pathsep.'\)\%(\f\|\s\)*$')
+  return a:t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\|\s\)\+\)$'
+        \     || (g:mucomplete_with_key && a:t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$')
 endf
 
 fun! mucomplete#compat#ulti(t)
