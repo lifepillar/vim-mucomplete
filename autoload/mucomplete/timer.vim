@@ -8,6 +8,8 @@ set cpo&vim
 if !has('timers')
   fun! mucomplete#timer#stop()
   endf
+  let &cpo = s:save_cpo
+  unlet s:save_cpo
   finish
 endif
 
