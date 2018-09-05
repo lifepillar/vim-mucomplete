@@ -296,6 +296,9 @@ fun! mucomplete#tab_complete(dir)
   if pumvisible()
     return mucomplete#cycle_or_select(a:dir)
   else
+    if get(g:, 'mucomplete#completion_delay', 0) > 1
+      call mucomplete#timer#stop()
+    endif
     let s:compl_text = mucomplete#get_compl_text()
     let s:complete_empty_text = get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0))
     if (empty(s:compl_text) || s:compl_text =~# '\m\s$') && !s:complete_empty_text
