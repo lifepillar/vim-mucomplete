@@ -178,14 +178,14 @@ endf
 
 fun! s:act_on_pumvisible()
   call s:set_cot()
-  silent doautocmd User MUcompletePmenu
+  let g:mucomplete#completion_type = s:compl_methods[s:i]
+  if exists('*MucompletePopup') | call MucompletePopup() | endif
   return !g:mucomplete_with_key || get(g:, 'mucomplete#always_use_completeopt', 0) || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
 endf
 
 fun! s:try_completion() " Assumes s:i in [0, s:N - 1]
-  let g:mucomplete#completion_type = s:compl_methods[s:i]
   return s:compl_mappings[s:compl_methods[s:i]] . "\<c-r>\<c-r>=''\<cr>\<plug>(MUcompleteVerify)"
 endf
 
@@ -253,6 +253,7 @@ endf
 
 " Precondition: pumvisible() is true.
 fun! mucomplete#cycle_or_select(dir)
+  let g:mucomplete#completion_type = s:compl_methods[s:i]
   return get(g:, 'mucomplete#cycle_with_trigger', 0)
         \ ? mucomplete#cycle(a:dir)
         \ : (get(s:select_dir(), s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
@@ -261,6 +262,7 @@ endf
 " Precondition: pumvisible() is false.
 fun! mucomplete#init(dir, tab_completion) " Initialize/reset internal state
   let g:mucomplete_with_key = a:tab_completion
+  let g:mucomplete#completion_type = ''
   let s:dir = a:dir
   let s:compl_methods = get(b:, 'mucomplete_chain',
         \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
