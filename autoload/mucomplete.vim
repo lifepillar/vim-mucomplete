@@ -61,6 +61,7 @@ let s:compl_mappings = extend({
       \ 'tags': "\<c-x>\<c-]>",
       \ 'thes': "\<c-x>\<c-t>",
       \ 'user': "\<c-x>\<c-u>",
+      \ 'nsnp': "\<c-r>=mucomplete#neosnips#complete()\<cr>",
       \ 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>"
