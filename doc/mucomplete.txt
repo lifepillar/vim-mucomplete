@@ -1,4 +1,4 @@
-*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Aug 03
+*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Oct 20
 
 			|\/|| | _ _ ._ _ ._ | __|_ _                      ~
 			|  ||_|(_(_)| | ||_)|(/_|_(/_                     ~
@@ -138,16 +138,17 @@ spelling suggestions:
 "path": file names (MUcomplete's implementation).
 "uspl": spelling suggestions (MUcomplete's implementation).
 
-If you have installed UltiSnips, there is also a method to get suggestions for
-snippets (if you use SnipMate, see |mucomplete-compatibility|):
+MUcomplete also supports Neosnippet, SnipMate and UltiSnips:
 
+"nsnp": Neosnippet snippets.
+"snip": SnipMate snippets.
 "ulti": UltiSnips snippets.
 
-Note: UltiSnips maps <tab> and <c-j> in a way that conflicts with MUcomplete.
-See |mucomplete-compatibility| for the recommended configuration.
+If you use snippets, please refer to |mucomplete-compatibility| for the
+recommended configuration.
 
-Additional completion methods may be defined by the user with
-|g:mucomplete#user_mappings|.
+Finally, arbitrary additional completion methods may be defined by the user
+with |g:mucomplete#user_mappings|.
 
 ==============================================================================
 5. Path completion				*mucomplete-path-complete*
@@ -791,44 +792,42 @@ MUcomplete's definition of <cr> in your |vimrc|, as follows:
 If you use endwise.vim together with auto-pairs, see the section above
 instead.
 
+Neosnippet ~
+MUcomplete works out of the box with Neosnippet. Just add the `'nsnp'` method
+to your completion chain. For example:
+>
+	let g:mucomplete#chains = {}
+	let g:mucomplete#chains.default = ['path', 'nsnp', 'keyn']
+<
+If you want snippets to be expanded automatically when you accept a menu entry
+with Enter, add the following code to your `vimrc`:
+>
+	inoremap <silent> <expr> <cr>
+            \ mucomplete#neosnippet#expand_snippet("\<cr>")
+<
+The argument of the function is the expansion to be used when <cr> is typed in
+a context different from completion (typically, it's <cr> itself).
+
+If you need more flexibility and you know what you are doing, you may call
+`mucomplete#neosnippet#do_expand()` directly.
+
 SnipMate ~
 In your |vimrc|, set:
 >
+	let g:snipMate = {}
 	let g:snipMate['no_match_completion_feedkeys_chars'] = ''
 <
-Then, define a custom completion method:
->
-	let g:mucomplete#user_mappings = {
-	    \ 'snip' : "\<plug>snipMateShow"
-	    \ }
-<
-and add it to your completion chain(s). For example:
+Then, add the `'snip'` method to your completion chain(s). For example:
 >
 	let g:mucomplete#chains = { 'default': ['snip', 'keyn'] }
 <
-You may also find it convenient to define SnipMate's trigger as follows:
+If you want snippets to be expanded automatically when you accept a menu entry
+with Enter, also add the following code to your `vimrc`:
 >
-	imap <expr> <c-j> (pumvisible() ? "\<c-y>" : "")
-	    \             . "\<plug>snipMateNextOrTrigger"
+	imap <silent> <expr> <cr> (pumvisible()
+            \ ? "\<c-y>\<plug>snipMateTrigger"
+            \ : "\<cr>")
 <
-so you can expand a snippet while the pop-up menu is still visible. By the
-way, if you use <c-j> in the mapping above, do not forget to map
-<plug>(MUcompleteCycFwd) (see |mucomplete-mappings|), too, e.g.:
->
-	inoremap <silent> <plug>(MUcompleteFwdKey) <right>
-	imap <expr> <right> <plug>(MUcompleteCycFwd)
->
-otherwise you will get an error at startup:
->
-	E227: mapping already exists for ^@
-<
-because MUcomplete maps <c-j> to <plug>(MUcompleteCycFwd) by default.
-Similarly, if you want to use <tab> to expand snippets, you have to map
-MUcomplete's manual completion trigger to something else. If MUcomplete's
-mappings get too much in the way, you may also disable them completely (see
-|g:mucomplete#no_mappings|). Finally, see also |mucomplete-tips| for a more
-sophisticated definition of a <tab> mapping.
-
 UltiSnips ~
 UltiSnips maps <tab> and <c-j> in a way that conflicts with MUcomplete. The
 recommended way to solve the conflict is to redefine UltiSnips's mappings. For
@@ -838,7 +837,7 @@ example:
 	let g:UltiSnipsJumpForwardTrigger = "<c-b>"  " Do not use <c-j>
 <
 If you want snippets to be expanded automatically when you accept a menu entry
-by typing Enter, also add the following code to your `vimrc`:
+with Enter, also add the following code to your `vimrc`:
 >
 	inoremap <silent> <expr> <cr>
             \ mucomplete#ultisnips#expand_snippet("\<cr>")
