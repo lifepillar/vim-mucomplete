@@ -5,15 +5,13 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:cmp = 'stridx(v:val, l:pat)' . (get(g:, 'mucomplete#neosnippet#match_at_start', 1) ? '==0' : '>=0')
-
 fun! mucomplete#neosnippet#complete() abort
   let l:snippets = neosnippet#helpers#get_completion_snippets()
   if empty(l:snippets)
     return ''
   endif
   let l:pat = matchstr(getline('.'), '\S\+\%'.col('.').'c')
-  let l:candidates = map(filter(keys(l:snippets), s:cmp),
+  let l:candidates = map(filter(keys(l:snippets), 'stridx(v:val, l:pat) == 0'),
         \  '{
         \      "word": l:snippets[v:val]["word"],
         \      "menu": "[neosnippet] ". get(l:snippets[v:val], "menu_abbr", ""),
