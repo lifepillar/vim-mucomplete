@@ -7,7 +7,7 @@ set cpo&vim
 
 let s:cmp = 'stridx(v:val, l:pat)' . (get(g:, 'mucomplete#neosnippet#match_at_start', 1) ? '==0' : '>=0')
 
-fun! mucomplete#neosnips#complete() abort
+fun! mucomplete#neosnippet#complete() abort
   let l:snippets = neosnippet#helpers#get_completion_snippets()
   if empty(l:snippets)
     return ''
@@ -28,20 +28,19 @@ endf
 
 " Automatic expansion of snippets
 
-fun! mucomplete#neosnips#do_expand(keys)
+fun! mucomplete#neosnippet#do_expand(keys)
   if get(v:completed_item, 'menu', '') =~# '[neosnippet]'
     return neosnippet#expand(v:completed_item['word'])
   endif
   return a:keys
 endf
 
-fun! mucomplete#neosnips#expand_snippet(keys)
+fun! mucomplete#neosnippet#expand_snippet(keys)
   return pumvisible()
-        \ ? "\<c-y>\<c-r>=mucomplete#neosnips#do_expand('')\<cr>"
+        \ ? "\<c-y>\<c-r>=mucomplete#neosnippet#do_expand('')\<cr>"
         \ : a:keys
 endf
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
-
 

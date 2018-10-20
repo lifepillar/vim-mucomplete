@@ -61,10 +61,10 @@ let s:compl_mappings = extend({
       \ 'tags': "\<c-x>\<c-]>",
       \ 'thes': "\<c-x>\<c-t>",
       \ 'user': "\<c-x>\<c-u>",
-      \ 'nsnp': "\<c-r>=mucomplete#neosnips#complete()\<cr>",
-      \ 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
-      \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>"
+      \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>",
+      \ 'nsnp': "\<c-r>=mucomplete#neosnippet#complete()\<cr>",
+      \ 'ulti': "\<c-r>=mucomplete#ultisnips#complete()\<cr>",
       \ }, get(g:, 'mucomplete#user_mappings', {}), 'error')
 let s:default_dir = { 'c-p' : -1, 'keyp': -1, 'line': -1 }
 let s:pathsep = exists('+shellslash') && !&shellslash
