@@ -503,6 +503,19 @@ long, MUcomplete may not trigger path completion. If you are dealing with
 paths having path components longer than 30 characters, you may need to
 increase the value of this option.
 
+					*'g:mucomplete#minimum_prefix_length'*
+The minimum number of (keyword) characters that must be present before the
+cursor for automatic completion to be triggered.
+>
+	let g:mucomplete#minimum_prefix_length = 2
+<
+Note: this setting does not affect all completion methods. In particular, it
+does not change the behaviour of `'dict'`, `'file'`, `'path'`, `'spel'`,
+`'thes'`, and `'uspl'`.
+
+Note: this setting is ignored for completion method whose activation condition
+(see |g:mucomplete#can_complete|) has been overridden by the user.
+
 						*'g:mucomplete#no_mappings'*
 When set to 1, MUcomplete does not define any mapping.
 >

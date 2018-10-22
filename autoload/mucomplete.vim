@@ -122,10 +122,20 @@ if has('lambda')
   endif
 
   let s:yes_you_can = { _ -> 1 } " Try always
-  let s:is_keyword = { t -> t =~# '\m\k\k$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\k$')) }
-  let s:omni_c   = { t -> strlen(&l:omnifunc) > 0 && t =~# '\m\%(\k\k\|\S->\|\S\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\S->\|\S\.\)$')) }
-  let s:omni_py  = { t -> strlen(&l:omnifunc) > 0 && t =~# '\m\k\%(\k\|\.\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$')) }
-  let s:omni_xml = { t -> strlen(&l:omnifunc) > 0 && t =~# '\m\%(\k\k\|</\)$' || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|</\)$')) }
+  let s:is_keyword = { t -> t =~# '\m\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}$'
+        \ || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\k$')) }
+  let s:omni_c   = { t -> strlen(&l:omnifunc) > 0 &&
+        \ (t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|\S->\|\S\.\)$'
+        \ || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\S->\|\S\.\)$'))
+        \ )}
+  let s:omni_py  = { t -> strlen(&l:omnifunc) > 0 &&
+        \ (t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|\k\.\)$'
+        \ || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$'))
+        \ )}
+  let s:omni_xml = { t -> strlen(&l:omnifunc) > 0 &&
+        \ (t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|</\)$'
+        \ || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|</\)$'))
+        \ )}
   let s:cc = get(g:, 'mucomplete#can_complete', {}) " Get user's settings, then merge them with defaults
   let g:mucomplete#can_complete = extend({
         \ 'default' : extend({
