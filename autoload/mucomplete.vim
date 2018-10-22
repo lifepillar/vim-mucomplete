@@ -156,9 +156,11 @@ if has('lambda')
         \     'spel': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }),
         \     'tags': s:fm({ t -> !empty(tagfiles()) && s:is_keyword(t) }),
         \     'thes': s:fm({ t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' }),
-        \     'ulti': s:fm({ t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) }),
         \     'user': s:fm({ t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) }),
-        \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' })
+        \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }),
+        \     'nsnp': s:fm({ t -> get(g:, 'loaded_neosnippet', 0) && s:is_keyword(t) }),
+        \     'snip': s:fm({ t -> get(g:, 'loaded_snips', 0) && s:is_keyword(t) }),
+        \     'ulti': s:fm({ t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) }),
         \   }, get(s:cc, 'default', {})),
         \       'c' : extend({ 'omni': s:fm(s:omni_c)   }, get(s:cc, 'c',    {})),
         \     'cpp' : extend({ 'omni': s:fm(s:omni_c)   }, get(s:cc, 'cpp',  {})),
