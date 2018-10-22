@@ -846,8 +846,8 @@ with Enter, also add the following code to your `vimrc`:
 <
 UltiSnips ~
 UltiSnips maps <tab> and <c-j> in a way that conflicts with MUcomplete. The
-recommended way to solve the conflict is to redefine UltiSnips's mappings. For
-example:
+recommended way to resolve the conflict is to redefine UltiSnips's mappings.
+For example:
 >
 	let g:UltiSnipsExpandTrigger = "<f5>"        " Do not use <tab>
 	let g:UltiSnipsJumpForwardTrigger = "<c-b>"  " Do not use <c-j>
