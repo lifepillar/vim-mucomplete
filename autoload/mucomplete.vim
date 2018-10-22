@@ -148,10 +148,10 @@ if has('lambda')
         \     'user': s:fm({ t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) }),
         \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' })
         \   }, get(s:cc, 'default', {})),
-        \       'c' : extend({ 'omni': s:omni_c   }, get(s:cc, 'c',    {})),
-        \     'cpp' : extend({ 'omni': s:omni_c   }, get(s:cc, 'cpp',  {})),
-        \    'html' : extend({ 'omni': s:omni_xml }, get(s:cc, 'html', {})),
-        \     'xml' : extend({ 'omni': s:omni_xml }, get(s:cc, 'xml',  {})),
+        \       'c' : extend({ 'omni': s:fm(s:omni_c)   }, get(s:cc, 'c',    {})),
+        \     'cpp' : extend({ 'omni': s:fm(s:omni_c)   }, get(s:cc, 'cpp',  {})),
+        \    'html' : extend({ 'omni': s:fm(s:omni_xml) }, get(s:cc, 'html', {})),
+        \     'xml' : extend({ 'omni': s:fm(s:omni_xml) }, get(s:cc, 'xml',  {})),
         \ }, s:cc, 'keep')
   if has('python') || has('python3')
     call extend(extend(g:mucomplete#can_complete, { 'python': {} }, 'keep')['python'], { 'omni': s:fm(s:omni_py) }, 'keep')
