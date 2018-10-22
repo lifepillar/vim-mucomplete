@@ -134,13 +134,15 @@ if has('lambda')
         \     'cmd' : s:fm(s:is_keyword),
         \     'defs': s:fm(s:is_keyword),
         \     'dict': s:fm({ t -> strlen(&l:dictionary) > 0 && (t =~# '\m\a\a$' || (g:mucomplete_with_key && t =~# '\m\a$')) }),
-        \     'file': s:fm({ t -> t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\)\+\)$' || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\f*$') }),
+        \     'file': s:fm({ t -> t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\)\+\)$'
+        \              || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\f*$') }),
         \     'incl': s:fm(s:is_keyword),
         \     'keyn': s:fm(s:is_keyword),
         \     'keyp': s:fm(s:is_keyword),
         \     'line': s:fm(s:is_keyword),
         \     'omni': s:fm({ t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) }),
-        \     'path': s:fm({ t -> t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\|\s\)\+\)$' || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$') }),
+        \     'path': s:fm({ t -> t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\|\s\)\+\)$'
+        \              || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$') }),
         \     'spel': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m\a\a\a$' }),
         \     'tags': s:fm({ t -> !empty(tagfiles()) && s:is_keyword(t) }),
         \     'thes': s:fm({ t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' }),
