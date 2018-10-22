@@ -378,6 +378,9 @@ a longer portion of the text (whose length is determined by
 synonyms), which require two (for dictionary) or three (for spelling and
 synonyms) alphabetic characters in front of the cursor.
 
+Note: If you only want to adjust the number of characters before the cursor
+needed to trigger auto-completion, see |g:mucomplete#minimum_prefix_length|.
+
 When completion is triggered manually, one non-whitespace character in front
 of the cursor is enough to enable all the methods in the current completion
 chain, except for spelling and synonyms, which still require three characters.
