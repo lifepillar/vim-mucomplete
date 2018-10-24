@@ -23,7 +23,6 @@
 'g:mucomplete#use_only_windows_paths'	mucomplete.txt	/*'g:mucomplete#use_only_windows_paths'*
 'g:mucomplete#user_mappings'	mucomplete.txt	/*'g:mucomplete#user_mappings'*
 'g:mucomplete_current_method'	mucomplete.txt	/*'g:mucomplete_current_method'*
-'g:mucomplete_method'	mucomplete.txt	/*'g:mucomplete_method'*
 'g:mucomplete_with_key'	mucomplete.txt	/*'g:mucomplete_with_key'*
 :MUcompleteAutoOff	mucomplete.txt	/*:MUcompleteAutoOff*
 :MUcompleteAutoOn	mucomplete.txt	/*:MUcompleteAutoOn*

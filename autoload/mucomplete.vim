@@ -212,7 +212,6 @@ endf
 fun! s:notify_completion_type()
   let g:mucomplete_current_method = s:compl_methods[s:i]
   silent doautocmd User MUcompletePmenu
-  let g:mucomplete_current_method = ''
 endf
 
 fun! s:act_on_pumvisible()

@@ -5,8 +5,11 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-fun! s:show_current_method()
-  unsilent echo '[MUcomplete]' get(g:mucomplete#msg#methods, get(g:, 'mucomplete_current_method', ''), 'Custom method')
+fun! s:show_current_method(abbr)
+  unsilent echo '[MUcomplete]'
+        \ get(a:abbr ? g:mucomplete#msg#short_methods : g:mucomplete#msg#methods,
+        \     get(g:, 'mucomplete_current_method', ''), 'Custom method')
+  let g:mucomplete_current_method = ''
   " Force placing the cursor back into the buffer
   " Without this, the cursor may get stuck in the command line after the
   " message is printed until another character is typed.
@@ -14,38 +17,23 @@ fun! s:show_current_method()
   let &ro=&ro
 endf
 
-fun! s:show_current_method_short()
-  unsilent echo '[MUcomplete]' get(g:mucomplete#msg#short_methods, get(g:, 'mucomplete_current_method', ''), 'Custom method')
-  let &ro=&ro
-endf
-
-fun! s:retrieve_method()
-  let g:mucomplete_method = get(g:, 'mucomplete_current_method', '')
-  let &ro=&ro  " Force redrawing the status line
-endf
-
-fun! s:prepare_for_status_line()
-  augroup MUcompleteNotifications
-    autocmd!
-    autocmd User MUcompletePmenu call s:retrieve_method()
-    autocmd CompleteDone * let g:mucomplete_method = '' | let &ro=&ro
-  augroup END
-endf
-
-fun! s:be_verbose(n)
+fun! s:notify_at_level(n)
   augroup MUcompleteNotifications
     autocmd!
     if a:n == 1
-      autocmd User MUcompletePmenu call s:show_current_method_short()
-    else
-      autocmd User MUcompletePmenu call s:show_current_method()
+      autocmd User MUcompletePmenu call s:show_current_method(1)
+      autocmd CompleteDone * echo "\r"
+    elseif a:n == 2
+      autocmd User MUcompletePmenu call s:show_current_method(0)
+      autocmd CompleteDone * echo "\r"
+    else " Status line
+      autocmd User MUcompletePmenu let &ro=&ro
+      autocmd CompleteDone * let g:mucomplete_current_method = '' | let &ro=&ro
     endif
-    " Clear messages when the popup menu is dismissed:
-    autocmd CompleteDone * echo "\r"
   augroup END
 endf
 
-fun! s:dont_be_verbose()
+fun! s:shut_off_notifications()
   if exists('#MUcompleteNotifications')
     autocmd! MUcompleteNotifications
     augroup! MUcompleteNotifications
@@ -53,12 +41,10 @@ fun! s:dont_be_verbose()
 endf
 
 fun! mucomplete#msg#set_notifications(n)
-  if a:n == 3
-    call s:prepare_for_status_line()
-  elseif a:n > 0
-    call s:be_verbose(a:n)
+  if a:n > 0 && a:n < 4
+    call s:notify_at_level(a:n)
   else
-    call s:dont_be_verbose()
+    call s:shut_off_notifications()
   endif
 endf
 

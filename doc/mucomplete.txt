@@ -1,4 +1,4 @@
-*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Oct 20
+*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Oct 24
 
 			|\/|| | _ _ ._ _ ._ | __|_ _                      ~
 			|  ||_|(_(_)| | ||_)|(/_|_(/_                     ~
@@ -247,9 +247,11 @@ Set the notification level. When set to 0 (which is the default):
 <
 no notifications are enabled. When set to 1 or 2, a short (1) or long (2)
 description of the current completion method is displayed in the command line.
-This works best when |showmode| is off and |shortmess| contains the `c` flag.
+This works best when |showmode| is off (or |cmdheight| is greater than 1) and
+|shortmess| contains the `c` flag.
+
 When set to 3, support for notifications in the status line is activated: in
-this case, |g:mucomplete_method| can be used in the definition of the status
+this case, |g:mucomplete_current_method| can be used in the definition of the status
 line, typically to print the current completion method. See |mucomplete-tips|
 for an example.
 
@@ -458,11 +460,9 @@ Note: auto-completion must be turned off and on again for this setting to take
 effect.
 
 					*'g:mucomplete_current_method'*
-A read-only variable that contains the name of the completion method that is
-used by an active pop-up menu. This variable is typically used in functions
-invoked after a |MUcompletePmenu| event is triggered.
-
-Note: do not change the value of this variable!
+The name of the last successful completion method. This variable is typically
+used in functions invoked after a |MUcompletePmenu| event is triggered. See
+|mucomplete-tips| for some examples.
 
 						*'g:mucomplete#cycle_all'*
 MUcomplete allows you to use specific completion methods only when the trigger
@@ -529,11 +529,6 @@ long, MUcomplete may not trigger path completion. If you are dealing with
 paths having path components longer than 30 characters, you may need to
 increase the value of this option.
 
-					*'g:mucomplete_method'*
-Similar to |g:mucomplete_current_method|, but exists only when the
-notification level is set to 3 (see |MUcompleteNotify). To be used only in the
-definition of a status line. See |mucomplete-tips| for an example.
-
 					*'g:mucomplete#minimum_prefix_length'*
 The minimum number of (keyword) characters that must be present before the
 cursor for automatic completion to be triggered.
@@ -553,14 +548,15 @@ Descriptions can be overridden and additional entries can be added by the
 user. For example:
 >
 	let g:mucomplete#msg#methods = {
-            \ 'keyn': 'My description of keyword completion',
-            \ 'xywz: 'Description of my custom method'
+            \ 'keyn': 'Mots-clés dans le fichier courant',
+            \ 'xywz: 'Description of my custom xywz method'
             \ }
 <
 Such descriptions are used in notifications (see |MUcompleteNotify|).
 
 					*'g:mucomplete#msg#short_methods'*
-Similar to |g:mucomplete#msg#methods|, but contains shorter descriptions.
+Similar to |g:mucomplete#msg#methods|, but contains shorter descriptions,
+suitable for small screens or for displaying messages in the status line.
 
 						*'g:mucomplete#no_mappings'*
 When set to 1, MUcomplete does not define any mapping.
@@ -831,16 +827,16 @@ Activate level 3 notifications:
 >
 	:MUcompleteNotify 3
 <
-Then use |g:mucomplete_method| inside the definition of your status line. For
-example:
+Then use |g:mucomplete_current_method| inside the definition of your status
+line. A minimal example:
 >
-	set statusline=%{get(g:,'mucomplete_method','')}
+	set statusline=%{get(g:,'mucomplete_current_method','')}
 <
-or
+A more realistic example:
 >
 	fun! MU()
           return get(g:mucomplete#msg#short_methods,
-              \      get(g:, 'mucomplete_method', ''), '')
+              \      get(g:, 'mucomplete_current_method', ''), '')
         endf
 
 	set statusline=%<%f\ %h%m%r%=\%{MU()}\ %-14.(%l,%c%V%)\ %P
