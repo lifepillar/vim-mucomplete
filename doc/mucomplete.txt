@@ -10,27 +10,27 @@ Author:  Lifepillar <https://github.com/lifepillar>
 License: Public Domain
 
 ==============================================================================
-CONTENTS						*mucomplete-contents*
+CONTENTS				*mucomplete-contents*
 
-	1.  Introduction ............. |mucomplete-introduction|
-	2.  Requirements ............. |mucomplete-requirements|
-	3.  Getting started .......... |mucomplete-howto|
-	4.  Completion methods ....... |mucomplete-methods|
-	5.  Path completion .......... |mucomplete-path-complete|
-	6.  Spelling suggestions ..... |mucomplete-spel-complete|
-	7.  Extending completions .... |mucomplete-extend-compl|
-	8.  Commands ................. |mucomplete-commands|
-	9.  Mappings ................. |mucomplete-mappings|
-	10. Plugs .................... |mucomplete-plugs|
-	11. Customization ............ |mucomplete-customization|
-	12. Tips & tricks ............ |mucomplete-tips|
-	13. Compatibility ............ |mucomplete-compatibility|
-	14. Troubleshooting .......... |mucomplete-troubleshooting|
-	15. Providing feedback ....... |mucomplete-feedback|
-	16. Implementation details ... |mucomplete-internals|
+	1.  Introduction .............. |mucomplete-introduction|
+	2.  Requirements .............. |mucomplete-requirements|
+	3.  Getting started ........... |mucomplete-howto|
+	4.  Completion methods ........ |mucomplete-methods|
+	5.  Path completion ........... |mucomplete-path-complete|
+	6.  Spelling suggestions ...... |mucomplete-spel-complete|
+	7.  Extending completions ..... |mucomplete-extend-compl|
+	8.  Commands .................. |mucomplete-commands|
+	9.  Mappings .................. |mucomplete-mappings|
+	10. Plugs ..................... |mucomplete-plugs|
+	11. Customization ............. |mucomplete-customization|
+	12. Tips & tricks ............. |mucomplete-tips|
+	13. Compatibility ............. |mucomplete-compatibility|
+	14. Troubleshooting ........... |mucomplete-troubleshooting|
+	15. Providing feedback ........ |mucomplete-feedback|
+	16. Implementation details .... |mucomplete-internals|
 
 ==============================================================================
-1. Introduction				 	*mucomplete-introduction*
+1. Introduction				*mucomplete-introduction*
 
 MUcomplete is a minimalist autocompletion plugin.
 
@@ -41,7 +41,7 @@ the rest. It does no caching, no asynchronous computation, no intelligent
 guessing. It just makes use of built-in Vim features.
 
 ==============================================================================
-2. Requirements					*mucomplete-requirements*
+2. Requirements				*mucomplete-requirements*
 
 MUcomplete requires Vim 7.2 compiled with |+insert_expand| and |+menu|.
 Automatic completion is available in Vim 7.4.143 or later, although Vim
@@ -50,7 +50,7 @@ Automatic completion is available in Vim 7.4.143 or later, although Vim
 MUcomplete is developed and tested on Vim 8.
 
 ==============================================================================
-3. Getting started					*mucomplete-howto*
+3. Getting started			*mucomplete-howto*
 
 Mandatory Vim settings:
 >
@@ -110,7 +110,7 @@ In detail, this is the algorithm used by MUcomplete:
 	       stop; otherwise, try the next method.
 
 ==============================================================================
-4. Completion methods				*mucomplete-methods*
+4. Completion methods			*mucomplete-methods*
 
 MUcomplete supports all the completion methods described in |ins-completion|
 (but not all of them are enabled by default; see |g:mucomplete#chains|). Each
@@ -151,7 +151,7 @@ Finally, arbitrary additional completion methods may be defined by the user
 with |g:mucomplete#user_mappings|.
 
 ==============================================================================
-5. Path completion				*mucomplete-path-complete*
+5. Path completion			*mucomplete-path-complete*
 
 MUcomplete provides two different methods to complete file paths: "file" and
 "path". The "file" completion method is based on Vim's built-in file
@@ -176,7 +176,7 @@ To adjust the case sensitivity of path matching, see 'fileignorecase' and
 See also |mucomplete-tips|.
 
 ==============================================================================
-6. Spelling suggestions				*mucomplete-spel-complete*
+6. Spelling suggestions			*mucomplete-spel-complete*
 
 The "spel" method invokes |i_CTRL-X_s| to perform the completion. Such
 mapping causes Vim to search for a badly spelled word in the current line
@@ -194,7 +194,7 @@ chain, although it is actively used only when 'spell' is on and 'spelllang' is
 defined.
 
 ==============================================================================
-7. Extending completions			*mucomplete-extend-compl*
+7. Extending completions		*mucomplete-extend-compl*
 
 Vim has a very nice, though possibly not very well known, feature allowing you
 to extend the current completion by copying the words following the previous
@@ -229,18 +229,18 @@ All this is more easily understood with examples rather than words. Try this:
         Ne<tab><right><tab><right>
 <
 ==============================================================================
-8. Commands					*mucomplete-commands*
+8. Commands				*mucomplete-commands*
 
-						*:MUcompleteAutoOn*
+					*:MUcompleteAutoOn*
 Enable automatic completion.
 
-						*:MUcompleteAutoOff*
+					*:MUcompleteAutoOff*
 Disable automatic completion.
 
-						*:MUcompleteAutoToggle*
+					*:MUcompleteAutoToggle*
 Toggle automatic completion.
 
-						*:MUcompleteNotify*
+					*:MUcompleteNotify*
 Set the notification level. When set to 0 (which is the default):
 >
 	:MUcompleteNotify 0
@@ -259,7 +259,7 @@ The default notification messages can be customized via
 |g:mucomplete#msg#methods| and |g:mucomplete#msg#short_methods|.
 
 ==============================================================================
-9. Mappings					*mucomplete-mappings*
+9. Mappings				*mucomplete-mappings*
 
 By default, MUcomplete maps the keys below in Insert mode. If you do not want
 MUcomplete to define any mapping, set |g:mucomplete#no_mappings| or
@@ -315,7 +315,7 @@ The following mappings are defined only in Vim 8.0.0282 or older.
     with some popular plugins.
 
 ==============================================================================
-10. Plugs						*mucomplete-plugs*
+10. Plugs				*mucomplete-plugs*
 
 <plug>(MUcompleteFwd)
 <plug>(MUcompleteBwd)
@@ -357,7 +357,7 @@ The following plugs are defined only in Vim 8.0.0282 or older.
 <
 
 ==============================================================================
-11. Customization				*mucomplete-customization*
+11. Customization			*mucomplete-customization*
 
 					*'g:mucomplete#always_use_completeopt'*
 By default, 'completeopt' does not affect manual completion (when pressing
@@ -380,7 +380,7 @@ relative to the current working directory (see `:pwd`).
 <
 Note: this setting affects only the "path" method, not the "file" method.
 
-						*'g:mucomplete#can_complete'*
+					*'g:mucomplete#can_complete'*
 A Dictionary defining the conditions that must be satisfied for a given method
 to be tried. Each condition is a |lambda|, |function()| or |funcref()| with
 one argument (the text to be completed), which returns either 1 or 0,
@@ -426,11 +426,11 @@ a custom check for "omni" completion in cpp buffers (enabling omni-completion
 only after -> and ::). In all the other cases, the default conditions will be
 checked.
 
-							*'b:mucomplete_chain'*
+					*'b:mucomplete_chain'*
 A List specifying a completion chain for the current buffer only. When this
 variable is defined, the value of |g:mucomplete#chains| is ignored.
 
-							*'g:mucomplete#chains'*
+					*'g:mucomplete#chains'*
 A Dictionary defining the Lists of completion chains.
 >
 	let g:mucomplete#chains = {
@@ -464,7 +464,7 @@ The name of the last successful completion method. This variable is typically
 used in functions invoked after a |MUcompletePmenu| event is triggered. See
 |mucomplete-tips| for some examples.
 
-						*'g:mucomplete#cycle_all'*
+					*'g:mucomplete#cycle_all'*
 MUcomplete allows you to use specific completion methods only when the trigger
 keys are pressed (<tab>/<s-tab> by default), even when auto-completion is on.
 This is achieved by testing |g:mucomplete_with_key| in the enabling conditions
@@ -487,8 +487,8 @@ through the current completion chain when the pop-up menu is visible.
 Note: if you set this to 1, you have to use the standard CTRL-N and CTRL-P to
 select the entries in the pop-up menu.
 
-						*'b:mucomplete_empty_text'*
-						*'g:mucomplete#empty_text'*
+					*'b:mucomplete_empty_text'*
+					*'g:mucomplete#empty_text'*
 By default, when you press <tab> to complete a word, MUcomplete inserts
 a literal Tab character if there is no non-space character before the cursor.
 Set this to 1 if you want manual completion to be triggered no matter what the
@@ -505,7 +505,7 @@ Set to 1 to enable automatic completion at startup.
 >
 	let g:mucomplete#enable_auto_at_startup = 0
 <
-						*'g:mucomplete#force_manual'*
+					*'g:mucomplete#force_manual'*
 When set to 1, force each completion method in your completion chain to be
 tried only when completion is triggered manually (e.g., by pressing <tab>)
 even if auto-completion is on. This is useful only if you override
@@ -514,7 +514,7 @@ even if auto-completion is on. This is useful only if you override
 >
 	let g:mucomplete#force_manual = 0
 <
-						*'g:mucomplete#look_behind'*
+					*'g:mucomplete#look_behind'*
 This is the maximum number of characters before the cursor that are considered
 when deciding which completion methods can be applied.
 >
@@ -558,7 +558,7 @@ Such descriptions are used in notifications (see |MUcompleteNotify|).
 Similar to |g:mucomplete#msg#methods|, but contains shorter descriptions,
 suitable for small screens or for displaying messages in the status line.
 
-						*'g:mucomplete#no_mappings'*
+					*'g:mucomplete#no_mappings'*
 When set to 1, MUcomplete does not define any mapping.
 >
 	let g:mucomplete#no_mappings = 0
@@ -625,14 +625,14 @@ by the "uspl" method.
 <
 Note: this setting does not affect the "spel" method.
 
-						*'g:mucomplete#spel#max'*
+					*'g:mucomplete#spel#max'*
 The maximum number of spelling suggestions offered by the "uspl" method.
 >
 	let g:mucomplete#spel#max = 25
 <
 Note: this setting does not affect the "spel" method.
 
-				*'g:mucomplete#ultisnips#match_at_start'*
+					*'g:mucomplete#ultisnips#match_at_start'*
 By default, the "ulti" method returns the snippets whose name starts with
 the word in front of the cursor. Set this to 0 to return all the snippets that
 contain the word in front of the cursor.
@@ -650,7 +650,7 @@ matter what the value of this option is.
 
 Note: this option is relevant only for Windows users.
 
-						*'g:mucomplete#user_mappings'*
+					*'g:mucomplete#user_mappings'*
 A Dictionary of user-defined completion methods. For example:
 >
 	let g:mucomplete#user_mappings = {
@@ -669,13 +669,13 @@ example:
 	let g:mucomplete#chains.default = ['keyp', 'xyz']
 	let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
-						*'g:mucomplete_with_key'*
+					*'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually by the
 user or it was triggered automatically. See |mucomplete-tips| for an example.
 
 Note: do not change the value of this variable!
 
-						*MUcompletePmenu*
+					*MUcompletePmenu*
 A |User| |autocmd| that is fired when the pop-up menu becomes visible. The
 user can hook to this to perform arbitrary operations upon successful completion.
 For example:
@@ -687,7 +687,7 @@ The name of the currently used completion method is available inside
 for an example.
 
 ==============================================================================
-12. Tips & tricks					*mucomplete-tips*
+12. Tips & tricks			*mucomplete-tips*
 
 How to insert a literal tab character when <tab> is used by MUcomplete? ~
 Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped). See also |i_<Tab>|.
@@ -860,7 +860,7 @@ You can hook to |MUcompletePmenu| directly instead of using
 	autocmd CompleteDone * echo "\r"
 <
 ==============================================================================
-13. Compatibility				*mucomplete-compatibility*
+13. Compatibility			*mucomplete-compatibility*
 
 MUcomplete tries to be a responsible citizen in Vimland. This section
 describes how to make it peacefully coexist with other plugins.
@@ -983,7 +983,7 @@ on |i_CTRL-R| in an essential way, you have to change vim-peekabo's mapping:
 Note: now you need to press <c-x><c-r> to view the registers.
 
 ==============================================================================
-14. Troubleshooting				*mucomplete-troubleshooting*
+14. Troubleshooting			*mucomplete-troubleshooting*
 
 Why am I getting the error: "E227: mapping already exists for..."? ~
 MUcomplete takes great care not to override an existing mapping defined in
@@ -1045,7 +1045,7 @@ Before reporting a bug, please do the following:
   MUcomplete behaves differently, please report the bug.
 
 ==============================================================================
-15. Providing feedback					*mucomplete-feedback*
+15. Providing feedback			*mucomplete-feedback*
 
 For bug reports and feature requests please use:
 
@@ -1054,7 +1054,7 @@ For bug reports and feature requests please use:
 Pull requests are welcome, too!
 
 ==============================================================================
-16. Implementation details				*mucomplete-internals*
+16. Implementation details		*mucomplete-internals*
 
 This section describes some technicalities of MUcomplete's implementation, and
 is not intended for the regular user: it is mostly a memo for myself and
