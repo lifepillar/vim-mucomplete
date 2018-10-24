@@ -240,6 +240,21 @@ Disable automatic completion.
 						*:MUcompleteAutoToggle*
 Toggle automatic completion.
 
+						*:MUcompleteNotify*
+Set the notification level. When set to 0 (which is the default):
+>
+	:MUcompleteNotify 0
+<
+no notifications are enabled. When set to 1 or 2, a short (1) or long (2)
+description of the current completion method is displayed in the command line.
+When set to 3, support for notifications in the status line is activated: in
+this case, |g:mucomplete_method| can be used in the definition of the status
+line, typically to print the current completion method. See |mucomplete-tips|
+for an example.
+
+The default notification messages can be customized via
+|g:mucomplete#msg#methods| and |g:mucomplete#msg#short_methods|.
+
 ==============================================================================
 9. Mappings					*mucomplete-mappings*
 
@@ -441,6 +456,13 @@ milliseconds to wait before triggering auto-completion.
 Note: auto-completion must be turned off and on again for this setting to take
 effect.
 
+					*'g:mucomplete_current_method'*
+A read-only variable that contains the name of the completion method that is
+used by an active pop-up menu. This variable is typically used in functions
+invoked after a |MUcompletePmenu| event is triggered.
+
+Note: do not change the value of this variable!
+
 						*'g:mucomplete#cycle_all'*
 MUcomplete allows you to use specific completion methods only when the trigger
 keys are pressed (<tab>/<s-tab> by default), even when auto-completion is on.
@@ -506,6 +528,11 @@ long, MUcomplete may not trigger path completion. If you are dealing with
 paths having path components longer than 30 characters, you may need to
 increase the value of this option.
 
+					*'g:mucomplete_method'*
+Similar to |g:mucomplete_current_method|, but exists only when the
+notification level is set to 3 (see |MUcompleteNotify). To be used only in the
+definition of a status line. See |mucomplete-tips| for an example.
+
 					*'g:mucomplete#minimum_prefix_length'*
 The minimum number of (keyword) characters that must be present before the
 cursor for automatic completion to be triggered.
@@ -518,6 +545,21 @@ does not change the behaviour of `'dict'`, `'file'`, `'path'`, `'spel'`,
 
 Note: this setting is ignored for completion method whose activation condition
 (see |g:mucomplete#can_complete|) has been overridden by the user.
+
+					*'g:mucomplete#msg#methods'*
+A Dictionary mapping each completion method's string to a description.
+Descriptions can be overridden and additional entries can be added by the
+user. For example:
+>
+	let g:mucomplete#msg#methods = {
+            \ 'keyn': 'My description of keyword completion',
+            \ 'xywz: 'Description of my custom method'
+            \ }
+<
+Such descriptions are used in notifications (see |MUcompleteNotify|).
+
+					*'g:mucomplete#msg#short_methods'*
+Similar to |g:mucomplete#msg#methods|, but contains shorter descriptions.
 
 						*'g:mucomplete#no_mappings'*
 When set to 1, MUcomplete does not define any mapping.
@@ -633,7 +675,19 @@ example:
 						*'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually by the
 user or it was triggered automatically. See |mucomplete-tips| for an example.
-Note: do not set the value of this variable!
+
+Note: do not change the value of this variable!
+
+						*MUcompletePmenu*
+A |User| |autocmd| that is fired when the pop-up menu becomes visible. The
+user can hook to this to perform arbitrary operations upon successful completion.
+For example:
+>
+	autocmd User MUcompletePmenu call MyFunction()
+
+The name of the currently used completion method is available inside
+`MyFunction()` through |g:mucomplete_current_method|. See |mucomplete-tips|
+for an example.
 
 ==============================================================================
 12. Tips & tricks					*mucomplete-tips*
@@ -771,6 +825,43 @@ which would always scan tags and included files, you might use:
 so that searching included files and/or tags will happen only when
 completion cannot be performed otherwise.
 
+How to show the currently active completion method in the status line? ~
+Activate level 3 notifications:
+>
+	:MUcompleteNotify 3
+<
+Then use |g:mucomplete_method| inside the definition of your status line. For
+example:
+>
+	set statusline=%{get(g:,'mucomplete_method','')}
+<
+or
+>
+	fun! MU()
+          return get(g:mucomplete#msg#short_methods,
+              \      get(g:, 'mucomplete_method', ''), '')
+        endf
+
+	set statusline=%<%f\ %h%m%r%=\%{MU()}\ %-14.(%l,%c%V%)\ %P
+<
+I want to customize/colorize/foofoofy the notification messages! ~
+You can hook to |MUcompletePmenu| directly instead of using
+|MUcompleteNotify|. For example, to display colorized messages:
+>
+	fun! ColorfulMessages()
+		echohl Label
+		unsilent echo "[MUcomplete] "
+		echohl Special
+		unsilent echon get(g:mucomplete#msg#methods,
+			\ get(g:, 'mucomplete_current_method', ''))
+		echohl None
+		let &ro=&ro  " Force updating the cursor
+	endfun
+
+	autocmd User MUcompletePmenu call ColorfulMessages()
+	" Clear the command line when the menu is dismissed
+	autocmd CompleteDone * echo "\r"
+<
 ==============================================================================
 13. Compatibility				*mucomplete-compatibility*
 

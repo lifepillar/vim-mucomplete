@@ -30,6 +30,8 @@ if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
   endif
 endif
 
+command -bar -nargs=1 MUcompleteNotify call mucomplete#msg#set_notifications(<args>)
+
 if has('patch-7.4.143') || (v:version == 704 && has("patch143")) " TextChangedI started to work there
   command -bar -nargs=0 MUcompleteAutoOn call mucomplete#auto#enable()
   command -bar -nargs=0 MUcompleteAutoOff call mucomplete#auto#disable()

@@ -12,6 +12,8 @@
 'g:mucomplete#force_manual'	mucomplete.txt	/*'g:mucomplete#force_manual'*
 'g:mucomplete#look_behind'	mucomplete.txt	/*'g:mucomplete#look_behind'*
 'g:mucomplete#minimum_prefix_length'	mucomplete.txt	/*'g:mucomplete#minimum_prefix_length'*
+'g:mucomplete#msg#methods'	mucomplete.txt	/*'g:mucomplete#msg#methods'*
+'g:mucomplete#msg#short_methods'	mucomplete.txt	/*'g:mucomplete#msg#short_methods'*
 'g:mucomplete#no_mappings'	mucomplete.txt	/*'g:mucomplete#no_mappings'*
 'g:mucomplete#no_popup_mappings'	mucomplete.txt	/*'g:mucomplete#no_popup_mappings'*
 'g:mucomplete#popup_direction'	mucomplete.txt	/*'g:mucomplete#popup_direction'*
@@ -20,10 +22,14 @@
 'g:mucomplete#ultisnips#match_at_start'	mucomplete.txt	/*'g:mucomplete#ultisnips#match_at_start'*
 'g:mucomplete#use_only_windows_paths'	mucomplete.txt	/*'g:mucomplete#use_only_windows_paths'*
 'g:mucomplete#user_mappings'	mucomplete.txt	/*'g:mucomplete#user_mappings'*
+'g:mucomplete_current_method'	mucomplete.txt	/*'g:mucomplete_current_method'*
+'g:mucomplete_method'	mucomplete.txt	/*'g:mucomplete_method'*
 'g:mucomplete_with_key'	mucomplete.txt	/*'g:mucomplete_with_key'*
 :MUcompleteAutoOff	mucomplete.txt	/*:MUcompleteAutoOff*
 :MUcompleteAutoOn	mucomplete.txt	/*:MUcompleteAutoOn*
 :MUcompleteAutoToggle	mucomplete.txt	/*:MUcompleteAutoToggle*
+:MUcompleteNotify	mucomplete.txt	/*:MUcompleteNotify*
+MUcompletePmenu	mucomplete.txt	/*MUcompletePmenu*
 mucomplete-commands	mucomplete.txt	/*mucomplete-commands*
 mucomplete-compatibility	mucomplete.txt	/*mucomplete-compatibility*
 mucomplete-contents	mucomplete.txt	/*mucomplete-contents*

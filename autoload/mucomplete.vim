@@ -209,8 +209,15 @@ fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect an
         \   )
 endf
 
+fun! s:notify_completion_type()
+  let g:mucomplete_current_method = s:compl_methods[s:i]
+  silent doautocmd User MUcompletePmenu
+  let g:mucomplete_current_method = ''
+endf
+
 fun! s:act_on_pumvisible()
   call s:set_cot()
+  call s:notify_completion_type()
   return !g:mucomplete_with_key || get(g:, 'mucomplete#always_use_completeopt', 0) || (index(['spel','uspl'], get(s:compl_methods, s:i, '')) > - 1)
         \ ? s:fix_auto_select()
         \ : s:insert_entry()
