@@ -9,7 +9,8 @@ fun! s:show_current_method()
   unsilent echo '[MUcomplete]' get(g:mucomplete#msg#methods, get(g:, 'mucomplete_current_method', ''), 'Custom method')
   " Force placing the cursor back into the buffer
   " Without this, the cursor may get stuck in the command line after the
-  " message is printed until another character is typed:
+  " message is printed until another character is typed.
+  " Note: this works only if the status line is visible!
   let &ro=&ro
 endf
 
