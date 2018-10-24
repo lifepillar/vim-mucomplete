@@ -247,6 +247,7 @@ Set the notification level. When set to 0 (which is the default):
 <
 no notifications are enabled. When set to 1 or 2, a short (1) or long (2)
 description of the current completion method is displayed in the command line.
+This works best when |showmode| is off and |shortmess| contains the `c` flag.
 When set to 3, support for notifications in the status line is activated: in
 this case, |g:mucomplete_method| can be used in the definition of the status
 line, typically to print the current completion method. See |mucomplete-tips|
