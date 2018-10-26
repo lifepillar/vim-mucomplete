@@ -14,7 +14,7 @@ fun! mucomplete#compat#yes_you_can(t)
 endf
 
 fun! mucomplete#compat#default(t)
-  return a:t =~# '\m\k\k$' ||
+  return a:t =~# '\m\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}$' ||
         \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || a:t =~# '\m\k$'))
 endf
 
@@ -52,22 +52,30 @@ fun! mucomplete#compat#path(t)
         \     || (g:mucomplete_with_key && a:t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$')
 endf
 
+fun! mucomplete#compat#nsnp(t)
+  return get(g:, 'loaded_neosnippet', 0) && mucomplete#compat#default(a:t)
+endf
+
+fun! mucomplete#compat#snip(t)
+  return get(g:, 'loaded_snips', 0) && mucomplete#compat#default(a:t)
+endf
+
 fun! mucomplete#compat#ulti(t)
   return get(g:, 'did_plugin_ultisnips', 0) && mucomplete#compat#default(a:t)
 endf
 
 fun! mucomplete#compat#omni_c(t)
-  return strlen(&l:omnifunc) > 0 && a:t =~# '\m\%(\k\k\|\S->\|\S\.\)$'
+  return strlen(&l:omnifunc) > 0 && a:t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|\S->\|\S\.\)$'
         \ || (g:mucomplete_with_key && (s:complete_empty_text || a:t =~# '\m\%(\k\|\S->\|\S\.\)$'))
 endf
 
 fun! mucomplete#compat#omni_python(t)
-  return a:t =~# '\m\k\%(\k\|\.\)$' ||
+  return a:t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|\k\.\)$'
         \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || a:t =~# '\m\%(\k\|\.\)$'))
 endf
 
 fun! mucomplete#compat#omni_xml(t)
-  return strlen(&l:omnifunc) > 0 && a:t =~# '\m\%(\k\k\|</\)$'
+  return strlen(&l:omnifunc) > 0 && a:t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|</\)$'
         \ || (g:mucomplete_with_key && (s:complete_empty_text || a:t =~# '\m\%(\k\|</\)$'))
 endf
 
@@ -105,16 +113,18 @@ fun! mucomplete#compat#can_complete()
         \     'user':  s:fm(function('mucomplete#compat#user')),
         \     'path':  s:fm(function('mucomplete#compat#path')),
         \     'uspl':  s:fm(function('mucomplete#compat#spel')),
+        \     'nsnp':  s:fm(function('mucomplete#compat#nsnp')),
+        \     'snip':  s:fm(function('mucomplete#compat#snip')),
         \     'ulti':  s:fm(function('mucomplete#compat#ulti'))
         \   }, get(l:cc, 'default', {})),
-        \       'c' : extend({ 'omni': function('mucomplete#compat#omni_c') },   get(l:cc, 'c',    {})),
-        \     'cpp' : extend({ 'omni': function('mucomplete#compat#omni_c') },   get(l:cc, 'cpp',  {})),
-        \    'html' : extend({ 'omni': function('mucomplete#compat#omni_xml') }, get(l:cc, 'html', {})),
-        \     'xml' : extend({ 'omni': function('mucomplete#compat#omni_xml') }, get(l:cc, 'xml',  {})),
+        \       'c' : extend({ 'omni': s:fm(function('mucomplete#compat#omni_c')) },   get(l:cc, 'c',    {})),
+        \     'cpp' : extend({ 'omni': s:fm(function('mucomplete#compat#omni_c')) },   get(l:cc, 'cpp',  {})),
+        \    'html' : extend({ 'omni': s:fm(function('mucomplete#compat#omni_xml')) }, get(l:cc, 'html', {})),
+        \     'xml' : extend({ 'omni': s:fm(function('mucomplete#compat#omni_xml')) }, get(l:cc, 'xml',  {})),
         \ }, l:cc, 'keep')
   " Special cases
   if has('python') || has('python3')
-    call extend(extend(l:can_complete, { 'python': {} }, 'keep')['python'], { 'omni': function('mucomplete#compat#omni_python') }, 'keep')
+    call extend(extend(l:can_complete, { 'python': {} }, 'keep')['python'], { 'omni': s:fm(function('mucomplete#compat#omni_python')) }, 'keep')
   endif
   return l:can_complete
 endf
