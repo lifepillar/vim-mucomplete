@@ -890,8 +890,8 @@ With older versions of Vim, both MUcomplete and endwise map <cr> in Insert
 mode, so you must resolve the conflict. The simplest way is to override
 MUcomplete's definition of <cr> in your |vimrc|, as follows:
 >
-    imap <Plug>MyCR <Plug>(MUcompleteCR)
-    imap <cr> <Plug>MyCR
+	imap <Plug>MyCR <Plug>(MUcompleteCR)
+	imap <cr> <Plug>MyCR
 <
 If you use endwise.vim together with auto-pairs, see the section above
 instead.
@@ -906,11 +906,14 @@ to your completion chain. For example:
 If you want snippets to be expanded automatically when you accept a menu entry
 with Enter, add the following code to your `vimrc`:
 >
-	inoremap <silent> <expr> <cr>
-            \ mucomplete#neosnippet#expand_snippet("\<cr>")
+	inoremap <silent> <expr> <plug><MyCR>
+	    \ mucomplete#neosnippet#expand_snippet("\<cr>")
+	imap <cr> <plug><MyCR>
 <
 The argument of the function is the expansion to be used when <cr> is typed in
-a context different from completion (typically, it's <cr> itself).
+a context different from completion (typically, it's <cr> itself). Using
+a plug improves compatibility with some plugins that map <cr> in Insert mode
+(e.g., endwise.vim).
 
 If you need more flexibility and you know what you are doing, you may call
 `mucomplete#neosnippet#do_expand()` directly.
@@ -928,10 +931,15 @@ Then, add the `'snip'` method to your completion chain(s). For example:
 If you want snippets to be expanded automatically when you accept a menu entry
 with Enter, also add the following code to your `vimrc`:
 >
-	imap <silent> <expr> <cr> (pumvisible()
-            \ ? "\<c-y>\<plug>snipMateTrigger"
-            \ : "\<cr>")
+	inoremap <plug>MyEnter <cr>
+	imap <silent> <expr> <plug>MyCR (pumvisible()
+	    \ ? "\<c-y>\<plug>snipMateTrigger"
+	    \ : "\<plug>MyEnter")
+	imap <cr> <plug>MyCR
 <
+Using a plug improves compatibility with some plugins that map <cr> in Insert
+mode (e.g., endwise.vim).
+
 UltiSnips ~
 UltiSnips maps <tab> and <c-j> in a way that conflicts with MUcomplete. The
 recommended way to resolve the conflict is to redefine UltiSnips's mappings.
@@ -943,9 +951,13 @@ For example:
 If you want snippets to be expanded automatically when you accept a menu entry
 with Enter, also add the following code to your `vimrc`:
 >
-	inoremap <silent> <expr> <cr>
-            \ mucomplete#ultisnips#expand_snippet("\<cr>")
+	inoremap <silent> <expr> <plug>MyCR
+	    \ mucomplete#ultisnips#expand_snippet("\<cr>")
+	imap <cr> <plug>MyCR
 <
+Using a plug improves compatibility with some plugins that map <cr> in Insert
+mode (e.g., endwise.vim).
+
 The argument of the function is the expansion to be used when <cr> is typed in
 a context different from completion (typically, it's <cr> itself).
 
