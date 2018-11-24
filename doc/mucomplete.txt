@@ -138,6 +138,10 @@ spelling suggestions:
 "path": file names (MUcomplete's implementation).
 "uspl": spelling suggestions (MUcomplete's implementation).
 
+You may also use your own list of words:
+
+"list": complete words from |b:mucomplete_wordlist| or |g:mucomplete#wordlist|.
+
 MUcomplete also supports Neosnippet, SnipMate and UltiSnips:
 
 "nsnp": Neosnippet snippets.
@@ -674,6 +678,18 @@ user or it was triggered automatically. See |mucomplete-tips| for an example.
 
 Note: do not change the value of this variable!
 
+					*'g:mucomplete#wordlist'*
+					*'b:mucomplete_wordlist'*
+A sorted List of words to be used with the "list" method. For instance:
+>
+	let g:mucomplete#wordlist = ['January', 'June', 'July']
+	let g:mucomplete#chains = { 'default': ['list'] }
+<
+Note: you may also use this list in a user completion function by setting:
+>
+	set completefunc=mucomplete#list#completefunc
+	let g:mucomplete#chains = { 'default': ['user'] }
+<
 					*MUcompletePmenu*
 A |User| |autocmd| that is fired when the pop-up menu becomes visible. The
 user can hook to this to perform arbitrary operations upon successful completion.

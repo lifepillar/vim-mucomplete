@@ -61,6 +61,7 @@ let s:compl_mappings = extend({
       \ 'tags': "\<c-x>\<c-]>",
       \ 'thes': "\<c-x>\<c-t>",
       \ 'user': "\<c-x>\<c-u>",
+      \ 'list': "\<c-r>=mucomplete#list#complete()\<cr>",
       \ 'path': "\<c-r>=mucomplete#path#complete()\<cr>",
       \ 'uspl': s:ctrlx_out."\<c-r>=mucomplete#spel#complete()\<cr>",
       \ 'nsnp': "\<c-r>=mucomplete#neosnippet#complete()\<cr>",
@@ -150,6 +151,8 @@ if has('lambda')
         \     'keyn': s:fm(s:is_keyword),
         \     'keyp': s:fm(s:is_keyword),
         \     'line': s:fm(s:is_keyword),
+        \     'list': s:fm({ t -> t =~# '\m\S\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}$'
+        \              || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\S$')) }),
         \     'omni': s:fm({ t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) }),
         \     'path': s:fm({ t -> t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\|\s\)\+\)$'
         \              || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$') }),

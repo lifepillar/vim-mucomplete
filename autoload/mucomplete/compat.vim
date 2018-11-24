@@ -47,6 +47,11 @@ fun! mucomplete#compat#user(t)
   return strlen(&l:completefunc) > 0 && mucomplete#compat#default(a:t)
 endf
 
+fun! mucomplete#compat#list(t)
+  return a:t =~# '\m\S\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}$' ||
+        \ (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\S$'))
+endf
+
 fun! mucomplete#compat#path(t)
   return a:t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\|\s\)\+\)$'
         \     || (g:mucomplete_with_key && a:t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$')
@@ -106,6 +111,7 @@ fun! mucomplete#compat#can_complete()
         \     'keyn':  s:fm(function('mucomplete#compat#default')),
         \     'keyp':  s:fm(function('mucomplete#compat#default')),
         \     'line':  s:fm(function('mucomplete#compat#default')),
+        \     'list':  s:fm(function('mucomplete#compat#list')),
         \     'omni':  s:fm(function('mucomplete#compat#omni')),
         \     'spel':  s:fm(function('mucomplete#compat#spel')),
         \     'tags':  s:fm(function('mucomplete#compat#tags')),
