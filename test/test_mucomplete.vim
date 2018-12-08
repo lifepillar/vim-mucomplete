@@ -252,6 +252,20 @@ fun! Test_MU_slash_is_not_path_in_autocompletion()
   bwipe!
 endf
 
+fun! Test_MU_complete_path_after_equal_sign()
+  new
+  execute 'lcd' s:testdir
+  let b:mucomplete_chain = ['path']
+  MUcompleteAutoOff
+  set completeopt=menuone,noselect
+  call feedkeys("Alet path=./R", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<esc>", "tx")
+  call assert_equal("let path=./Readme.md", getline(1))
+  bwipe!
+  set completeopt&
+endf
+
 fun! Test_MU_uspl_completion()
   new
   setlocal spell

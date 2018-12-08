@@ -102,7 +102,7 @@ fun! mucomplete#path#complete() abort
         return ''
       endif
     endif
-    let l:prefix = matchstr(l:prefix, '\s\zs.*'.s:pathstart.'.*$', 1) " Next potential path
+    let l:prefix = matchstr(l:prefix, '\%(\s\|=\)\zs.*'.s:pathstart.'.*$', 1) " Next potential path
   endwhile
   return ''
 endf
