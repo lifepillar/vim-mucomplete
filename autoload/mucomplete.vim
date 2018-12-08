@@ -85,27 +85,6 @@ let s:noselect = 0             " Set to 1 when completeopt contains 'noselect'; 
 let s:noinsert = 0             " Set to 1 when completeopt contains 'noinsert'; 0 otherwise
 let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 
-if has("patch-7.4.775") || (v:version == 704 && has("patch775"))  " noinsert and noselect added there
-  fun! s:set_cot()
-    let s:noselect = (stridx(&l:completeopt, 'noselect') != -1)
-    let s:noinsert = (stridx(&l:completeopt, 'noinsert') != -1)
-  endf
-
-  fun! s:select_entry(dir) " argument is the natural direction of the current method
-    return ''
-  endf
-else " First menu entry is always selected and inserted
-  fun! s:set_cot()
-    " noop
-  endf
-
-  fun! s:select_entry(dir) " Works as with noselect
-    return strridx(&l:completeopt, 'longest') != -1
-          \ ? ''
-          \ : (a:dir > 0 ? "\<c-p>" : "\<c-n>")
-  endf
-endif
-
 " Completion chains
 let g:mucomplete#chains = extend({
       \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
@@ -192,14 +171,33 @@ fun! s:select_dir()
   return extend({ 'c-p' : -1, 'keyp': -1, 'line': -1 }, get(g:, 'mucomplete#popup_direction', {}))
 endf
 
-fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
-  let l:m = s:compl_methods[s:i]
-  return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || s:noselect
-        \ ? s:select_entry(get(s:default_dir, l:m, 1))
-        \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
-        \    ? "\<plug>(MUcompleteUp)\<plug>(MUcompleteUp)"
-        \    : "\<plug>(MUcompleteDown)\<plug>(MUcompleteDown)")
-endf
+if has("patch-7.4.775") || (v:version == 704 && has("patch775"))  " noinsert and noselect added there
+  fun! s:set_cot()
+    let s:noselect = (stridx(&l:completeopt, 'noselect') != -1)
+    let s:noinsert = (stridx(&l:completeopt, 'noinsert') != -1)
+  endf
+
+  fun! s:fix_auto_select() " Select the correct entry taking into account g:mucomplete#popup_direction
+    let l:m = s:compl_methods[s:i]
+    return get(s:default_dir, l:m, 1) == get(s:select_dir(), l:m, 1) || s:noselect
+          \ ? ''
+          \ : (get(s:default_dir, l:m, 1) > get(s:select_dir(), l:m, 1)
+          \    ? "\<plug>(MUcompleteUp)\<plug>(MUcompleteUp)"
+          \    : "\<plug>(MUcompleteDown)\<plug>(MUcompleteDown)")
+  endf
+else " In Vim without 7.4.775, first menu entry is always selected and inserted
+  fun! s:set_cot()
+    " noop
+  endf
+
+  fun! s:fix_auto_select() " Behave as if 'noselect' were set
+    let l:m = s:compl_methods[s:i]
+    return strridx(&l:completeopt, 'longest') != -1
+          \ ? ''
+          \ : (get(s:default_dir, l:m, 1) > 0 ? "\<c-p>" : "\<c-n>")
+  endf
+endif
+
 
 fun! s:insert_entry() " Select and insert a pop-up entry, overriding noselect and noinsert
   let l:m = s:compl_methods[s:i]
