@@ -99,8 +99,10 @@ else " First menu entry is always selected and inserted
     " noop
   endf
 
-  fun! s:select_entry(dir)
-    return (a:dir > 0 ? "\<c-p>" : "\<c-n>") " Works as with noselect
+  fun! s:select_entry(dir) " Works as with noselect
+    return strridx(&l:completeopt, 'longest') != -1
+          \ ? ''
+          \ : (a:dir > 0 ? "\<c-p>" : "\<c-n>")
   endf
 endif
 
