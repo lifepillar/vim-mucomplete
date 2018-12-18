@@ -30,7 +30,10 @@ fun! mucomplete#list#completefunc(findstart, base)
   else
     let l:res = []
     " TODO: replace with binary search (and require the list to be sorted)
-    for l:m in get(b:, 'mucomplete_wordlist', get(g:, 'mucomplete#wordlist', []))
+    for l:m in get(get(b:, 'mucomplete_wordlist', get(g:, 'mucomplete#wordlist', {})),
+          \        getbufvar("%","&ft"),
+          \        get(get(b:, 'mucomplete_wordlist', get(g:, 'mucomplete#wordlist', {})),
+          \            'default', []))
       if l:m =~ '^' . a:base
         call add(l:res, l:m)
       endif
