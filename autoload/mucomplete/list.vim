@@ -35,12 +35,21 @@ fun! mucomplete#list#completefunc(findstart, base)
     return match(getline('.'), '\S\+\%'.col('.').'c')
   else
     let l:res = []
-    " TODO: replace with binary search (and require the list to be sorted)
-    for l:m in s:wordlist()
-      if l:m =~ '^' . a:base
-        call add(l:res, l:m)
+    let l:len = len(s:wordlist())
+    let l:lft = 0
+    let l:rgt = l:len
+    while l:lft < l:rgt  " Find the leftmost index matching base
+      let l:i = (l:lft + l:rgt) / 2
+      if s:wordlist()[l:i] < a:base
+        let l:lft = l:i + 1
+      else
+        let l:rgt = l:i
       endif
-    endfor
+    endwhile
+    while l:lft < l:len && s:wordlist()[l:lft] =~ '^' . a:base
+      call add(l:res, s:wordlist()[l:lft])
+      let l:lft += 1
+    endwhile
     return l:res
   endif
 endfun
