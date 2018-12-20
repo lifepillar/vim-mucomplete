@@ -24,16 +24,19 @@ fun! mucomplete#list#complete() abort
   return ''
 endf
 
+fun! s:wordlist()
+  return get(b:, 'mucomplete_wordlist',
+        \    get(get(g:, 'mucomplete#wordlist', {}), getbufvar("%","&ft"),
+        \        get(get(g:, 'mucomplete#wordlist', {}), 'default', [])))
+endf
+
 fun! mucomplete#list#completefunc(findstart, base)
   if a:findstart
     return match(getline('.'), '\S\+\%'.col('.').'c')
   else
     let l:res = []
     " TODO: replace with binary search (and require the list to be sorted)
-    for l:m in get(get(b:, 'mucomplete_wordlist', get(g:, 'mucomplete#wordlist', {})),
-          \        getbufvar("%","&ft"),
-          \        get(get(b:, 'mucomplete_wordlist', get(g:, 'mucomplete#wordlist', {})),
-          \            'default', []))
+    for l:m in s:wordlist()
       if l:m =~ '^' . a:base
         call add(l:res, l:m)
       endif

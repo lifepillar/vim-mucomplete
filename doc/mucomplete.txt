@@ -433,6 +433,7 @@ checked.
 A List specifying a completion chain for the current buffer only. When this
 variable is defined, the value of |g:mucomplete#chains| is ignored.
 
+
 					*'g:mucomplete#chains'*
 A Dictionary defining the Lists of completion chains.
 >
@@ -678,8 +679,11 @@ user or it was triggered automatically. See |mucomplete-tips| for an example.
 
 Note: do not change the value of this variable!
 
-					*'g:mucomplete#wordlist'*
 					*'b:mucomplete_wordlist'*
+A sorted List of words to be used with the "list" method. When this variable
+is defined, |g:mucomplete#wordlist| is ignored.
+
+					*'g:mucomplete#wordlist'*
 A Dictionary of sorted lists of words to be used with the "list" method. The
 keys of the dictionary are filetypes or the `'default'` keyword. A list keyed
 on a filetype is used if the buffer is set to that filetype; otherwise, the
