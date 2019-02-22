@@ -435,7 +435,6 @@ variable is defined, the value of |g:mucomplete#chains| is ignored.
 
 
 					*'g:mucomplete#chains'*
-					*'g:mucomplete#scoped_chains'*
 A Dictionary defining the Lists of completion chains.
 >
 	let g:mucomplete#chains = {
@@ -450,19 +449,21 @@ completion chains. For example:
 	let g:mucomplete#chains.default  = ['omni', 'c-p']
 	let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
-An additional dictionary defines chains that will be active inside certain
-syntax elements ('scopes'), and in a certain filetype. If you don't define
-this dictionary, or the current filetype and scope inside of it, other defined
-chains will be used. If all of the above is defined, the scoped chain will be
-used instead, if the current syntax element matches one that have been
-defined. If you define a chain, but set it empty, it means you don't want any
-kind of completion inside that scope. In this case, completion will fallback
-to use 'path' completion as a bare minimum.
+					*'g:mucomplete#scoped_chains'*
+A Dictionary defining chains that will be active inside certain syntax
+elements ('scopes'), and in certain filetypes.
 
 Default:
 >
 	let g:mucomplete#scoped_chains = {}
 <
+If you don't define this dictionary, it will be ignored. Otherwise mucomplete
+will look for the current filetype and scope inside of it, and will use it if
+the current scope matches one that has been defined. 
+If you define a chain, but set it empty, it means you don't want any kind of
+completion inside that scope. In this case, completion will fallback to use
+'path' completion.
+
 Example:
 >
 	let g:mucomplete#scoped_chains = {
