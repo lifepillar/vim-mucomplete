@@ -449,6 +449,29 @@ completion chains. For example:
 	let g:mucomplete#chains.default  = ['omni', 'c-p']
 	let g:mucomplete#chains.markdown = ['keyn', 'dict', 'uspl']
 <
+					*'g:mucomplete#scoped_chains'*
+A Dictionary defining chains that will be active inside certain syntax
+elements ('scopes'), and in certain filetypes.
+
+Default:
+>
+	let g:mucomplete#scoped_chains = {}
+<
+If you don't define this dictionary, it will be ignored. Otherwise mucomplete
+will look for the current filetype and scope inside of it, and will use it if
+the current scope matches one that has been defined. 
+If you define a chain, but set it empty, it means you don't want any kind of
+completion inside that scope. In this case, completion will fallback to use
+'path' completion.
+
+Example:
+>
+	let g:mucomplete#scoped_chains = {
+		\ 'vim'     : {'vimString':      [],
+		\	       'vimLineComment': ['keyn'],
+		\	       'vimComment':     ['spel']}
+		\ }
+<
 					*'g:mucomplete#completion_delay'*
 Set to a positive value if you want autocompletion to be triggered only when
 you pause typing (autocompletion must be on for this to work). When set to 0,
