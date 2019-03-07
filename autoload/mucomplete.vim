@@ -91,8 +91,6 @@ let g:mucomplete#chains = extend({
       \ 'vim'     : ['path', 'cmd',  'keyn']
       \ }, get(g:, 'mucomplete#chains', {}))
 
-let g:mucomplete#scoped_chains = get(g:, 'mucomplete#scoped_chains', {})
-
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
   if get(g:, 'mucomplete#force_manual', 0)
@@ -271,30 +269,6 @@ fun! s:extend_completion(dir, keys)
         \ : a:keys
 endf
 
-fun! s:get_chain_for_buffer()
-    return get(b:, 'mucomplete_chain',
-          \ get(g:mucomplete#chains, getbufvar("%", "&ft"),
-          \     g:mucomplete#chains['default']))
-endfun
-
-fun! s:get_chain_for_scope()
-  if !has_key(g:mucomplete#scoped_chains, &ft)
-    " no scoped chains for this filetype
-    return s:get_chain_for_buffer()
-  endif
-
-  let scope = synIDattr(synID(line('.'), col('.')-1, 1), 'name')
-
-  if !has_key(g:mucomplete#scoped_chains[&ft], scope)
-    " no chain for this scope
-    return s:get_chain_for_buffer()
-  endif
-
-  " if the chain is empty, return 'path' as a fallback method
-  let chain = g:mucomplete#scoped_chains[&ft][scope]
-  return empty(chain) ? ['path'] : chain
-endf
-
 fun! mucomplete#extend_fwd(keys)
   return s:extend_completion(1, a:keys)
 endf
@@ -324,22 +298,22 @@ fun! mucomplete#cycle_or_select(dir)
         \ : (get(s:select_dir(), s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
 endf
 
+" If the argument is a completion chain (type() returns v:t_list), return it;
+" otherwise, get the completion chain for the current syntax item.
+fun! s:scope_chain(c)
+  return type(a:c) != 4
+        \ ? a:c
+        \ : get(a:c, synIDattr(synID('.', col('.') - 1, 0), 'name'),
+        \       get(a:c, 'default', g:mucomplete#chains['default']))
+endf
+
 " Precondition: pumvisible() is false.
 fun! mucomplete#init(dir, tab_completion) " Initialize/reset internal state
   let g:mucomplete_with_key = a:tab_completion
   let s:dir = a:dir
-
-  " get the chain of completion methods in this order:
-  " 1. check if a chain is defined for the current syntax group and filetype
-  " 2. try b:mucomplete_chain
-  " 3. finally try g:mucomplete#chains[&ft] or g:mucomplete#chains['default']
-
-  try
-    let s:compl_methods = s:get_chain_for_scope()
-  catch
-    let s:compl_methods = s:get_chain_for_buffer()
-  endtry
-
+  let s:compl_methods = s:scope_chain(get(b:, 'mucomplete_chain',
+        \                                 get(g:mucomplete#chains, getbufvar("%", "&ft"),
+        \                                     g:mucomplete#chains['default'])))
   let s:N = len(s:compl_methods)
   let s:countdown = s:N
   let s:i = s:dir > 0 ? -1 : s:N
