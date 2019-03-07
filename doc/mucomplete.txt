@@ -508,6 +508,8 @@ milliseconds to wait before triggering auto-completion.
 >
 	let g:mucomplete#completion_delay = 0
 <
+See also |g:mucomplete#reopen_immediately|.
+
 Note: auto-completion must be turned off and on again for this setting to take
 effect.
 
@@ -667,6 +669,45 @@ If you also want to invert the direction of "c-p" completion, you may write:
 For the completion methods not explicitly mentioned in the value of
 |g:mucomplete#popup_direction|, the natural value is assumed, i.e., -1 for
 "c-p", "keyp" and "line", and 1 for all the other methods.
+
+					*'g:mucomplete#reopen_immediately'*
+With autocompletion on and the pop-up menu open, if the user keeps typing
+until the pop-up menu eventually closes, MUcomplete immediately attemps to
+complete the current text again. Set this to 0 if you want MUcomplete to wait
+for the time specified by |g:mucomplete#completion_delay|.
+>
+	let g:mucomplete#reopen_immediately = 1
+<
+To appreciate the effect of this option, open a new buffer and set:
+>
+	set spell spelllang=en
+	let g:mucomplete#completion_delay=1000
+<
+Now type:
+>
+	sure
+	su
+<
+and wait one second. If you are using the default completion chain, Vim will
+offer you to complete with `sure`. With the pop-up menu open, keep typing:
+>
+	sure
+	surel
+<
+As soon as you type `l` the pop-up menu closes and reopens again, offering
+spelling suggestions. Now set this options to 0:
+>
+	let g:mucomplete#reopen_immediately = 0
+<
+and repeat the experiment. You should see that after typing `l` the pop-up
+menu is reopened with a delay.
+
+Note: this option affects the behaviour of delayed completion only when timers
+are used. It has no effect if Vim is compiled without |+timers| or if
+|g:mucomplete#completion_delay| is set to 0. Do NOT set this option to 0 if
+|g:mucomplete#completion_delay| is set to 1.
+
+Note: This option requires Vim 8.0.0283 or later.
 
 					*'g:mucomplete#spel#good_words'*
 Set to 1 if you want spelling suggestions (similar words) even for words that

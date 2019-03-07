@@ -49,7 +49,7 @@ if has('patch-8.0.0283')
   fun! mucomplete#auto#ic_auto_complete()
     " In Insert completion mode, CursorHoldI in not invoked.
     " With delay on, wait for timer to expire (if using timers).
-    if mode(1) ==# 'ic' && get(g:, 'mucomplete#completion_delay', 0) <= 1
+    if mode(1) ==# 'ic' && get(g:, 'mucomplete#reopen_immediately', 1)
       call mucomplete#auto_complete()
     endif
   endf
