@@ -301,7 +301,7 @@ endf
 " If the argument is a completion chain (type() returns v:t_list), return it;
 " otherwise, get the completion chain for the current syntax item.
 fun! s:scope_chain(c)
-  return type(a:c) != 4
+  return type(a:c) == 3
         \ ? a:c
         \ : get(a:c, synIDattr(synID('.', col('.') - 1, 0), 'name'),
         \       get(a:c, 'default', g:mucomplete#chains['default']))
