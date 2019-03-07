@@ -1029,6 +1029,11 @@ You may need or want to adjust the delay.
 
 Note: this fix requires Vim 8.0.0283 or later compiled with |+timers|.
 
+If you have other issues with LanguageClient-neovim, first of all make sure
+that omni-completion works without MUcomplete (i.e., by typing CTRL-X CTRL-O).
+See also |mucomplete-troubleshooting|. If that works, but MUcomplete does not
+offers the same completions, consider providing some |mucomplete-feedback|.
+
 Neosnippet ~
 MUcomplete works out of the box with Neosnippet. Just add the `'nsnp'` method
 to your completion chain. For example:
