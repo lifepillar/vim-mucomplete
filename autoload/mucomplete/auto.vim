@@ -6,6 +6,9 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 fun! mucomplete#auto#enable()
+  let s:v_char_expr = get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0))
+        \                 ? '\m\p'
+        \                 : '\m\S'
   if get(g:, 'mucomplete#completion_delay', 0) > 1 && has('timers')
     call mucomplete#timer#enable()
   else
@@ -27,6 +30,7 @@ fun! mucomplete#auto#disable()
     autocmd! MUcompleteAuto
     augroup! MUcompleteAuto
   endif
+  unlet! s:v_char_expr
 endf
 
 fun! mucomplete#auto#toggle()
@@ -43,7 +47,7 @@ if has('patch-8.0.0283')
   let s:insertcharpre = 0
 
   fun! mucomplete#auto#insertcharpre()
-    let s:insertcharpre = !pumvisible() && (v:char =~# '\m\S')
+    let s:insertcharpre = !pumvisible() && (v:char =~# s:v_char_expr)
   endf
 
   fun! mucomplete#auto#ic_auto_complete()

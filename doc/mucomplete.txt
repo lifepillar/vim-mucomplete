@@ -441,7 +441,12 @@ when there are at least two keyword characters in front of the cursor (see
 a longer portion of the text (whose length is determined by
 |g:mucomplete#look_behind|) and "linguistic" methods (dictionary, spelling,
 synonyms), which require two (for dictionary) or three (for spelling and
-synonyms) alphabetic characters in front of the cursor.
+synonyms) alphabetic characters in front of the cursor. By default,
+autocompletion is never triggered after white space, no matter how this option
+is set. If you want to allow autocompletion after any printable character (as
+defined by |isprint|), set |g:mucomplete#empty_text| to 1. The enabling
+patterns defined inside this option should also be adjusted accordingly (e.g.,
+they should be changed to match white space).
 
 Note: If you only want to adjust the number of characters before the cursor
 needed to trigger auto-completion, see |g:mucomplete#minimum_prefix_length|.
@@ -545,9 +550,10 @@ select the entries in the pop-up menu.
 					*'g:mucomplete#empty_text'*
 By default, when you press <tab> to complete a word, MUcomplete inserts
 a literal Tab character if there is no non-space character before the cursor.
-Set this to 1 if you want manual completion to be triggered no matter what the
-character in front of the cursor is (|g:mucomplete#can_complete| will still be
-applied):
+With autocompletion on, no completion is attempted if the character in front
+of the cursor is a space. Set this to 1 if you want manual and autocompletion
+to be triggered no matter what the character in front of the cursor is
+(|g:mucomplete#can_complete| will still be applied):
 >
 	let g:mucomplete#empty_text = 0
 <
