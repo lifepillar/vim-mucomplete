@@ -298,12 +298,22 @@ fun! mucomplete#cycle_or_select(dir)
         \ : (get(s:select_dir(), s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
 endf
 
+" If the argument is a completion chain (type() returns v:t_list), return it;
+" otherwise, get the completion chain for the current syntax item.
+fun! s:scope_chain(c)
+  return type(a:c) == 3
+        \ ? a:c
+        \ : get(a:c, synIDattr(synID('.', col('.') - 1, 0), 'name'),
+        \       get(a:c, 'default', g:mucomplete#chains['default']))
+endf
+
 " Precondition: pumvisible() is false.
 fun! mucomplete#init(dir, tab_completion) " Initialize/reset internal state
   let g:mucomplete_with_key = a:tab_completion
   let s:dir = a:dir
-  let s:compl_methods = get(b:, 'mucomplete_chain',
-        \ get(g:mucomplete#chains, getbufvar("%", "&ft"), g:mucomplete#chains['default']))
+  let s:compl_methods = s:scope_chain(get(b:, 'mucomplete_chain',
+        \                                 get(g:mucomplete#chains, getbufvar("%", "&ft"),
+        \                                     g:mucomplete#chains['default'])))
   let s:N = len(s:compl_methods)
   let s:countdown = s:N
   let s:i = s:dir > 0 ? -1 : s:N

@@ -1,4 +1,4 @@
-*mucomplete.txt*	For Vim version 7.2	Last change: 2018 Oct 24
+*mucomplete.txt*	For Vim version 7.2	Last change: 2019 Mar 7
 
 			|\/|| | _ _ ._ _ ._ | __|_ _                      ~
 			|  ||_|(_(_)| | ||_)|(/_|_(/_                     ~
@@ -16,18 +16,19 @@ CONTENTS				*mucomplete-contents*
 	2.  Requirements .............. |mucomplete-requirements|
 	3.  Getting started ........... |mucomplete-howto|
 	4.  Completion methods ........ |mucomplete-methods|
-	5.  Path completion ........... |mucomplete-path-complete|
-	6.  Spelling suggestions ...... |mucomplete-spel-complete|
-	7.  Extending completions ..... |mucomplete-extend-compl|
-	8.  Commands .................. |mucomplete-commands|
-	9.  Mappings .................. |mucomplete-mappings|
-	10. Plugs ..................... |mucomplete-plugs|
-	11. Customization ............. |mucomplete-customization|
-	12. Tips & tricks ............. |mucomplete-tips|
-	13. Compatibility ............. |mucomplete-compatibility|
-	14. Troubleshooting ........... |mucomplete-troubleshooting|
-	15. Providing feedback ........ |mucomplete-feedback|
-	16. Implementation details .... |mucomplete-internals|
+	5.  Completion chains ......... |mucomplete-chains|
+	6.  Path completion ........... |mucomplete-path-complete|
+	7.  Spelling suggestions ...... |mucomplete-spel-complete|
+	8.  Extending completions ..... |mucomplete-extend-compl|
+	9.  Commands .................. |mucomplete-commands|
+	10. Mappings .................. |mucomplete-mappings|
+	11. Plugs ..................... |mucomplete-plugs|
+	12. Customization ............. |mucomplete-customization|
+	13. Tips & tricks ............. |mucomplete-tips|
+	14. Compatibility ............. |mucomplete-compatibility|
+	15. Troubleshooting ........... |mucomplete-troubleshooting|
+	16. Providing feedback ........ |mucomplete-feedback|
+	17. Implementation details .... |mucomplete-internals|
 
 ==============================================================================
 1. Introduction				*mucomplete-introduction*
@@ -74,13 +75,13 @@ Press <tab> in Insert mode to complete a word. This will sequentially trigger
 the methods specified in |g:mucomplete#chains| until some results are found
 (if any). You may use <s-tab> to try the same list of methods in reverse
 order. For example, if the current completion chain is ["omni", "keyn"] (see
-|mucomplete-methods|), then pressing <tab> will cause omni completion to be
-attempted first, provided that 'omnifunc' is defined. If 'omnifunc' is not
-defined or the omni completion function returns no results then MUcomplete
-will fallback to local keyword completion ("keyn"). Pressing <s-tab> will
-trigger keyword completion first and fallback to omni completion if necessary.
-You may define arbitrarily long completion chains, and even filetype-specific
-or buffer-specific completion chains.
+|mucomplete-methods| and |mucomplete-chains|), then pressing <tab> will cause
+omni completion to be attempted first, provided that 'omnifunc' is defined. If
+'omnifunc' is not defined or the omni completion function returns no results
+then MUcomplete will fallback to local keyword completion ("keyn"). Pressing
+<s-tab> will trigger keyword completion first and fallback to omni completion
+if necessary. You may define arbitrarily long completion chains, and even
+filetype-specific or buffer-specific completion chains.
 
 Sometimes, the first method returning results is not the one you want. With
 the pop-up menu visible, you may type <c-h> and <c-j> to cycle back and forth,
@@ -114,7 +115,7 @@ In detail, this is the algorithm used by MUcomplete:
 
 MUcomplete supports all the completion methods described in |ins-completion|
 (but not all of them are enabled by default; see |g:mucomplete#chains|). Each
-method is defined by a string:
+method is identified by a string:
 
 "c-n" : keywords in 'complete' (search forwards);
 "c-p" : keywords in 'complete' (search backwards);
@@ -155,7 +156,50 @@ Finally, arbitrary additional completion methods may be defined by the user
 with |g:mucomplete#user_mappings|.
 
 ==============================================================================
-5. Path completion			*mucomplete-path-complete*
+5. Completion chains			*mucomplete-chains*
+
+A (standard) "completion chain" is a List of completion methods. MUcomplete
+allows you to define a global completion chain and filetype-specific
+completion chains using |g:mucomplete#chains|. For example:
+>
+	let g:mucomplete#chains = {
+		\ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
+		\ 'vim'     : ['path', 'cmd', 'keyn']
+		\ }
+<
+The definition above sets the default completion chain to a List of five
+completion methods. Such completion chain is used in all buffers except Vim
+buffers, because in Vim buffers the default chain is overridden by
+a filetype-specific chain consisting of path completion, Vim commands
+completion and keyword completion.
+
+A completion chain may also be a Dictionary defining the chains that must be
+active inside certain syntax items in specified filetypes. These are called
+"scoped (completion) chains" and are used in the same places where standard
+chains may be used. For example:
+>
+	let g:mucomplete#chains = {
+		\ 'vim': { 'vimString': [],
+		\	   'vimLineComment': ['uspl'],
+		\          'default': ['path', 'cmd', 'keyn'] }
+		\ }
+<
+The assignment above defines the following behaviour in Vim buffers: no
+completion inside strings; only spelling suggestions inside comments; path
+completion, Vim commands completion and keyword completion in all other
+places. For all other filetypes, the global default chain is used (a global
+default chain is automatically defined by MUcomplete if it is not provided by
+the user).
+
+The keys of a scoped chain should be names of filetype-specific highlight
+groups or the `'default'` key. The associated values are standard completion
+chains (i.e., Lists of completion methods). If the `'default'` key is not
+present in a scoped chain, MUcomplete falls back to using the global
+completion chain (that is, the value of |g:mucomplete#chains|`['default']`) if
+necessary.
+
+==============================================================================
+6. Path completion			*mucomplete-path-complete*
 
 MUcomplete provides two different methods to complete file paths: "file" and
 "path". The "file" completion method is based on Vim's built-in file
@@ -180,7 +224,7 @@ To adjust the case sensitivity of path matching, see 'fileignorecase' and
 See also |mucomplete-tips|.
 
 ==============================================================================
-6. Spelling suggestions			*mucomplete-spel-complete*
+7. Spelling suggestions			*mucomplete-spel-complete*
 
 The "spel" method invokes |i_CTRL-X_s| to perform the completion. Such
 mapping causes Vim to search for a badly spelled word in the current line
@@ -198,7 +242,7 @@ chain, although it is actively used only when 'spell' is on and 'spelllang' is
 defined.
 
 ==============================================================================
-7. Extending completions		*mucomplete-extend-compl*
+8. Extending completions		*mucomplete-extend-compl*
 
 Vim has a very nice, though possibly not very well known, feature allowing you
 to extend the current completion by copying the words following the previous
@@ -233,7 +277,7 @@ All this is more easily understood with examples rather than words. Try this:
         Ne<tab><right><tab><right>
 <
 ==============================================================================
-8. Commands				*mucomplete-commands*
+9. Commands				*mucomplete-commands*
 
 					*:MUcompleteAutoOn*
 Enable automatic completion.
@@ -263,7 +307,7 @@ The default notification messages can be customized via
 |g:mucomplete#msg#methods| and |g:mucomplete#msg#short_methods|.
 
 ==============================================================================
-9. Mappings				*mucomplete-mappings*
+10. Mappings				*mucomplete-mappings*
 
 By default, MUcomplete maps the keys below in Insert mode. If you do not want
 MUcomplete to define any mapping, set |g:mucomplete#no_mappings| or
@@ -319,7 +363,7 @@ The following mappings are defined only in Vim 8.0.0282 or older.
     with some popular plugins.
 
 ==============================================================================
-10. Plugs				*mucomplete-plugs*
+11. Plugs				*mucomplete-plugs*
 
 <plug>(MUcompleteFwd)
 <plug>(MUcompleteBwd)
@@ -360,7 +404,7 @@ The following plugs are defined only in Vim 8.0.0282 or older.
 	imap <unique> <cr> <plug>(MUcompleteCR)
 <
 ==============================================================================
-11. Customization			*mucomplete-customization*
+12. Customization			*mucomplete-customization*
 
 					*'g:mucomplete#always_use_completeopt'*
 By default, 'completeopt' does not affect manual completion (when pressing
@@ -430,12 +474,16 @@ only after -> and ::). In all the other cases, the default conditions will be
 checked.
 
 					*'b:mucomplete_chain'*
-A List specifying a completion chain for the current buffer only. When this
-variable is defined, the value of |g:mucomplete#chains| is ignored.
-
+A List specifying a completion chain, or a Dictionary specifying a scoped
+chain, for the current buffer only. When this variable is defined, the value
+of |g:mucomplete#chains| is ignored (with one exception: if a scoped chain
+without a `'default'` key is used as the value of this variable, then
+MUcomplete may fall back to using |g:mucomplete#chains|`['default']`).
 
 					*'g:mucomplete#chains'*
-A Dictionary defining the Lists of completion chains.
+A Dictionary defining the global default chain and filetype-specific
+completion chains. Each completion chain may be a standard chain or a scoped
+chain. See |mucomplete-chains| for more details.
 >
 	let g:mucomplete#chains = {
 		\ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
@@ -702,8 +750,8 @@ Note: You may also use these lists in a user completion function by setting:
 <
 					*MUcompletePmenu*
 A |User| |autocmd| that is fired when the pop-up menu becomes visible. The
-user can hook to this to perform arbitrary operations upon successful completion.
-For example:
+user can hook to this to perform arbitrary operations upon successful
+completion. For example:
 >
 	autocmd User MUcompletePmenu call MyFunction()
 
@@ -712,7 +760,7 @@ The name of the currently used completion method is available inside
 for an example.
 
 ==============================================================================
-12. Tips & tricks			*mucomplete-tips*
+13. Tips & tricks			*mucomplete-tips*
 
 How to insert a literal tab character when <tab> is used by MUcomplete? ~
 Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped). See also |i_<Tab>|.
@@ -885,7 +933,7 @@ You can hook to |MUcompletePmenu| directly instead of using
 	autocmd CompleteDone * echo "\r"
 <
 ==============================================================================
-13. Compatibility			*mucomplete-compatibility*
+14. Compatibility			*mucomplete-compatibility*
 
 MUcomplete tries to be a responsible citizen in Vimland. This section
 describes how to make it peacefully coexist with other plugins.
@@ -1020,7 +1068,7 @@ on |i_CTRL-R| in an essential way, you have to change vim-peekabo's mapping:
 Note: now you need to press <c-x><c-r> to view the registers.
 
 ==============================================================================
-14. Troubleshooting			*mucomplete-troubleshooting*
+15. Troubleshooting			*mucomplete-troubleshooting*
 
 Why am I getting the error: "E227: mapping already exists for..."? ~
 MUcomplete takes great care not to override an existing mapping defined in
@@ -1082,7 +1130,7 @@ Before reporting a bug, please do the following:
   MUcomplete behaves differently, please report the bug.
 
 ==============================================================================
-15. Providing feedback			*mucomplete-feedback*
+16. Providing feedback			*mucomplete-feedback*
 
 For bug reports and feature requests please use:
 
@@ -1091,7 +1139,7 @@ For bug reports and feature requests please use:
 Pull requests are welcome, too!
 
 ==============================================================================
-16. Implementation details		*mucomplete-internals*
+17. Implementation details		*mucomplete-internals*
 
 This section describes some technicalities of MUcomplete's implementation, and
 is not intended for the regular user: it is mostly a memo for myself and
