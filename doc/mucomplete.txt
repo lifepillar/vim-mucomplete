@@ -1017,17 +1017,16 @@ If you use endwise.vim together with auto-pairs, see the section above
 instead.
 
 LanguageClient-neovim ~
-MUcomplete should work fine with this plugin and its satellite plugins. Some
-users, however, have experienced an issue whereby MUcomplete sometimes
-triggers completion "too early", as if the last typed character were ignored.
-This may be fixed by using delayed completion, as follows:
+MUcomplete works fine with this plugin and its satellite server plugins, but
+for the best results you should enable a short delay (this requires Vim
+8.0.0283 or later compiled with |+timers|):
 >
-	let g:mucomplete#completion_delay = 100
+	let g:mucomplete#completion_delay = 50
 	let g:mucomplete#reopen_immediately = 0
 <
-You may need or want to adjust the delay.
-
-Note: this fix requires Vim 8.0.0283 or later compiled with |+timers|.
+You might need or want to adjust the delay. You need to increase the delay if
+you notice that MUcomplete triggers completion "too early", as if the last
+typed character is ignored.
 
 If you have other issues with LanguageClient-neovim, first of all make sure
 that omni-completion works without MUcomplete (i.e., by typing CTRL-X CTRL-O).
