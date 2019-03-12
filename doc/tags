@@ -1,5 +1,6 @@
 'b:mucomplete_chain'	mucomplete.txt	/*'b:mucomplete_chain'*
 'b:mucomplete_empty_text'	mucomplete.txt	/*'b:mucomplete_empty_text'*
+'b:mucomplete_empty_text_auto'	mucomplete.txt	/*'b:mucomplete_empty_text_auto'*
 'b:mucomplete_wordlist'	mucomplete.txt	/*'b:mucomplete_wordlist'*
 'g:mucomplete#always_use_completeopt'	mucomplete.txt	/*'g:mucomplete#always_use_completeopt'*
 'g:mucomplete#buffer_relative_paths'	mucomplete.txt	/*'g:mucomplete#buffer_relative_paths'*
@@ -9,6 +10,7 @@
 'g:mucomplete#cycle_all'	mucomplete.txt	/*'g:mucomplete#cycle_all'*
 'g:mucomplete#cycle_with_trigger'	mucomplete.txt	/*'g:mucomplete#cycle_with_trigger'*
 'g:mucomplete#empty_text'	mucomplete.txt	/*'g:mucomplete#empty_text'*
+'g:mucomplete#empty_text_auto'	mucomplete.txt	/*'g:mucomplete#empty_text_auto'*
 'g:mucomplete#enable_auto_at_startup'	mucomplete.txt	/*'g:mucomplete#enable_auto_at_startup'*
 'g:mucomplete#force_manual'	mucomplete.txt	/*'g:mucomplete#force_manual'*
 'g:mucomplete#look_behind'	mucomplete.txt	/*'g:mucomplete#look_behind'*

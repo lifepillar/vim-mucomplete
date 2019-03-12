@@ -444,9 +444,9 @@ synonyms), which require two (for dictionary) or three (for spelling and
 synonyms) alphabetic characters in front of the cursor. By default,
 autocompletion is never triggered after white space, no matter how this option
 is set. If you want to allow autocompletion after any printable character (as
-defined by |isprint|), set |g:mucomplete#empty_text| to 1. The enabling
-patterns defined inside this option should also be adjusted accordingly (e.g.,
-they should be changed to match white space).
+defined by |isprint|), set |g:mucomplete#empty_text_auto| to 1. The enabling
+patterns defined inside |g:mucomplete#can_complete| should also be adjusted
+accordingly (e.g., they should be changed to match white space).
 
 Note: If you only want to adjust the number of characters before the cursor
 needed to trigger auto-completion, see |g:mucomplete#minimum_prefix_length|.
@@ -550,15 +550,29 @@ select the entries in the pop-up menu.
 					*'g:mucomplete#empty_text'*
 By default, when you press <tab> to complete a word, MUcomplete inserts
 a literal Tab character if there is no non-space character before the cursor.
-With autocompletion on, no completion is attempted if the character in front
-of the cursor is a space. Set this to 1 if you want manual and autocompletion
-to be triggered no matter what the character in front of the cursor is
-(|g:mucomplete#can_complete| will still be applied):
+Set this to 1 if you want manual completion to be triggered no matter what the
+character in front of the cursor is (|g:mucomplete#can_complete| will still be
+applied):
 >
 	let g:mucomplete#empty_text = 0
 <
 Setting this variable to 1 is useful in very limited circumstances, e.g., to
 trigger omni-completion at the start of a line in some buffer types.
+
+					*'b:mucomplete_empty_text_auto'*
+					*'g:mucomplete#empty_text_auto'*
+By default, autocompletion is never activated if the character in front of the
+cursor is a space, no matter how |g:mucomplete#can_complete| is defined. Set
+this to 1 if you want autocompletion to be triggered no matter what the
+character in front of the cursor is (|g:mucomplete#can_complete| will still be
+applied):
+>
+	let g:mucomplete#empty_text_auto = 0
+<
+Setting this variable to 1 is useful in very limited circumstances, e.g., to
+trigger omni-completion for tag attributes in HTML buffers. For instance, with
+this option set, typing `<table` followed by a space in a HTML buffer will
+offer completions for table attributes.
 
 					*'g:mucomplete#enable_auto_at_startup'*
 Set to 1 to enable automatic completion at startup.
