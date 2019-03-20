@@ -299,9 +299,9 @@ This works best when |showmode| is off (or |cmdheight| is greater than 1) and
 |shortmess| contains the `c` flag.
 
 When set to 3, support for notifications in the status line is activated: in
-this case, |g:mucomplete_current_method| can be used in the definition of the status
-line, typically to print the current completion method. See |mucomplete-tips|
-for an example.
+this case, |g:mucomplete_current_method| can be used in the definition of the
+status line, typically to print the current completion method. See
+|mucomplete-tips| for an example.
 
 The default notification messages can be customized via
 |g:mucomplete#msg#methods| and |g:mucomplete#msg#short_methods|.
