@@ -1115,11 +1115,31 @@ a context different from completion (typically, it's <cr> itself).
 If you need more flexibility and you know what you are doing, you may call
 `mucomplete#ultisnips#do_expand()` directly.
 
-Note: don't forget to add `'ulti'` to your completion chains! For example:
+It is also possible to expand snippets or complete text using only <tab>. That
+is, when you press <tab>, if there is a snippet keyword before the cursor then
+the snippet is expanded (and you may use <tab> also to jump between the
+snippet triggers), otherwise MUcomplete kicks in. The following configuration
+achieves this kind of behaviour:
 >
-	let g:mucomplete#chains = {}
-	let g:mucomplete#chains.default = ['path', 'ulti', 'keyn']
+	let g:ulti_expand_or_jump_res = 0
+
+	fun! TryUltiSnips()
+	  if !pumvisible() " With the pop-up menu open, let Tab move down
+	    call UltiSnips#ExpandSnippetOrJump()
+	  endif
+	  return ''
+	endf
+	
+	fun! TryMUcomplete()
+	  return g:ulti_expand_or_jump_res ? "" : "\<plug>(MUcompleteFwd)"
+	endf
+	
+	inoremap <plug>(TryUlti) <c-r>=TryUltiSnips()<cr>
+	imap <expr> <silent> <plug>(TryMU) TryMUcomplete()
+	imap <expr> <silent> <tab> "\<plug>(TryUlti)\<plug>(TryMU)"
 <
+You still need to redefine UltiSnips's mappings as explained above.
+
 UltiSnips + PHP ~
 In some versions of Vim, there is a (now solved) compatibility issue between
 PHP's 'omnifunc' function and UltiSnips. This bug is hit by MUcomplete when:
