@@ -115,8 +115,8 @@ if has('lambda')
         \ || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|\.\)$'))
         \ )}
   let s:omni_xml = { t -> strlen(&l:omnifunc) > 0 &&
-        \ (t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|</\)$'
-        \ || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|</\)$'))
+        \ (t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|<\|</\|\s\|"\|''\)$'
+        \ || (g:mucomplete_with_key && (s:complete_empty_text || t =~# '\m\%(\k\|<\|</\|\s\|"\|''\)$'))
         \ )}
   let s:cc = get(g:, 'mucomplete#can_complete', {}) " Get user's settings, then merge them with defaults
   let g:mucomplete#can_complete = extend({
