@@ -999,7 +999,7 @@ You can hook to |MUcompletePmenu| directly instead of using
 MUcomplete tries to be a responsible citizen in Vimland. This section
 describes how to make it peacefully coexist with other plugins.
 
-auto-pairs ~
+Auto Pairs ~
 This plugin maps <space> in Insert mode in ways that conflict with
 MUcomplete's operation. To resolve the conflict, put this in your |vimrc|:
 >
@@ -1016,6 +1016,9 @@ If you use Vim 8.0.0282 or older, you must also remap <cr>:
 <
 Mapping things this way will also make MUcomplete and auto-pairs work well
 together with endwise.vim (see below).
+
+Auto Pairs + UltiSnips ~
+See UltiSnips + Auto Pairs configuration below.
 
 endwise.vim ~
 If you use Vim 8.0.0283 or later, MUcomplete works just fine with endwise.
@@ -1140,6 +1143,22 @@ achieves this kind of behaviour:
 <
 You still need to redefine UltiSnips's mappings as explained above.
 
+UltiSnips + Auto Pairs ~
+If you want snippets to be expanded as explained above and you are using Auto
+Pairs, you need to disable Auto Pairs's mappings and invoke them in custom
+mappings, as follows:
+>
+	let g:AutoPairsMapCR = 0
+	let g:AutoPairsMapSpace = 0
+	imap <silent> <expr> <space> pumvisible()
+	  \ ? "<space>"
+	  \ : "<c-r>=AutoPairsSpace()<cr>"
+	
+	inoremap <silent> <expr> <plug>UltiExpand
+	      \ mucomplete#ultisnips#expand_snippet("\<cr>")
+	imap <plug>MyCR <plug>UltiExpand<plug>AutoPairsReturn
+	imap <cr> <plug>MyCR
+<
 UltiSnips + PHP ~
 In some versions of Vim, there is a (now solved) compatibility issue between
 PHP's 'omnifunc' function and UltiSnips. This bug is hit by MUcomplete when:
