@@ -74,7 +74,7 @@ let s:pathsep = exists('+shellslash') && !&shellslash
       \ : '[/]'
 
 fun! mucomplete#add_user_mapping(name, mapping)
-  return extend(s:compl_mappings, { a:name: a:mapping }, 'error')
+  return extend(s:compl_mappings, { a:name: a:mapping }, 'keep')
 endf
 
 " Internal state
