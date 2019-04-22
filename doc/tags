@@ -29,6 +29,7 @@
 'g:mucomplete#wordlist'	mucomplete.txt	/*'g:mucomplete#wordlist'*
 'g:mucomplete_current_method'	mucomplete.txt	/*'g:mucomplete_current_method'*
 'g:mucomplete_with_key'	mucomplete.txt	/*'g:mucomplete_with_key'*
+'mucomplete#add_user_mapping()'	mucomplete.txt	/*'mucomplete#add_user_mapping()'*
 :MUcompleteAutoOff	mucomplete.txt	/*:MUcompleteAutoOff*
 :MUcompleteAutoOn	mucomplete.txt	/*:MUcompleteAutoOn*
 :MUcompleteAutoToggle	mucomplete.txt	/*:MUcompleteAutoToggle*

@@ -406,6 +406,19 @@ The following plugs are defined only in Vim 8.0.0282 or older.
 ==============================================================================
 12. Customization			*mucomplete-customization*
 
+					*'mucomplete#add_user_mapping()'*
+Use this function to add a new user-defined completion method. For example:
+>
+	call mucomplete#add_user_mapping("sqla", "\<c-c>a")
+<
+The first argument of the function is the name of the completion method and
+the second argument is the mapping to be invoked.
+
+See also |g:mucomplete#user_mappings|.
+
+Note: you cannot override existing methods. Calling this function with an
+existing key is a no-op.
+
 					*'g:mucomplete#always_use_completeopt'*
 By default, 'completeopt' does not affect manual completion (when pressing
 <tab> to complete a word, the first match is always automatically selected and
@@ -782,6 +795,10 @@ example:
 	let g:mucomplete#chains.default = ['keyp', 'xyz']
 	let g:mucomplete#chains.sql = ['sqla', 'keyp', 'tags']
 <
+Note: this variable is read only once when MUcomplete is loaded. If you want
+to define completion methods later (for example, in some ftplugin file), use
+|mucomplete#add_user_mapping()| instead.
+
 					*'g:mucomplete_with_key'*
 Read-only flag that tells whether completion was initiated manually by the
 user or it was triggered automatically. See |mucomplete-tips| for an example.
