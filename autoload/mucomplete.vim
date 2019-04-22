@@ -73,6 +73,10 @@ let s:pathsep = exists('+shellslash') && !&shellslash
       \ ? (get(g:, 'mucomplete#use_only_windows_paths', 0) ? '[\\]' : '[/\\]')
       \ : '[/]'
 
+fun! mucomplete#add_user_mapping(name, mapping)
+  return extend(s:compl_mappings, { a:name: a:mapping }, 'error')
+endf
+
 " Internal state
 let s:compl_methods = ['keyn'] " Current completion chain
 let s:N = 0                    " Length of the current completion chain
