@@ -76,7 +76,7 @@ endf
 
 fun! mucomplete#compat#omni_python(t)
   return a:t =~# '\m\%(\k\{'.get(g:, 'mucomplete#minimum_prefix_length', 2).'\}\|\k\.\)$'
-        \ (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || a:t =~# '\m\%(\k\|\.\)$'))
+        \ || (g:mucomplete_with_key && (get(b:, 'mucomplete_empty_text', get(g:, 'mucomplete#empty_text', 0)) || a:t =~# '\m\%(\k\|\.\)$'))
 endf
 
 fun! mucomplete#compat#omni_xml(t)
