@@ -960,8 +960,8 @@ automatic completion is on.
 You may optimize your work flow by using longer completion chains and reducing
 the options in 'complete' accordingly. For example, instead of:
 >
-	set completeopt+=i
-	set completeopt+=t
+	set complete+=i
+	set complete+=t
 	let g:mucomplete#chains = { 'default' : ['c-p'] }
 <
 which would always scan tags and included files, you might use:
