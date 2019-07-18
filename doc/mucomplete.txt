@@ -117,21 +117,21 @@ MUcomplete supports all the completion methods described in |ins-completion|
 (but not all of them are enabled by default; see |g:mucomplete#chains|). Each
 method is identified by a string:
 
-"c-n" : keywords in 'complete' (search forwards);
-"c-p" : keywords in 'complete' (search backwards);
-"cmd" : Vim command line;
-"defs": definitions or macros;
-"dict": keywords in 'dictionary';
-"file": file names;
-"incl": keywords in the current and included files;
-"keyn": keywords in the current file (search forwards);
-"keyp": keywords in the current file (search backwards);
-"line": whole lines;
-"omni": omni completion ('omnifunc');
-"spel": spelling suggestions;
-"tags": tags;
-"thes": keywords in 'thesaurus';
-"user": user defined completion ('completefunc').
+"c-n" : keywords in 'complete' (search forwards);        |i_CTRL-N|
+"c-p" : keywords in 'complete' (search backwards);       |i_CTRL-P|
+"cmd" : Vim command line;                                |i_CTRL-X_CTRL-V|
+"defs": definitions or macros;                           |i_CTRL-X_CTRL-D|
+"dict": keywords in 'dictionary';                        |i_CTRL-X_CTRL-K|
+"file": file names;                                      |i_CTRL-X_CTRL-F|
+"incl": keywords in the current and included files;      |i_CTRL-X_CTRL-I|
+"keyn": keywords in the current file (search forwards);  |i_CTRL-X_CTRL-N|
+"keyp": keywords in the current file (search backwards); |i_CTRL-X_CTRL-P|
+"line": whole lines;                                     |i_CTRL-X_CTRL-L|
+"omni": omni completion ('omnifunc');                    |i_CTRL-X_CTRL-O|
+"spel": spelling suggestions;                            |i_CTRL-X_s|
+"tags": tags;                                            |i_CTRL-X_CTRL-]|
+"thes": keywords in 'thesaurus';                         |i_CTRL-X_CTRL-T|
+"user": user defined completion ('completefunc').        |i_CTRL-X_CTRL-U|
 
 Besides, MUcomplete implements its own alternative file completion and
 spelling suggestions:
@@ -1149,11 +1149,11 @@ achieves this kind of behaviour:
 	  endif
 	  return ''
 	endf
-	
+
 	fun! TryMUcomplete()
 	  return g:ulti_expand_or_jump_res ? "" : "\<plug>(MUcompleteFwd)"
 	endf
-	
+
 	inoremap <plug>(TryUlti) <c-r>=TryUltiSnips()<cr>
 	imap <expr> <silent> <plug>(TryMU) TryMUcomplete()
 	imap <expr> <silent> <tab> "\<plug>(TryUlti)\<plug>(TryMU)"
@@ -1170,7 +1170,7 @@ mappings, as follows:
 	imap <silent> <expr> <space> pumvisible()
 	  \ ? "<space>"
 	  \ : "<c-r>=AutoPairsSpace()<cr>"
-	
+
 	inoremap <silent> <expr> <plug>UltiExpand
 	      \ mucomplete#ultisnips#expand_snippet("\<cr>")
 	imap <plug>MyCR <plug>UltiExpand<plug>AutoPairsReturn
