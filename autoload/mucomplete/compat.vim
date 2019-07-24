@@ -32,7 +32,7 @@ fun! mucomplete#compat#omni(t)
 endf
 
 fun! mucomplete#compat#spel(t)
-  return &l:spell && !empty(&l:spelllang) && a:t =~# '\m\a\a\a$'
+  return &l:spell && !empty(&l:spelllang) && a:t =~# '\m[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]\{3}$'
 endf
 
 fun! mucomplete#compat#tags(t)
