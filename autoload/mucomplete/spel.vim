@@ -7,11 +7,11 @@ set cpo&vim
 
 if exists('*matchstrpos')
   fun! s:getword()
-    return matchstrpos(getline('.'), '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]\+\%'.col('.').'c')
+    return matchstrpos(getline('.'), mucomplete#get_spel_regex().'\+\%'.col('.').'c')
   endf
 else
   fun! s:getword()
-    return [matchstr(getline('.'), '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]\+\%'.col('.').'c'), match(getline('.'), '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]\+\%'.col('.').'c'), 0]
+    return [matchstr(getline('.'), mucomplete#get_spel_regex().'\%'.col('.').'c'), match(getline('.'), mucomplete#get_spel_regex().'\+\%'.col('.').'c'), 0]
   endf
 endif
 
