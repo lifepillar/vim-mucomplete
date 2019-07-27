@@ -95,9 +95,9 @@ let g:mucomplete#chains = extend({
       \ 'vim'     : ['path', 'cmd',  'keyn']
       \ }, get(g:, 'mucomplete#chains', {}))
 
-" Regex with special umlaut characters and apostroph (') for spel/uspl completion
+" Regex with special umlaut characters for spel/uspl completion
 fun! mucomplete#get_spel_regex()
-  return '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF\u0027]'
+  return '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]'
 endf
 
 " Conditions to be verified for a given method to be applied.
