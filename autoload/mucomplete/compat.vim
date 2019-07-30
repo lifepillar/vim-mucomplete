@@ -32,7 +32,7 @@ fun! mucomplete#compat#omni(t)
 endf
 
 fun! mucomplete#compat#spel(t)
-  return &l:spell && !empty(&l:spelllang) && a:t =~# '\m\a\a\a$'
+  return &l:spell && !empty(&l:spelllang) && a:t =~# '\m'.mucomplete#get_spel_regex().'\{3}$'
 endf
 
 fun! mucomplete#compat#tags(t)
