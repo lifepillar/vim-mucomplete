@@ -163,9 +163,9 @@ allows you to define a global completion chain and filetype-specific
 completion chains using |g:mucomplete#chains|. For example:
 >
 	let g:mucomplete#chains = {
-		\ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
-		\ 'vim'     : ['path', 'cmd', 'keyn']
-		\ }
+	    \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
+	    \ 'vim'     : ['path', 'cmd', 'keyn']
+	    \ }
 <
 The definition above sets the default completion chain to a List of five
 completion methods. Such completion chain is used in all buffers except Vim
@@ -179,10 +179,10 @@ active inside certain syntax items in specified filetypes. These are called
 chains may be used. For example:
 >
 	let g:mucomplete#chains = {
-		\ 'vim': { 'vimString': [],
-		\	   'vimLineComment': ['uspl'],
-		\          'default': ['path', 'cmd', 'keyn'] }
-		\ }
+	    \ 'vim': { 'vimString': [],
+	    \          'vimLineComment': ['uspl'],
+	    \          'default': ['path', 'cmd', 'keyn'] }
+	    \ }
 <
 The assignment above defines the following behaviour in Vim buffers: no
 completion inside strings; only spelling suggestions inside comments; path
@@ -270,11 +270,11 @@ All this is more easily understood with examples rather than words. Try this:
 	Shall I compare thee to a summer’s day?
 	S<tab><right><right><right><right><right><right>
 <
-        Another example:
+	Another example:
 >
-        New Zealand
-        New York Times
-        Ne<tab><right><tab><right>
+	New Zealand
+	New York Times
+	Ne<tab><right><tab><right>
 <
 ==============================================================================
 9. Commands				*mucomplete-commands*
@@ -356,48 +356,48 @@ The following mappings are defined only in Vim 8.0.0282 or older.
 <c-e>
 <c-y>
 <cr>
-    MUcomplete defines a thin wrapper around these keys in Vim 8.0.0282 or
-    older, without changing their function. If you want to prevent MUcomplete
-    from defining these three mappings, set |g:mucomplete#no_popup_mappings|.
-    See also |mucomplete-compatibility| for suggestions on fixing conflicts
-    with some popular plugins.
+	MUcomplete defines a thin wrapper around these keys in Vim 8.0.0282 or
+	older, without changing their function. If you want to prevent
+	MUcomplete from defining these three mappings, set
+	|g:mucomplete#no_popup_mappings|. See also |mucomplete-compatibility|
+	for suggestions on fixing conflicts with some popular plugins.
 
 ==============================================================================
 11. Plugs				*mucomplete-plugs*
 
 <plug>(MUcompleteFwd)
 <plug>(MUcompleteBwd)
-        These are the plugs that trigger manual forward and backward
-        completion, respectively. They are ultimately mapped to the (possibly
-        empty) text that completes the current word.
+	These are the plugs that trigger manual forward and backward
+	completion, respectively. They are ultimately mapped to the (possibly
+	empty) text that completes the current word.
 >
 	imap <unique> <tab> <plug>(MUcompleteFwd)
 	imap <unique> <s-tab> <plug>(MUcompleteBwd)
 <
 <plug>(MUcompleteCycFwd)
 <plug>(MUcompleteCycBwd)
-        These are the plugs that trigger forward and backward cycling through
-        the completion chain. They are ultimately mapped to the (possibly
-        empty) text that completes the current word.
+	These are the plugs that trigger forward and backward cycling through
+	the completion chain. They are ultimately mapped to the (possibly
+	empty) text that completes the current word.
 >
 	imap <unique> <c-j> <plug>(MUcompleteCycFwd)
 	imap <unique> <c-h> <plug>(MUcompleteCycBwd)
 <
 <plug>(MUcompleteFwdKey)
 <plug>(MUcompleteBwdKey)
-        These are used to preserve the functionality of the cycling keys in
-        contexts different from completion. They must be redefined when
-        <plug>(MUcompleteCycFwd) and <plug>(MUcompleteCycBwd) are remapped by
-        the user. See |mucomplete-mappings| for an example.
+	These are used to preserve the functionality of the cycling keys in
+	contexts different from completion. They must be redefined when
+	<plug>(MUcompleteCycFwd) and <plug>(MUcompleteCycBwd) are remapped by
+	the user. See |mucomplete-mappings| for an example.
 
 The following plugs are defined only in Vim 8.0.0282 or older.
 
 <plug>(MUcompletePopupCancel)
 <plug>(MUcompletePopupAccept)
 <plug>(MUcompleteCR)
-        These are used to detect when the pop-up menu is closed with <c-e>,
-        <c-y> or <cr>, respectively. They are ultimately mapped to the
-        corresponding key (<c-e>, <c-y> and <cr>, respectively).
+	These are used to detect when the pop-up menu is closed with <c-e>,
+	<c-y> or <cr>, respectively. They are ultimately mapped to the
+	corresponding key (<c-e>, <c-y> and <cr>, respectively).
 >
 	imap <unique> <c-e> <plug>(MUcompletePopupCancel)
 	imap <unique> <c-y> <plug>(MUcompletePopupAccept)
@@ -504,9 +504,9 @@ completion chains. Each completion chain may be a standard chain or a scoped
 chain. See |mucomplete-chains| for more details.
 >
 	let g:mucomplete#chains = {
-		\ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
-		\ 'vim'     : ['path', 'cmd', 'keyn']
-		\ }
+	    \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
+	    \ 'vim'     : ['path', 'cmd', 'keyn']
+	    \ }
 <
 In your |vimrc|, you may override the default or add filetype-specific
 completion chains. For example:
@@ -635,9 +635,9 @@ Descriptions can be overridden and additional entries can be added by the
 user. For example:
 >
 	let g:mucomplete#msg#methods = {
-            \ 'keyn': 'Mots-clés dans le fichier courant',
-            \ 'xywz: 'Description of my custom xywz method'
-            \ }
+	    \ 'keyn': 'Mots-clés dans le fichier courant',
+	    \ 'xywz: 'Description of my custom xywz method'
+	    \ }
 <
 Such descriptions are used in notifications (see |MUcompleteNotify|).
 
@@ -788,9 +788,9 @@ Note: this option is relevant only for Windows users.
 A Dictionary of user-defined completion methods. For example:
 >
 	let g:mucomplete#user_mappings = {
-			\ 'sqla' : "\<c-c>a",
-			\ 'xyz'  : "\<c-r>=MyCustomComplete()\<cr>"
-			\ }
+	    \ 'sqla' : "\<c-c>a",
+	    \ 'xyz'  : "\<c-r>=MyCustomComplete()\<cr>"
+	    \ }
 <
 Each key in the dictionary is an arbitrary string providing the name of the
 completion method (but you cannot override the predefined names) and the
@@ -824,9 +824,9 @@ on a filetype is used if the buffer is set to that filetype; otherwise, the
 `'default'` list is used, if defined. For instance:
 >
 	let g:mucomplete#wordlist = {
-		\       'default': ['January', 'July', 'June'],
-		\            'js': ['console.log()', 'console.trace()']
-		\ }
+	    \       'default': ['January', 'July', 'June'],
+	    \            'js': ['console.log()', 'console.trace()']
+	    \ }
 	let g:mucomplete#chains = { 'default': ['list', 'keyp'] }
 <
 Note: You may also use these lists in a user completion function by setting:
@@ -994,9 +994,9 @@ line. A minimal example:
 A more realistic example:
 >
 	fun! MU()
-          return get(g:mucomplete#msg#short_methods,
-              \      get(g:, 'mucomplete_current_method', ''), '')
-        endf
+	  return get(g:mucomplete#msg#short_methods,
+	    \        get(g:, 'mucomplete_current_method', ''), '')
+	endf
 
 	set statusline=%<%f\ %h%m%r%=\%{MU()}\ %-14.(%l,%c%V%)\ %P
 <
@@ -1005,13 +1005,13 @@ You can hook to |MUcompletePmenu| directly instead of using
 |MUcompleteNotify|. For example, to display colorized messages:
 >
 	fun! ColorfulMessages()
-		echohl Label
-		unsilent echo "[MUcomplete] "
-		echohl Special
-		unsilent echon get(g:mucomplete#msg#methods,
-			\ get(g:, 'mucomplete_current_method', ''))
-		echohl None
-		let &ro=&ro  " Force updating the cursor
+	  echohl Label
+	  unsilent echo "[MUcomplete] "
+	  echohl Special
+	  unsilent echon get(g:mucomplete#msg#methods,
+	      \ get(g:, 'mucomplete_current_method', ''))
+	  echohl None
+	  let &ro=&ro  " Force updating the cursor
 	endfun
 
 	autocmd User MUcompletePmenu call ColorfulMessages()
@@ -1030,8 +1030,8 @@ MUcomplete's operation. To resolve the conflict, put this in your |vimrc|:
 >
 	let g:AutoPairsMapSpace = 0
 	imap <silent> <expr> <space> pumvisible()
-		\ ? "<space>"
-		\ : "<c-r>=AutoPairsSpace()<cr>"
+	    \ ? "<space>"
+	    \ : "<c-r>=AutoPairsSpace()<cr>"
 <
 If you use Vim 8.0.0282 or older, you must also remap <cr>:
 >
@@ -1235,14 +1235,14 @@ Before reporting a bug, please do the following:
   troubleshooting_vimrc.vim from MUcomplete's directory into your .vim
   directory, edit it, and run Vim with:
 >
-	 vim -u troubleshooting_vimrc.vim
+	vim -u troubleshooting_vimrc.vim
 <
   Can you still reproduce your problem? If not, a conflict with another plugin
   or a setting in your |vimrc| may be the culprit.
 
 - Double-check your completion chains: >
 
-	 echo g:mucomplete#chains
+	echo g:mucomplete#chains
 <
   Also, check whether |b:mucomplete_chain| is defined, because its value
   shadows the global dictionary. Are the methods you expect to be used defined
@@ -1257,11 +1257,11 @@ Before reporting a bug, please do the following:
 - Make sure that <c-r> is not mapped in Insert mode. The following command
   should return "No mapping found": >
 
-	 :imap <c-r>
+	:imap <c-r>
 <
 - Turn off automatic completion: >
 
-	 :MUcompleteAutoOff
+	:MUcompleteAutoOff
 <
   and try to complete a word using the corresponding mapping (see
   |ins-completion| for a list of available mappings). For example, for omni
