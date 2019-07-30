@@ -758,6 +758,14 @@ The maximum number of spelling suggestions offered by the "uspl" method.
 <
 Note: this setting does not affect the "spel" method.
 
+					*'g:mucomplete#spel#regex'*
+The regular expression used to search for matches during spell checking. The
+default matches the Latin alphabetic characters plus a wide range of UTF
+symbols with diacriticals.
+>
+	let g:mucomplete#spel#regex =
+	    \ '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]'
+<
 					*'g:mucomplete#ultisnips#match_at_start'*
 By default, the "ulti" method returns the snippets whose name starts with
 the word in front of the cursor. Set this to 0 to return all the snippets that

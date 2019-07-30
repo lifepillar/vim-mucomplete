@@ -23,6 +23,7 @@
 'g:mucomplete#reopen_immediately'	mucomplete.txt	/*'g:mucomplete#reopen_immediately'*
 'g:mucomplete#spel#good_words'	mucomplete.txt	/*'g:mucomplete#spel#good_words'*
 'g:mucomplete#spel#max'	mucomplete.txt	/*'g:mucomplete#spel#max'*
+'g:mucomplete#spel#regex'	mucomplete.txt	/*'g:mucomplete#spel#regex'*
 'g:mucomplete#ultisnips#match_at_start'	mucomplete.txt	/*'g:mucomplete#ultisnips#match_at_start'*
 'g:mucomplete#use_only_windows_paths'	mucomplete.txt	/*'g:mucomplete#use_only_windows_paths'*
 'g:mucomplete#user_mappings'	mucomplete.txt	/*'g:mucomplete#user_mappings'*

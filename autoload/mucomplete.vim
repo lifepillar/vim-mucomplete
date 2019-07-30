@@ -96,9 +96,8 @@ let g:mucomplete#chains = extend({
       \ }, get(g:, 'mucomplete#chains', {}))
 
 " Regex with special umlaut characters for spel/uspl completion
-fun! mucomplete#get_spel_regex()
-  return '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]'
-endf
+let g:mucomplete#spel#regex = get(g:, 'mucomplete#spel#regex',
+      \ '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]')
 
 " Conditions to be verified for a given method to be applied.
 if has('lambda')
@@ -146,11 +145,11 @@ if has('lambda')
         \     'omni': s:fm({ t -> strlen(&l:omnifunc) > 0 && s:is_keyword(t) }),
         \     'path': s:fm({ t -> t =~# '\m\%(\%(\f\&[^/\\]\)'.s:pathsep.'\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\%(\f\&[^/\\]\|\s\)\+\)$'
         \              || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$') }),
-        \     'spel': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m'.mucomplete#get_spel_regex().'\{3}$' }),
+        \     'spel': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m'.g:mucomplete#spel#regex.'\{3}$' }),
         \     'tags': s:fm({ t -> !empty(tagfiles()) && s:is_keyword(t) }),
         \     'thes': s:fm({ t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' }),
         \     'user': s:fm({ t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) }),
-        \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m'.mucomplete#get_spel_regex().'\{3}$' }),
+        \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m'.g:mucomplete#spel#regex.'\{3}$' }),
         \     'nsnp': s:fm({ t -> get(g:, 'loaded_neosnippet', 0) && s:is_keyword(t) }),
         \     'snip': s:fm({ t -> get(g:, 'loaded_snips', 0) && s:is_keyword(t) }),
         \     'ulti': s:fm({ t -> get(g:, 'did_plugin_ultisnips', 0) && s:is_keyword(t) }),
