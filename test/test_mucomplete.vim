@@ -285,6 +285,25 @@ fun! Test_MU_uspl_completion()
   set completeopt&
 endf
 
+fun! Test_MU_uspl_umlauts_completion()
+  new
+  setlocal spell
+  setlocal spelllang=en
+  let b:mucomplete_chain = ['uspl']
+  MUcompleteAutoOff
+  set completeopt=menuone,noselect
+  call feedkeys("anaïv", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<tab>\<esc>", "tx")
+  call assert_equal("naïve", getline(1))
+  call feedkeys("a naiv", "tx")
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<tab>\<tab>\<tab>\<tab>\<esc>", "tx")
+  call assert_equal("naïve naïve", getline(1))
+  bwipe!
+  set completeopt&
+endf
+
 fun! Test_MU_ctrl_e_ends_completion()
   new
   let b:mucomplete_chain = ['keyn']
