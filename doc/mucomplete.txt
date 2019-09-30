@@ -1042,6 +1042,9 @@ If you use Vim 8.0.0282 or older, you must also remap <cr>:
 Mapping things this way will also make MUcomplete and auto-pairs work well
 together with endwise.vim (see below).
 
+Auto Pairs + SnipMate ~
+See SnipMate + Auto Pairs configuration below.
+
 Auto Pairs + UltiSnips ~
 See UltiSnips + Auto Pairs configuration below.
 
@@ -1118,6 +1121,19 @@ with Enter, also add the following code to your `vimrc`:
 <
 Using a plug improves compatibility with some plugins that map <cr> in Insert
 mode (e.g., endwise.vim).
+
+SnipMate + Auto Pairs ~
+If you want snippets to be expanded automatically when you accept a menu entry
+with Enter and you are also using Auto Pairs, use the following snippet
+instead of the snippet above:
+>
+	let g:AutoPairsMapCR = 0
+
+	inoremap <plug>MyEnter <cr>
+	imap <silent> <expr> <plug>MyCR (pumvisible()
+	    \ ? "\<c-y>\<plug>snipMateTrigger"
+	    \ : "\<plug>MyEnter<plug>AutoPairsReturn")
+	imap <cr> <plug>MyCR
 
 UltiSnips ~
 UltiSnips maps <tab> and <c-j> in a way that conflicts with MUcomplete. The
