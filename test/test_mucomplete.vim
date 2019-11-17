@@ -787,5 +787,22 @@ fun! Test_MU_scoped_completion()
   bwipe!
 endf
 
+fun! Test_MU_test_dictionary_completion()
+  new
+  set dictionary=spell " Set global option
+  set spell spelllang=en
+  let b:mucomplete_chain = ['dict']
+  " Setting 'dictionary' globally leaves the local option empty:
+  call assert_equal('', &l:dictionary)
+  call setline(1, 'zu')
+  call cursor(1,1)
+  call feedkeys("A\<tab>\<c-y>\<esc>", 'tx')
+  call assert_equal('zucchini', getline(1))
+
+  set completeopt&
+  set dictionary&
+  bwipe!
+endf
+
 call RunBabyRun('MU')
 

@@ -19,7 +19,7 @@ fun! mucomplete#compat#default(t)
 endf
 
 fun! mucomplete#compat#dict(t)
-  return strlen(&l:dictionary) > 0 && (a:t =~# '\m\a\a$' || (g:mucomplete_with_key && a:t =~# '\m\a$'))
+  return strlen(&dictionary) > 0 && (a:t =~# '\m\a\a$' || (g:mucomplete_with_key && a:t =~# '\m\a$'))
 endf
 
 fun! mucomplete#compat#file(t)
