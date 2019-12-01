@@ -40,7 +40,7 @@ fun! mucomplete#compat#tags(t)
 endf
 
 fun! mucomplete#compat#thes(t)
-  return strlen(&l:thesaurus) > 0 && a:t =~# '\m\a\a\a$'
+  return strlen(&thesaurus) > 0 && a:t =~# '\m\a\a\a$'
 endf
 
 fun! mucomplete#compat#user(t)

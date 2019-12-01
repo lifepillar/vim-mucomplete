@@ -147,7 +147,7 @@ if has('lambda')
         \              || (g:mucomplete_with_key && t =~# '\m\%(\~\|\%(^\|\s\|\f\|["'']\)'.s:pathsep.'\)\%(\f\|\s\)*$') }),
         \     'spel': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m'.g:mucomplete#spel#regex.'\{3}$' }),
         \     'tags': s:fm({ t -> !empty(tagfiles()) && s:is_keyword(t) }),
-        \     'thes': s:fm({ t -> strlen(&l:thesaurus) > 0 && t =~# '\m\a\a\a$' }),
+        \     'thes': s:fm({ t -> strlen(&thesaurus) > 0 && t =~# '\m\a\a\a$' }),
         \     'user': s:fm({ t -> strlen(&l:completefunc) > 0 && s:is_keyword(t) }),
         \     'uspl': s:fm({ t -> &l:spell && !empty(&l:spelllang) && t =~# '\m'.g:mucomplete#spel#regex.'\{3}$' }),
         \     'nsnp': s:fm({ t -> get(g:, 'loaded_neosnippet', 0) && s:is_keyword(t) }),
