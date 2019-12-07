@@ -246,7 +246,7 @@ fun! s:next_method()
       return s:try_completion()
     endif
   endwhile
-  return ''
+  return s:ctrlx_out " No result, make sure completion mode is reset
 endf
 
 fun! s:verify_completion()

@@ -859,6 +859,27 @@ fun! Test_MU_test_set_thesaurus_locally()
   bwipe!
 endf
 
+" See https://github.com/lifepillar/vim-mucomplete/issues/160
+fun! Test_MU_completion_mode_is_exited_when_no_results()
+  new
+  setlocal tags=./testtags
+  setlocal complete=t
+  setlocal filetype=c
+  let b:mucomplete_chain = ['keyn']
+  call writefile(['incCount	path/to/somefile.c	/^void incCount(int n) {$/;"	f'], 'testtags')
+
+  call feedkeys("iin", 'tx')
+  call feedkeys("a", "t!")
+  " When pressing Tab, no result is returned and the completion mode should be
+  " reset. So, if the user next types CTRL-P, Vim should complete keywords from
+  " different sources (tags, in this case). If, for some reason, Vim were still
+  " in completion mode, then CTRL-P would have no effect.
+  call feedkeys("\<tab>\<c-p>\<tab>\<c-y>\<esc>", 'tx')
+  call assert_equal('incCount', getline(1))
+
+  call delete('testtags')
+  bwipe!
+endf
 
 call RunBabyRun('MU')
 
