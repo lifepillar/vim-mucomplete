@@ -881,5 +881,18 @@ fun! Test_MU_completion_mode_is_exited_when_no_results()
   bwipe!
 endf
 
+fun! Test_MU_tab_when_no_result()
+  new
+  let g:mucomplete#tab_when_no_result = 1
+  let b:mucomplete_chain = ['keyn']
+  call feedkeys("ieorigh", 'tx')
+  call feedkeys("a", "t!")
+  call feedkeys("\<tab>\<esc>", "tx")
+  call assert_equal("eorigh\t", getline(1))
+
+  unlet g:mucomplete#tab_when_no_result
+  bwipe!
+endf
+
 call RunBabyRun('MU')
 

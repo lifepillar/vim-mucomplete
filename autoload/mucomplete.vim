@@ -246,7 +246,12 @@ fun! s:next_method()
       return s:try_completion()
     endif
   endwhile
-  return s:ctrlx_out " No result, make sure completion mode is reset
+  " No result, make sure completion mode is reset.
+  " Also, insert Tab character if enabled by user option.
+  return s:ctrlx_out
+        \ . (g:mucomplete_with_key && get(g:, 'mucomplete#tab_when_no_result', 0)
+        \ ? "\<plug>(MUcompleteTab)"
+        \ : '')
 endf
 
 fun! s:verify_completion()
