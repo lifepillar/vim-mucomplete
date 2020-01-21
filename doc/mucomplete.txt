@@ -855,7 +855,9 @@ for an example.
 13. Tips & tricks			*mucomplete-tips*
 
 How to insert a literal tab character when <tab> is used by MUcomplete? ~
-Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped). See also |i_<Tab>|.
+Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped). See |i_<Tab>|.
+Another possibility is to set |g:mucomplete#tab_when_no_result| to 1 to have
+a tab character inserted when there are no completions.
 
 I want to do something special with <tab> in some circumstances, ~
 but I also want to keep using it with MUcomplete. How may I achieve ~
