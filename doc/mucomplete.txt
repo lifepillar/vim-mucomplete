@@ -766,11 +766,11 @@ symbols with diacriticals.
 	let g:mucomplete#spel#regex =
 	    \ '[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]'
 <
-					*'g:mucomplete#tab_when_no_result'*
+					*'g:mucomplete#tab_when_no_results'*
 Set to 1 if you want a literal Tab character to be inserted when manually
 triggered completion does not produce any completion.
 >
-	let g:mucomplete#tab_when_no_result = 0
+	let g:mucomplete#tab_when_no_results = 0
 <
 					*'g:mucomplete#ultisnips#match_at_start'*
 By default, the "ulti" method returns the snippets whose name starts with
@@ -856,7 +856,7 @@ for an example.
 
 How to insert a literal tab character when <tab> is used by MUcomplete? ~
 Use CTRL-V <Tab> (or CTRL-Q <Tab> if CTRL-V is mapped). See |i_<Tab>|.
-Another possibility is to set |g:mucomplete#tab_when_no_result| to 1 to have
+Another possibility is to set |g:mucomplete#tab_when_no_results| to 1 to have
 a tab character inserted when there are no completions.
 
 I want to do something special with <tab> in some circumstances, ~

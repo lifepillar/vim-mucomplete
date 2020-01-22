@@ -883,14 +883,14 @@ endf
 
 fun! Test_MU_tab_when_no_result()
   new
-  let g:mucomplete#tab_when_no_result = 1
+  let g:mucomplete#tab_when_no_results = 1
   let b:mucomplete_chain = ['keyn']
   call feedkeys("ieorigh", 'tx')
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
   call assert_equal("eorigh\t", getline(1))
 
-  unlet g:mucomplete#tab_when_no_result
+  unlet g:mucomplete#tab_when_no_results
   bwipe!
 endf
 
