@@ -1,6 +1,7 @@
 " Chained completion that works as I want!
 " Maintainer: Lifepillar <lifepillar@lifepillar.me>
 " License: This file is placed in the public domain
+" vim: et ts=2 sts=2 sw=2
 
 let s:save_cpo = &cpo
 set cpo&vim
