@@ -315,11 +315,20 @@ endf
 " If the argument is a completion chain (type() returns v:t_list), return it;
 " otherwise, get the completion chain for the current syntax item.
 fun! s:scope_chain(c)
-  return type(a:c) == 3
-        \ ? a:c
-        \ : get(a:c, synIDattr(synID('.', col('.') - 1, 0), 'name'),
-        \       get(a:c, 'default', g:mucomplete#chains['default']))
-endf
+  if type(a:c) ==  v:t_list
+    return a:c
+  else
+    let l:current_syntax = synIDattr(synID('.', col('.') - 1, 0), 'name')
+
+    for l:item in items(a:c)
+      if l:current_syntax =~? l:item[0]
+        return l:item[1]
+      endif
+    endfor
+
+    return get(a:c, 'default', g:mucomplete#chains['default'])
+  endif
+endfun
 
 " Precondition: pumvisible() is false.
 fun! mucomplete#init(dir, tab_completion) " Initialize/reset internal state
