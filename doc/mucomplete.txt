@@ -180,8 +180,12 @@ chains may be used. For example:
 >
 	let g:mucomplete#chains = {
 	    \ 'vim': { 'vimString': [],
-	    \          'vimLineComment': ['uspl'],
-	    \          'default': ['path', 'cmd', 'keyn'] }
+	    \		'vimLineComment': ['uspl'],
+	    \		'default': ['path', 'cmd', 'keyn'] },
+	    \ 'rust' : {
+	    \		'default' : ['omni', 'nsnp'],
+	    \		'rustString.*' : [],
+	    \		'rustComment.*' : ['spel'] }
 	    \ }
 <
 The assignment above defines the following behaviour in Vim buffers: no
@@ -190,13 +194,15 @@ completion, Vim commands completion and keyword completion in all other
 places. For all other filetypes, the global default chain is used (a global
 default chain is automatically defined by MUcomplete if it is not provided by
 the user).
+It also define the following in rust buffers : a default chain using omni
+completion and neosnippets, no completion inside strings, and spelling
+completion inside comments (either line or block).
 
-The keys of a scoped chain should be names of filetype-specific highlight
-groups or the `'default'` key. The associated values are standard completion
-chains (i.e., Lists of completion methods). If the `'default'` key is not
-present in a scoped chain, MUcomplete falls back to using the global
-completion chain (that is, the value of |g:mucomplete#chains|`['default']`) if
-necessary.
+The keys of a scoped chain should be regexes mathing highlight groups or the
+`'default'` key. The associated values are standard completion chains (i.e.,
+Lists of completion methods). If the `'default'` key is not present in a
+scoped chain, MUcomplete falls back to using the global completion chain (that
+is, the value of |g:mucomplete#chains|`['default']`) if necessary.
 
 ==============================================================================
 6. Path completion			*mucomplete-path-complete*
