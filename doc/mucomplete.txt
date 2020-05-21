@@ -179,13 +179,13 @@ active inside certain syntax items in specified filetypes. These are called
 chains may be used. For example:
 >
 	let g:mucomplete#chains = {
-	    \ 'vim': { 'vimString': [],
-	    \		'vimLineComment': ['uspl'],
-	    \		'default': ['path', 'cmd', 'keyn'] },
+	    \ 'vim'  : { 'vimString': [],
+	    \            'vimLineComment': ['uspl'],
+	    \            'default': ['path', 'cmd', 'keyn'] },
 	    \ 'rust' : {
-	    \		'default' : ['omni', 'nsnp'],
-	    \		'rustString.*' : [],
-	    \		'rustComment.*' : ['spel'] }
+	    \           'default' : ['omni', 'nsnp'],
+	    \           'rustString.*' : [],
+	    \           'rustComment.*' : ['spel'] }
 	    \ }
 <
 The assignment above defines the following behaviour in Vim buffers: no
@@ -196,6 +196,20 @@ omni completion and neosnippets, no completion inside strings, and spelling
 completion inside comments (either line or block). For all other filetypes,
 the global default chain is used (a global default chain is automatically
 defined by MUcomplete if it is not provided by the user).
+
+The global default chain may also be "scoped". This allows you to tweak your
+completion strategy in some nice ways. For instance:
+>
+	let g:mucomplete#chains = {
+	    \ 'default': { 'default': ['keyn'],
+	    \              '.*string.*: [],
+	    \              '.*comment.*: ['uspl']
+	    \            }
+	    \ }
+<
+The above setting will suppress completion inside any region matching a string
+highlight group and will enable only spell checking inside comments. Note that
+the `default` key in the `default` dictionary is mandatory!
 
 The keys of a scoped chain can be:
 
