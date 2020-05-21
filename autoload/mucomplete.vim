@@ -312,22 +312,21 @@ fun! mucomplete#cycle_or_select(dir)
         \ : (get(s:select_dir(), s:compl_methods[s:i], 1) * a:dir > 0 ? "\<c-n>" : "\<c-p>")
 endf
 
+fun! s:match_scoped_item(chain, syn)
+  for l:regex in keys(a:chain)
+    if a:syn =~? l:regex
+      return a:chain[l:regex]
+    endif
+  endfor
+  return get(a:chain, 'default', g:mucomplete#chains['default'])
+endf
+
 " If the argument is a completion chain (type() returns v:t_list), return it;
 " otherwise, get the completion chain for the current syntax item.
 fun! s:scope_chain(c)
-  if type(a:c) ==  3
-    return a:c
-  else
-    let l:current_syntax = synIDattr(synID('.', col('.') - 1, 0), 'name')
-
-    for l:item in items(a:c)
-      if l:current_syntax =~? l:item[0]
-        return l:item[1]
-      endif
-    endfor
-
-    return get(a:c, 'default', g:mucomplete#chains['default'])
-  endif
+  return type(a:c) == 3
+        \ ? a:c
+        \ : s:match_scoped_item(a:c, synIDattr(synID('.', col('.') - 1, 0), 'name'))
 endfun
 
 " Precondition: pumvisible() is false.
