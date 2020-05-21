@@ -320,12 +320,16 @@ fun! s:match_scoped_item(chain, syn)
   return get(a:chain, 'default', g:mucomplete#chains['default'])
 endf
 
+fun! s:get_scoped_item(chain, syn)
+  return get(a:chain, a:syn, s:match_scoped_item(a:chain, a:syn))
+endf
+
 " If the argument is a completion chain (type() returns v:t_list), return it;
 " otherwise, get the completion chain for the current syntax item.
 fun! s:scope_chain(c)
   return type(a:c) == 3
         \ ? a:c
-        \ : s:match_scoped_item(a:c, synIDattr(synID('.', col('.') - 1, 0), 'name'))
+        \ : s:get_scoped_item(a:c, synIDattr(synID('.', col('.') - 1, 0), 'name'))
 endfun
 
 " Precondition: pumvisible() is false.
