@@ -318,12 +318,12 @@ fun! s:match_scoped_item(chain, syn)
     endif
   endfor
   return has_key(a:chain, 'default')
-        \ ? get(a:chain, 'default')
+        \ ? a:chain['default']
         \ : s:scope_chain(g:mucomplete#chains['default'])
 endf
 
 fun! s:get_scoped_item(chain, syn)
-  return has_key(a:chain, a:syn) ? a:chain[a:syn] : s:match_scoped_item(a:chain, a:syn))
+  return has_key(a:chain, a:syn) ? a:chain[a:syn] : s:match_scoped_item(a:chain, a:syn)
 endf
 
 " If the argument is a completion chain (type() returns v:t_list), return it;
