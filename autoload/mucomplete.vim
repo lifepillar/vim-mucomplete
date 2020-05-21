@@ -315,7 +315,7 @@ endf
 " If the argument is a completion chain (type() returns v:t_list), return it;
 " otherwise, get the completion chain for the current syntax item.
 fun! s:scope_chain(c)
-  if type(a:c) ==  v:t_list
+  if type(a:c) ==  3
     return a:c
   else
     let l:current_syntax = synIDattr(synID('.', col('.') - 1, 0), 'name')
