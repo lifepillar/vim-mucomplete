@@ -787,6 +787,24 @@ fun! Test_MU_scoped_completion()
   bwipe!
 endf
 
+fun! Test_MU_scoped_completion_with_regexp()
+  new
+  set completeopt=menuone,noselect
+  set filetype=vim
+  set spell spelllang=en
+  let b:mucomplete_chain = { '^.*Comment$': ['uspl'], 'vimStr.*': [], 'default': ['cmd', 'keyp'] }
+  call setline(1, ['" Vim rulez', 'let x = "rocks roc"', 'wh'])
+  let l:expected = ['" Vim rules', 'let x = "rocks roc"', 'while']
+  call cursor(1,1)
+  call feedkeys("A\<tab>\<tab>\<c-y>\<esc>", 'tx')
+  call feedkeys("+2fca\<tab>\<c-y>\<esc>", 'tx') " No completion here
+  call feedkeys("+A\<tab>\<c-y>\<esc>", 'tx')
+  call assert_equal(l:expected, getline(1, '$'))
+
+  set completeopt&
+  bwipe!
+endf
+
 fun! Test_MU_test_set_dictionary_spell()
   new
   set dictionary=spell " Set global option
