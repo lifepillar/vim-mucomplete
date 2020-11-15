@@ -1,3 +1,7 @@
+" Chained completion that works as I want!
+" Maintainer: Lifepillar <lifepillar@lifepillar.me>
+" License: MIT
+
 " To run the tests:
 "
 " 1. vim -u ../troubleshooting_vimrc.vim test_mucomplete.vim

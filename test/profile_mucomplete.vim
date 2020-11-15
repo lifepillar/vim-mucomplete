@@ -1,3 +1,7 @@
+" Chained completion that works as I want!
+" Maintainer: Lifepillar <lifepillar@lifepillar.me>
+" License: MIT
+
 " Source this script to start profiling MUcomplete
 let s:testdir = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let s:mudir = fnamemodify(s:testdir, ':h')

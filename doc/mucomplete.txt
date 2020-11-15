@@ -1,4 +1,4 @@
-*mucomplete.txt*	For Vim version 7.2	Last change: 2019 Mar 20
+*mucomplete.txt*	For Vim version 7.2	Last change: 2020 Nov 15
 
 			|\/|| | _ _ ._ _ ._ | __|_ _                      ~
 			|  ||_|(_(_)| | ||_)|(/_|_(/_                     ~
@@ -7,7 +7,7 @@
 Welcome to the world of fallback completion!
 
 Author:  Lifepillar <https://github.com/lifepillar>
-License: Public Domain
+License: MIT
 
 ==============================================================================
 CONTENTS				*mucomplete-contents*

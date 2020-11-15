@@ -1,3 +1,7 @@
+" Chained completion that works as I want!
+" Maintainer: Lifepillar <lifepillar@lifepillar.me>
+" License: MIT
+
 let s:messages = []
 let s:errors = []
 let s:done = 0
