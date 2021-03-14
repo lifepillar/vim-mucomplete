@@ -545,11 +545,11 @@ completion chains. For example:
 					*'g:mucomplete#completion_delay'*
 Set to a positive value if you want autocompletion to be triggered only when
 you pause typing (autocompletion must be on for this to work). When set to 0,
-no delay occurs. If this is set to 1, or it is set to a positive value but Vim
-does not have the |+timers| feature, then |'updatetime'| is used for the delay
-(see also |CursorHoldI|). If Vim is built with |+timers| and this is set to
-a value greater than 1 then the value is interpreted as the number of
-milliseconds to wait before triggering auto-completion.
+no delay occurs. If this is set to 1, or it is set to a positive integer value
+but Vim does not have the |+timers| feature, then |'updatetime'| is used for
+the delay (see also |CursorHoldI|). If Vim is built with |+timers| and this is
+set to an integer value greater than 1 then the value is interpreted as the
+number of milliseconds to wait before triggering auto-completion.
 >
 	let g:mucomplete#completion_delay = 0
 <
