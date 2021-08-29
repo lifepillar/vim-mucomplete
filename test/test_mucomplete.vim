@@ -13,7 +13,7 @@
 
 if !has('patch-8.2.2638')
   echohl WarningMsg
-  echomsg "[MUcomplete Test] Vim 8.0.1806 or later is needed to run the tests successfully"
+  echomsg "[MUcomplete Test] Vim 8.2.2638 or later is needed to run the tests successfully"
   echohl None
 endif
 
