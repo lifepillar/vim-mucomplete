@@ -1350,7 +1350,11 @@ mapping. Since recently, there was no way in Vim to check that. So, the idea
 was to use a key sequence that (1) exits CTRL-X sub-mode when Vim is in CTRL-X
 submode, and (2) does nothing when typed out of CTRL-X mode. There are a few
 such key sequences, and eventually MUcomplete settled to use <c-g><c-g>, as it
-is one of the simplest.
+is one of the simplest. A possible side effect of that sequence is that it may
+trigger a beep, but that can be suppressed by adding `ctrlg` to |belloff|.
+
+As of Vim 8.2.3389, Vim provides <c-x><c-z> to stop insert mode completion
+without side effects. MUcomplete uses <c-x><c-z> if possible.
 
 What's the purpose of computing an empty string in the value returned by ~
 s:next_method()? ~

@@ -7,7 +7,11 @@ set cpo&vim
 
 imap     <silent> <expr> <plug>(MUcompleteTry) <sid>try_completion()
 imap     <silent> <expr> <plug>(MUcompleteVerify) <sid>verify_completion()
-inoremap <silent>        <plug>(MUcompleteOut) <c-g><c-g>
+if has("patch-8.2.3389")
+  inoremap <silent>      <plug>(MUcompleteOut) <c-x><c-z>
+else
+  inoremap <silent>      <plug>(MUcompleteOut) <c-g><c-g>
+endif
 inoremap <silent>        <plug>(MUcompleteTab) <tab>
 inoremap <silent>        <plug>(MUcompleteCtd) <c-d>
 inoremap <silent>        <plug>(MUcompleteCte) <c-e>
