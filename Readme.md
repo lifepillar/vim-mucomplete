@@ -55,7 +55,7 @@ Other recommended settings:
 
 ```vim
   set shortmess+=c   " Shut off completion messages
-  set belloff+=ctrlg " If Vim beeps during completion
+  set belloff+=ctrlg " Add only if Vim beeps during completion
 ```
 
 No other configuration is needed. Just start pressing `<tab>` or `<s-tab>` to
