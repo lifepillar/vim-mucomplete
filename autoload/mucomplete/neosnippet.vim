@@ -6,7 +6,8 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 fun! mucomplete#neosnippet#complete() abort
-  let l:snippets = neosnippet#helpers#get_completion_snippets()
+  let l:snippets = filter(neosnippet#helpers#get_snippets(),
+       \ "!get(v:val.options, 'oneshot', 0)")
   if empty(l:snippets)
     return ''
   endif
