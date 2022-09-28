@@ -202,8 +202,8 @@ completion strategy in some nice ways. For instance:
 >
 	let g:mucomplete#chains = {
 	    \ 'default': { 'default': ['keyn'],
-	    \              '.*string.*: [],
-	    \              '.*comment.*: ['uspl']
+	    \              '.*string.*': [],
+	    \              '.*comment.*': ['uspl']
 	    \            }
 	    \ }
 <
