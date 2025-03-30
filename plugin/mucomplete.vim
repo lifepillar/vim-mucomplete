@@ -22,10 +22,10 @@ if !has('patch-8.0.0283')
 endif
 
 if !get(g:, 'mucomplete#no_mappings', get(g:, 'no_plugin_maps', 0))
-  if !hasmapto('<plug>(MUcompleteFwd)', 'i')
+  if !hasmapto('<plug>(MUcompleteFwd)', 'i') && !has('nvim')
     imap <unique> <tab> <plug>(MUcompleteFwd)
   endif
-  if !hasmapto('<plug>(MUcompleteBwd)', 'i')
+  if !hasmapto('<plug>(MUcompleteBwd)', 'i') && !has('nvim')
     imap <unique> <s-tab> <plug>(MUcompleteBwd)
   endif
 endif

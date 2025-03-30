@@ -1061,7 +1061,7 @@ You can hook to |MUcompletePmenu| directly instead of using
 14. Compatibility			*mucomplete-compatibility*
 
 MUcomplete tries to be a responsible citizen in Vimland. This section
-describes how to make it peacefully coexist with other plugins.
+describes how to make it peacefully coexist with other Vim citizens.
 
 Auto Pairs ~
 This plugin maps <space> in Insert mode in ways that conflict with
@@ -1138,6 +1138,12 @@ a plug improves compatibility with some plugins that map <cr> in Insert mode
 
 If you need more flexibility and you know what you are doing, you may call
 `mucomplete#neosnippet#do_expand()` directly.
+
+Neovim ~
+Starting with version 0.11, Neovim maps Tab and Shift-Tab by default.
+MUcomplete will not remap those keys. If you want to use manual completion,
+you have to map <plug>(MUcompleteFwd) and <plug>(MUcompleteBwd) as explained
+in |mucomplete-mappings|.
 
 SnipMate ~
 In your |vimrc|, set:
