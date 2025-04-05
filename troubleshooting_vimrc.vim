@@ -12,7 +12,7 @@ if has('viminfo')
   set viminfo=""
 endif
 if has('packages')
-  set packpath=
+  set packpath=$VIMRUNTIME
 endif
 set runtimepath=$VIMRUNTIME
 set completeopt=menuone
