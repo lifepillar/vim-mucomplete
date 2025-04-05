@@ -364,10 +364,10 @@ fun! Test_MU_issue_89()
 endf
 
 fun! Test_MU_smart_enter()
-  " Vim does not always insert a new line after pressing Enter with the pop-up
-  " menu visible. This function tests a situation is which Vim would not
-  " normally insert a new line (so "ok" would end on the same line as
-  " "hawkfish"), but MUcomplete does, after remapping <cr>.
+  " Before v9.1.1121, Vim does not always insert a new line after pressing
+  " Enter with the pop-up menu visible. This function tests a situation is
+  " which Vim would not normally insert a new line (so "ok" would end on the
+  " same line as "hawkfish"), but MUcomplete does, after remapping <cr>.
   new
   let b:mucomplete_chain = ['keyn']
   setl completeopt=menuone
@@ -376,19 +376,34 @@ fun! Test_MU_smart_enter()
   call feedkeys("ahawkfish\<cr>hawk", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<c-p>fish\<cr>ok", "tx")
-  call assert_equal("hawkfish", getline(1))
-  call assert_equal("hawkfishok", getline(2))
-  call assert_equal(2, line('$'))
+
+  if has('patch-9.1.1121')
+    call assert_equal("hawkfish", getline(1))
+    call assert_equal("hawkfish", getline(2))
+    call assert_equal("ok", getline(3))
+    call assert_equal(3, line('$'))
+  else
+    call assert_equal("hawkfish", getline(1))
+    call assert_equal("hawkfishok", getline(2))
+    call assert_equal(2, line('$'))
+  endif
+
   " Remap <cr> to always Insert a new line when the pop up menu is dismissed
   imap <buffer> <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
   call feedkeys("ohawk", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<c-p>fish\<cr>ok", "tx")
-  call assert_equal("hawkfish", getline(3))
-  call assert_equal("ok", getline(4))
-  call assert_equal(4, line('$'))
+
+  if has('patch-9.1.1121')
+    call assert_equal("hawkfish", getline(4))
+    call assert_equal("ok", getline(5))
+    call assert_equal(5, line('$'))
+  else
+    call assert_equal("hawkfish", getline(3))
+    call assert_equal("ok", getline(4))
+    call assert_equal(4, line('$'))
+  endif
   bwipe!
-  setl completeopt&
 endf
 
 if has('python') || has('python3')
@@ -415,13 +430,20 @@ fun! Test_MU_popup_complete_backwards_issues_61_and_95()
   " This test fails before Vim 8.0.1731 because of a Vim bug.
   " See https://github.com/vim/vim/issues/1645
   new
+  setlocal completeopt=menuone,noinsert
   call setline(1, ['Post', 'Port', 'Po'])
-  let l:expected = ['Post', 'Port', 'Port']
+
+  if has('patch-9.1.1121')  " Insert newline when pressing Enter if no menu item is selected
+    let l:expected = ['Post', 'Port', 'Port', '']
+  else
+    let l:expected = ['Post', 'Port', 'Port']
+  endif
+
   call cursor(3,2)
   " Check that Vim does not have bugs
   call feedkeys("A\<c-x>". repeat("\<c-p>", 3). "rt\<cr>", 'tx')
   call assert_equal(l:expected, getline(1, '$'))
-  norm ddgG
+  norm ggdG
   call setline(1, ['Post', 'Port', 'Po'])
   call cursor(3,2)
   call feedkeys("A\<c-p>\<c-n>rt\<cr>", 'tx')
