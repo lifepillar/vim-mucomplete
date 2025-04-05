@@ -41,7 +41,7 @@ fun! s:vim(vimrc, cmd, ...)
         \ 'if has("writebackup") | set nowritebackup | endif',
         \ 'if has("packages") | set packpath= | endif',
         \ 'set runtimepath='.fnameescape(s:mudir),
-        \ 'set completeopt=menuone'
+        \ 'setl completeopt=menuone'
         \ ]
   let l:vimrc += a:vimrc
   call writefile(l:vimrc, l:vimrc_name)
@@ -60,27 +60,27 @@ fun! Test_MU_buffer_keyword_completion()
   new
   let b:mucomplete_chain = ['keyn']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("ajump ju", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
   call assert_equal("jump jump", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_buffer_keyword_completion_plug()
   new
   let b:mucomplete_chain = ['keyn']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("ajump ju", "tx")
   call feedkeys("a", "t!")
   " Check that invoking the plug directly has the same effect as <tab>
   call feedkeys("\<plug>(MUcompleteFwd)\<esc>", "tx")
   call assert_equal("jump jump", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 " Extending completion should work the same no matter how completeopt is set.
@@ -96,7 +96,7 @@ fun! Test_MU_buffer_extend_keyword_completion()
       let b:mucomplete_chain = [l:method]
       for l:popup_dir in [1,-1]
         let g:mucomplete#popup_direction = { l:method: l:popup_dir }
-        let &completeopt = l:opt
+        let &l:completeopt = l:opt
         norm ggdG
         call feedkeys("aIn Xanadu did Kubla Khan", "tx")
         call feedkeys("oIn", "tx")
@@ -113,7 +113,7 @@ fun! Test_MU_buffer_extend_keyword_completion()
   endfor
 
   unlet g:mucomplete#popup_direction
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
@@ -125,7 +125,7 @@ fun! Test_MU_extend_line_completion()
   MUcompleteAutoOff
 
   for l:opt in ['menuone', 'menuone,noselect', 'menuone,noinsert', 'menuone,noinsert,noselect']
-    let &completeopt = l:opt
+    let &l:completeopt = l:opt
     norm ggdG
     call setline(1,  ['abc def', 'abc def ghi', 'abc def ghi jkl'])
     let l:expected = ['abc def', 'abc def ghi', 'abc def ghi jkl',
@@ -143,7 +143,7 @@ fun! Test_MU_extend_line_completion()
     call assert_equal(l:expected, getline(1, '$'))
   endfor
 
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
@@ -152,20 +152,20 @@ fun! Test_MU_cmd_completion()
   set ft=vim
   let b:mucomplete_chain = ['cmd']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("aech", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<tab>\<esc>", "tx")
   call assert_equal("echoconsole", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_line_completion()
   new
   let b:mucomplete_chain = ['line']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("aVim is awesome\<cr>", "tx")
   call feedkeys("aVi", "tx")
   call feedkeys("a", "t!")
@@ -173,7 +173,7 @@ fun! Test_MU_line_completion()
   call assert_equal("Vim is awesome", getline(1))
   call assert_equal("Vim is awesome", getline(2))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_path_completion_basic()
@@ -181,13 +181,13 @@ fun! Test_MU_path_completion_basic()
   execute 'lcd' s:testdir
   let b:mucomplete_chain = ['path']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("a./test_m", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
   call assert_equal("./test_mucomplete.vim", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_path_completion_with_non_default_isfname()
@@ -195,7 +195,7 @@ fun! Test_MU_path_completion_with_non_default_isfname()
   let b:mucomplete_chain = ['path']
   MUcompleteAutoOff
   try
-    set completeopt=menuone,noselect
+    setl completeopt=menuone,noselect
     set isfname+=@-@,#,{,},*
     execute 'lcd' s:testdir
     call mkdir('tempdir/I * mucomplete/@ @/###/{ok}/}ok{/', "p")
@@ -218,7 +218,7 @@ fun! Test_MU_path_completion_with_non_default_isfname()
     bwipe!
   finally
     call delete("tempdir", "rf")
-    set completeopt&
+    setl completeopt&
     set isfname&
   endtry
 endf
@@ -228,18 +228,18 @@ fun! Test_MU_double_slash_comment_is_not_path()
   execute 'lcd' s:testdir
   let b:mucomplete_chain = ['path']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("a// t", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
   call assert_equal("// t", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_slash_is_not_path_in_autocompletion()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   let b:mucomplete_chain = ['path']
   call assert_equal('<Plug>(MUcompleteFwd)', maparg('<tab>', 'i'))
   call assert_equal('<Plug>(MUcompleteBwd)', maparg('<s-tab>', 'i'))
@@ -252,7 +252,7 @@ fun! Test_MU_slash_is_not_path_in_autocompletion()
   call assert_equal('//', getline(2))
   call test_override("char_avail", 0)
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
@@ -261,13 +261,13 @@ fun! Test_MU_complete_path_after_equal_sign()
   execute 'lcd' s:testdir
   let b:mucomplete_chain = ['path']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("Alet path=./R", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
   call assert_equal("let path=./Readme.md", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_uspl_completion()
@@ -276,7 +276,7 @@ fun! Test_MU_uspl_completion()
   setlocal spelllang=en
   let b:mucomplete_chain = ['uspl']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("aspelin", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<tab>\<esc>", "tx")
@@ -286,7 +286,7 @@ fun! Test_MU_uspl_completion()
   call feedkeys("\<tab>\<tab>\<tab>\<esc>", "tx")
   call assert_equal("spleen spelling", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_uspl_umlauts_completion()
@@ -295,7 +295,7 @@ fun! Test_MU_uspl_umlauts_completion()
   setlocal spelllang=en
   let b:mucomplete_chain = ['uspl']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("anaïv", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<tab>\<esc>", "tx")
@@ -305,33 +305,33 @@ fun! Test_MU_uspl_umlauts_completion()
   call feedkeys("\<tab>\<tab>\<tab>\<tab>\<tab>\<esc>", "tx")
   call assert_equal("naïve naïve", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_ctrl_e_ends_completion()
   new
   let b:mucomplete_chain = ['keyn']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("aabsinthe ab", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<c-e>", "tx")
   call assert_equal("absinthe ab", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_ctrl_y_accepts_completion()
   new
   let b:mucomplete_chain = ['keyn']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys("aabsinthe ab", "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<c-y> ok", "tx")
   call assert_equal("absinthe absinthe ok", getline(1))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_issue_87()
@@ -339,14 +339,14 @@ fun! Test_MU_issue_87()
   set ft=tex
   let b:mucomplete_chain = ['path', 'omni', 'keyn']
   MUcompleteAutoOff
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   call feedkeys('a\emph{', "tx")
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<esc>", "tx")
   call assert_equal('\emph{', getline(1))
   call assert_equal([], v:errors)
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 fun! Test_MU_issue_89()
@@ -370,7 +370,7 @@ fun! Test_MU_smart_enter()
   " "hawkfish"), but MUcomplete does, after remapping <cr>.
   new
   let b:mucomplete_chain = ['keyn']
-  set completeopt=menuone
+  setl completeopt=menuone
   MUcompleteAutoOff
   " Default behaviour: Enter does not start a new line
   call feedkeys("ahawkfish\<cr>hawk", "tx")
@@ -388,7 +388,7 @@ fun! Test_MU_smart_enter()
   call assert_equal("ok", getline(4))
   call assert_equal(4, line('$'))
   bwipe!
-  set completeopt&
+  setl completeopt&
 endf
 
 if has('python') || has('python3')
@@ -399,14 +399,14 @@ if has('python') || has('python3')
     set filetype=python
     let b:mucomplete_chain = ['omni']
     MUcompleteAutoOff
-    set completeopt=menuone,noselect
+    setl completeopt=menuone,noselect
     call feedkeys("aimport sys.", "tx")
     call feedkeys("a", "t!")
     " Trigger omni-completion and select the first entry
     call feedkeys("\<tab>\<esc>", "tx")
     call assert_match('import sys.\w\+', getline(1))
     bwipe!
-    set completeopt&
+    setl completeopt&
   endf
 
 endif
@@ -453,7 +453,7 @@ fun! Test_MU_popup_direction()
   for l:opt in ['menuone', 'menuone,noselect', 'menuone,noinsert', 'menuone,noinsert,noselect']
     let g:mucomplete#popup_direction = { 'keyp': -1 }
     norm ggdG
-    let &completeopt = l:opt
+    let &l:completeopt = l:opt
     call setline(1, ['bowl', 'bowling', 'bowtie', 'bo'])
     let l:expected = ['bowl', 'bowling', 'bowtie', 'bowtie', 'bowling']
     call cursor(4,2)
@@ -476,13 +476,13 @@ fun! Test_MU_popup_direction()
 
   unlet g:mucomplete#always_use_completeopt
   unlet g:mucomplete#popup_direction
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_basic_autocompletion()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   let b:mucomplete_chain = ['keyn']
   call assert_equal('<Plug>(MUcompleteFwd)', maparg('<tab>', 'i'))
   call assert_equal('<Plug>(MUcompleteBwd)', maparg('<s-tab>', 'i'))
@@ -496,14 +496,14 @@ fun! Test_MU_basic_autocompletion()
   call assert_equal(l:expected, getline(1,'$'))
   call test_override("char_avail", 0)
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_autocompletion_tab_shifttab()
   new
   let b:mucomplete_chain = ['keyn']
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   MUcompleteAutoOn
 
   " Test that we are able to select menu entries with TAB and SHIFT-TAB
@@ -532,13 +532,13 @@ fun! Test_MU_autocompletion_tab_shifttab()
   call test_override("char_avail", 0)
 
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_natural_popup_direction_auto_on_noselect()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   MUcompleteAutoOn
   let g:mucomplete#popup_direction = { 'keyp': -1 }
   let b:mucomplete_chain = ['keyp']
@@ -555,13 +555,13 @@ fun! Test_MU_natural_popup_direction_auto_on_noselect()
 
   MUcompleteAutoOff
   unlet g:mucomplete#popup_direction
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_reverse_popup_direction_auto_on_noselect()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   MUcompleteAutoOn
   let g:mucomplete#popup_direction = { 'keyp': 1 }
   let b:mucomplete_chain = ['keyp']
@@ -578,13 +578,13 @@ fun! Test_MU_reverse_popup_direction_auto_on_noselect()
 
   unlet g:mucomplete#popup_direction
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_natural_popup_direction_auto_on_noinsert()
   new
-  set completeopt=menuone,noinsert
+  setl completeopt=menuone,noinsert
   MUcompleteAutoOn
   let g:mucomplete#popup_direction = { 'keyp': -1 }
   let b:mucomplete_chain = ['keyp']
@@ -601,13 +601,13 @@ fun! Test_MU_natural_popup_direction_auto_on_noinsert()
 
   unlet g:mucomplete#popup_direction
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_reverse_popup_direction_auto_on_noinsert()
   new
-  set completeopt=menuone,noinsert
+  setl completeopt=menuone,noinsert
   MUcompleteAutoOn
   let g:mucomplete#popup_direction = { 'keyp': 1 }
   let b:mucomplete_chain = ['keyp']
@@ -624,13 +624,13 @@ fun! Test_MU_reverse_popup_direction_auto_on_noinsert()
 
   unlet g:mucomplete#popup_direction
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_natural_popup_direction_auto_on_noinsert_noselect()
   new
-  set completeopt=menuone,noselect,noinsert
+  setl completeopt=menuone,noselect,noinsert
   MUcompleteAutoOn
   let g:mucomplete#popup_direction = { 'keyp': -1 }
   let b:mucomplete_chain = ['keyp']
@@ -646,13 +646,13 @@ fun! Test_MU_natural_popup_direction_auto_on_noinsert_noselect()
 
   unlet g:mucomplete#popup_direction
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_reverse_popup_direction_auto_on_noselect_noinsert()
   new
-  set completeopt=menuone,noselect,noinsert
+  setl completeopt=menuone,noselect,noinsert
   MUcompleteAutoOn
   let g:mucomplete#popup_direction = { 'keyp': 1 }
   let b:mucomplete_chain = ['keyp']
@@ -668,7 +668,7 @@ fun! Test_MU_reverse_popup_direction_auto_on_noselect_noinsert()
 
   unlet g:mucomplete#popup_direction
   MUcompleteAutoOff
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
@@ -677,7 +677,7 @@ fun! Test_MU_ctrl_p_and_ctrl_n_remapped()
   new
   inoremap <buffer> <c-p> P
   inoremap <buffer> <c-n> N
-  set completeopt=menu,noselect
+  setl completeopt=menu,noselect
   call feedkeys("Ajust jump ju", 'tx')
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<tab>\<c-y>\<esc>", 'tx')
@@ -687,7 +687,7 @@ fun! Test_MU_ctrl_p_and_ctrl_n_remapped()
   call feedkeys("\<s-tab>\<s-tab>\<s-tab>\<c-y>\<esc>", 'tx')
   call assert_equal('jump', getline(2))
 
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
@@ -696,7 +696,7 @@ fun! Test_MU_up_and_down_arrow_remapped()
   new
   inoremap <buffer> <up> UP
   inoremap <buffer> <down> DOWN
-  set completeopt=menu,noinsert
+  setl completeopt=menu,noinsert
   call feedkeys("Ajust jump ju", 'tx')
   call feedkeys("a", "t!")
   call feedkeys("\<tab>\<tab>\<c-y>\<esc>", 'tx')
@@ -706,13 +706,13 @@ fun! Test_MU_up_and_down_arrow_remapped()
   call feedkeys("\<s-tab>\<s-tab>\<s-tab>\<c-y>\<esc>", 'tx')
   call assert_equal('jump', getline(2))
 
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_cycling_uses_correct_compl_text()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   set filetype=c
   setlocal omnifunc=ccomplete#Complete
   setlocal tags=./testtags
@@ -738,13 +738,13 @@ fun! Test_MU_cycling_uses_correct_compl_text()
   call assert_equal('incredible', getline(4))
 
   call delete('testtags')
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_ccomplete_and_cycling()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   set filetype=c
   setlocal omnifunc=ccomplete#Complete
   setlocal tags=./testtags
@@ -769,13 +769,13 @@ fun! Test_MU_ccomplete_and_cycling()
   call assert_equal('int', getline(4))
 
   call delete('testtags')
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_scoped_completion()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   set filetype=vim
   set spell spelllang=en
   let b:mucomplete_chain = { 'vimLineComment': ['uspl'], 'vimString': [], 'default': ['cmd', 'keyp'] }
@@ -787,13 +787,13 @@ fun! Test_MU_scoped_completion()
   call feedkeys("+A\<tab>\<c-y>\<esc>", 'tx')
   call assert_equal(l:expected, getline(1, '$'))
 
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
 fun! Test_MU_scoped_completion_with_regexp()
   new
-  set completeopt=menuone,noselect
+  setl completeopt=menuone,noselect
   set filetype=vim
   set spell spelllang=en
   let b:mucomplete_chain = { '^.*Comment$': ['uspl'], 'vimStr.*': [], 'default': ['cmd', 'keyp'] }
@@ -805,7 +805,7 @@ fun! Test_MU_scoped_completion_with_regexp()
   call feedkeys("+A\<tab>\<c-y>\<esc>", 'tx')
   call assert_equal(l:expected, getline(1, '$'))
 
-  set completeopt&
+  setl completeopt&
   bwipe!
 endf
 
@@ -821,7 +821,7 @@ fun! Test_MU_test_set_dictionary_spell()
   call feedkeys("A\<tab>\<c-y>\<esc>", 'tx')
   call assert_equal('zucchini', getline(1))
 
-  set completeopt&
+  setl completeopt&
   set dictionary&
   bwipe!
 endf
@@ -839,7 +839,7 @@ fun! Test_MU_setlocal_dictionary_spell()
   call feedkeys("A\<tab>\<c-y>\<esc>", 'tx')
   call assert_equal('zucchini', getline(1))
 
-  set completeopt&
+  setl completeopt&
   set dictionary&
   bwipe!
 endf
@@ -857,7 +857,7 @@ fun! Test_MU_test_set_thesaurus_globally()
   call assert_equal('abundantly', getline(1))
 
   call delete('testthes')
-  set completeopt&
+  setl completeopt&
   set thesaurus&
   bwipe!
 endf
@@ -876,7 +876,7 @@ fun! Test_MU_test_set_thesaurus_locally()
   call assert_equal('abundantly', getline(1))
 
   call delete('testthes')
-  set completeopt&
+  setl completeopt&
   set thesaurus&
   bwipe!
 endf
