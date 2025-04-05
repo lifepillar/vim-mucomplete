@@ -884,6 +884,7 @@ endf
 " See https://github.com/lifepillar/vim-mucomplete/issues/160
 fun! Test_MU_completion_mode_is_exited_when_no_results()
   new
+  setlocal completeopt=menuone,noselect
   setlocal tags=./testtags
   setlocal complete=t
   setlocal filetype=c
@@ -900,6 +901,7 @@ fun! Test_MU_completion_mode_is_exited_when_no_results()
   call assert_equal('incCount', getline(1))
 
   call delete('testtags')
+  setl completeopt&
   bwipe!
 endf
 
