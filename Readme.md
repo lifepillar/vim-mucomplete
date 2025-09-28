@@ -73,7 +73,7 @@ features, in particular:
 
 **NOTE:** *Vim 9.1.1590 has added an `'autocomplete'` option. If you set
 `autocomplete` on, you need not—and must not—enable MUcomplete autocompletion,
-and you may ignore this section.
+and you may ignore this section.*
 
 To get completion suggestions automatically as you type (with Vim 7.4.775 or
 later), you must add either `noselect` or `noinsert` to `completeopt`:
