@@ -27,19 +27,56 @@ MUcomplete brings Vim completion down to earth again.
 
 MUcomplete requires Vim 7.2 compiled with `+insert_expand` and `+menu`.
 Automatic completion is available in Vim 7.4.143 or later, although Vim
-8.0.0283 is recommended. MUcomplete is developed and tested on Vim 8.
+8.0.0283 is recommended. MUcomplete is developed and tested on Vim 9.
 
 Installation does not require anything special. If you need help, please read
 [How to Install](https://github.com/lifepillar/vim-mucomplete/wiki/How-to-Install).
 
-Mandatory Vim settings:
+**Mandatory Vim settings:**
 
 ```vim
   set completeopt+=menuone
 ```
 
-For automatic completion, if you use Vim 7.4.775 or later you also need one of
-the following:
+**Optional Vim settings:**
+
+Starting with Vim 9.1.1178, Vim supports fuzzy completion by adding `fuzzy` to
+`completeopt`, so if you want fuzzy matching, set:
+
+```vim
+  set completeopt+=fuzzy
+```
+
+Other recommended settings:
+
+```vim
+  set shortmess+=c   " Shut off completion messages
+  set belloff+=ctrlg " Add only if Vim beeps during completion
+```
+
+No other configuration is needed. Just start pressing `<tab>` or `<s-tab>` to
+complete a word. For autocompletion, see the next section.
+
+Vim 9.1 has improved its support for both manual and automatic completion. To
+make the most out of MUcomplete, make sure to get familiar with Vim's built-in
+features, in particular:
+
+```
+:help ins-completion
+:help 'completeopt'
+:help 'complete'
+:help 'autocomplete'
+```
+
+
+## Autocompletion
+
+**NOTE:** *Vim 9.1.1590 has added an `'autocomplete'` option. If you set
+`autocomplete` on, you need not—and must not—enable MUcomplete autocompletion,
+and you may ignore this section.
+
+To get completion suggestions automatically as you type (with Vim 7.4.775 or
+later), you must add either `noselect` or `noinsert` to `completeopt`:
 
 ```vim
   set completeopt+=noselect
@@ -51,23 +88,15 @@ or
   set completeopt+=noinsert
 ```
 
-Other recommended settings:
+Automatic completion can be activated at any time with `:MUcompleteOn` and
+disabled with `:MUcompleteOff`, or toggled with `:MUcompleteToggle`. To make
+automatic completion available at startup, add the following to your `vimrc`:
 
 ```vim
-  set shortmess+=c   " Shut off completion messages
-  set belloff+=ctrlg " Add only if Vim beeps during completion
+g:mucomplete#enable_auto_at_startup = 1
 ```
 
-No other configuration is needed. Just start pressing `<tab>` or `<s-tab>` to
-complete a word. If you want to enable automatic completion at startup, put
-
-```vim
-let g:mucomplete#enable_auto_at_startup = 1
-```
-
-in your `.vimrc`. Automatic completion may be enabled and disabled at any time
-with `:MUcompleteAutoToggle`. If autocompletion looks a little overzealous to
-you, you may set:
+If autocompletion looks a little overzealous to you, you may set:
 
 ```vim
 let g:mucomplete#completion_delay = 1
@@ -75,6 +104,9 @@ let g:mucomplete#completion_delay = 1
 
 Then, MUcomplete will kick in only when you pause typing. The delay can be
 adjusted, of course: see `:help mucomplete-customization`.
+
+
+## Completion Chains
 
 By default, MUcomplete attempts:
 
@@ -84,15 +116,17 @@ By default, MUcomplete attempts:
 4. dictionary completion, if a dictionary is set for the current buffer;
 5. spelling completion, if `'spell'` is on and `'spelllang'` is set;
 
-in this order (this is called a *completion chain*). At the first successful
-attempt, the pop-up menu shows the results. When the pop-up menu is visible, you
-may cycle back and forth through the completion chain and try different
-completion methods by pressing `<c-h>` and `<c-j>`, respectively. In other
-words, `<c-h>` and `<c-j>` mean: “cancel the current menu and try completing the
-text I originally typed in a different way”. See below for an example.
+in this order. This is called a *completion chain* and it is the core concept
+of MUcomplete operation. At the first successful attempt, the pop-up menu shows
+the results. When the pop-up menu is visible, you may cycle back and forth
+through the completion chain and try different completion methods by pressing
+`<c-h>` and `<c-j>`, respectively. In other words, `<c-h>` and `<c-j>` mean:
+“cancel the current menu and try completing the text I originally typed in
+a different way”. See below for an example.
 
-MUcomplete is fully customizable. See `:help mucomplete.txt` for detailed
-documentation.
+Different completion chains can be defined for each filetype or at the buffer
+level. They can also be scoped by syntax groups. MUcomplete is fully
+customizable. See `:help mucomplete.txt` for detailed documentation.
 
 **Note:** *MUcomplete maps `<tab>` and `<s-tab>` to act as manual completion
 triggers by default. It also changes how `<c-j>` and `<c-h>` work when the
@@ -101,10 +135,14 @@ MUcomplete's defaults, of course, or prevent MUcomplete to define any mappings
 at all. Read the documentation for options and for hints about making MUcomplete
 work with plugins having conflicting mappings.*
 
-**Important:** by itself, MUcomplete does not provide any
-“intellisense”/semantic completion. If you want that, you also need to install
-suitable omni completion plugins for the languages you are using (see the
-examples below).
+
+## Semantic Completion and Language Server Protocol (LSP) Support
+
+MUcomplete offers no explicit support for “intellisense”/semantic completion or
+for LSP. For that, you need to install suitable plugins. However, as long as
+those other plugins expose their functionality through `omnifunc` or
+`complete`'s `F` option (in Vim 9.1.1409 or later), MUcomplete should work just
+fine with them.
 
 
 # MUcomplete in action
@@ -173,7 +211,6 @@ In the example, `<tab>` was typed to trigger a completion, then `<down>` was
 pressed repeatedly to extend the completion. To my knowledge, MUcomplete is the
 only completion plugin that streamlines this Vim feature. See `:help
 mucomplete-extend-compl` for more details.
-
 
 
 # Compatibility
