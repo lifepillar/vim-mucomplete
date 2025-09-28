@@ -800,7 +800,7 @@ fun! Test_MU_scoped_completion()
   setl completeopt=menuone,noselect
   set filetype=vim
   set spell spelllang=en
-  let b:mucomplete_chain = { 'vimLineComment': ['uspl'], 'vimString': [], 'default': ['cmd', 'keyp'] }
+  let b:mucomplete_chain = { 'vimLineComment': ['uspl'], 'String': [], 'default': ['cmd', 'keyp'] }
   call setline(1, ['" Vim rulez', 'let x = "rocks roc"', 'wh'])
   let l:expected = ['" Vim rules', 'let x = "rocks roc"', 'while']
   call cursor(1,1)
@@ -818,7 +818,7 @@ fun! Test_MU_scoped_completion_with_regexp()
   setl completeopt=menuone,noselect
   set filetype=vim
   set spell spelllang=en
-  let b:mucomplete_chain = { '^.*Comment$': ['uspl'], 'vimStr.*': [], 'default': ['cmd', 'keyp'] }
+  let b:mucomplete_chain = { '^.*Comment$': ['uspl'], 'vim\%(Continue\)\=Str.*': [], 'default': ['cmd', 'keyp'] }
   call setline(1, ['" Vim rulez', 'let x = "rocks roc"', 'wh'])
   let l:expected = ['" Vim rules', 'let x = "rocks roc"', 'while']
   call cursor(1,1)
