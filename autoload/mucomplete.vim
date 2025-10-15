@@ -96,7 +96,7 @@ let g:mucomplete_with_key = 1  " Was completion triggered by a key?
 " Completion chains
 let g:mucomplete#chains = extend({
       \ 'default' : ['path', 'omni', 'keyn', 'dict', 'uspl'],
-      \ 'vim'     : ['path', 'cmd',  'keyn']
+      \ 'vim'     : (has('patch-9.1.1853') ? ['path', 'omni',  'keyn'] : ['path', 'cmd', 'keyn'])
       \ }, get(g:, 'mucomplete#chains', {}))
 
 " Regex with special umlaut characters for spel/uspl completion
